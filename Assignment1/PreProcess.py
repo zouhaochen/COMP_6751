@@ -11,7 +11,7 @@ print("For example:【training/267】")
 text = input()
 
 
-class ProcessMethod:
+class TextPreprocess:
 
     def __init__(self, fileid: str):
         self.fileid = fileid
@@ -105,17 +105,16 @@ class ProcessMethod:
             body_tokens = regex_tokenizer.tokenize(body)
             print()
 
-            print('Tokenization results:')
+            print('Text Preprocess and proofreading result display as follows:')
+            print('\n【Tokenization】')
             print(title_tokens)
             print(body_tokens)
-            print()
 
             # 2. sentence splitting
             # ## use built-in tagged sentence (for clarify)
             body_sents = nltk.sent_tokenize(body)
-            print('Sentences splitting results:')
+            print('\n【Sentences Splitting】')
             print(body_sents)
-            print()
 
             # 3. POS tagging
             pos_tags: List[List[str]] = list()
@@ -123,7 +122,7 @@ class ProcessMethod:
                 body_tokens = regex_tokenizer.tokenize(body_sent)
                 body_pos_tags = nltk.pos_tag(body_tokens)
                 pos_tags.append(body_pos_tags)
-            print('Part-of-speech tagging results:')
+            print('\n【POS Tagging】')
             print(pos_tags)
             print()
 
@@ -133,6 +132,6 @@ class ProcessMethod:
 
 if __name__ == '__main__':
 
-    PreProcess = ProcessMethod(text)
+    PreProcess = TextPreprocess(text)
     tokenizer_types = ['base', 'enhanced']
     PreProcess.pre_process(tokenizer_types[1], tokenizer_types)
