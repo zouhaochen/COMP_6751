@@ -1,7 +1,7 @@
 import nltk
 from nltk.tokenize import RegexpTokenizer
 
-from nltk.corpus import reuters # import reuters corpora
+from nltk.corpus import reuters  # import reuters corpora
 from typing import List
 
 print("Welcome to the text preprocess and proofreading results program!")
@@ -10,9 +10,8 @@ print("For example:【training/267】")
 
 text = input()
 
-
-
 class Pipeline:
+
     def __init__(self, fileid: str):
         self.fileid = fileid
         self.raw_text = ""
@@ -20,14 +19,14 @@ class Pipeline:
 
     def read_raw_and_save(self):
         """
-        read fileid file from reuters corpus from NLTK and write it on local
+        read text file from reuters corpus from NLTK and write it on local
         :return: True if successful, otherwise False
         """
         if self.fileid in reuters.fileids():
             # get the text using the NLTK corpus
             self.raw_text = reuters.raw(self.fileid)
         else:
-            raise Exception('Error: ' + str(fileid) + ' does not exist in reuters corpus.')
+            raise Exception('Error: ' + str(text) + ' does not exist in reuters corpus.')
 
         # save the raw text on local for backup
         with open(self.save_file_name, "w") as f:
@@ -97,7 +96,8 @@ class Pipeline:
                       | \w+                         # word characters
                       '''
             else:
-                raise Exception("Error: tokenizer type \'" + str(tokenizer_type) + "\' does not exist in [" + (', '.join(tokenizer_types)) + '].')
+                raise Exception("Error: tokenizer type \'" + str(tokenizer_type) + "\' does not exist in [" + (
+                    ', '.join(tokenizer_types)) + '].')
 
             regex_tokenizer = RegexpTokenizer(pattern)
             title_tokens = regex_tokenizer.tokenize(title)
@@ -130,13 +130,13 @@ class Pipeline:
 
 
 if __name__ == '__main__':
+
     # TODO: change the fileid for different test cases
     # test cases used in report and demo
     #      training/267
     #      training/279
     #      training/6
-    fileid = 'training/267'
-    PreProcess = Pipeline(fileid)   # initialization
 
+    PreProcess = Pipeline(text)
     tokenizer_types = ['base', 'enhanced']
     PreProcess.pre_process(tokenizer_types[1], tokenizer_types)
