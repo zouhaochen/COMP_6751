@@ -5,13 +5,13 @@ from nltk.corpus import reuters
 from typing import List
 
 print("Welcome to the text preprocess and proofreading results program!")
-print("\nPlease input the name of text to process")
+print("\nPlease enter a file name to process")
 print("For example:【training/267】")
 
 text = input()
 
 
-class Pipeline:
+class ProcessMethod:
 
     def __init__(self, fileid: str):
         self.fileid = fileid
@@ -133,6 +133,6 @@ class Pipeline:
 
 if __name__ == '__main__':
 
-    PreProcess = Pipeline(text)
+    PreProcess = ProcessMethod(text)
     tokenizer_types = ['base', 'enhanced']
     PreProcess.pre_process(tokenizer_types[1], tokenizer_types)
