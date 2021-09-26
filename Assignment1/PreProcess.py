@@ -1,7 +1,7 @@
 import nltk
 from nltk.tokenize import RegexpTokenizer
 
-from nltk.corpus import reuters  # import reuters corpora
+from nltk.corpus import reuters
 from typing import List
 
 print("Welcome to the text preprocess and proofreading results program!")
@@ -9,6 +9,7 @@ print("\nPlease input the name of text to process")
 print("For example:【training/267】")
 
 text = input()
+
 
 class Pipeline:
 
@@ -102,17 +103,19 @@ class Pipeline:
             regex_tokenizer = RegexpTokenizer(pattern)
             title_tokens = regex_tokenizer.tokenize(title)
             body_tokens = regex_tokenizer.tokenize(body)
+            print()
+
             print('Tokenization results:')
             print(title_tokens)
             print(body_tokens)
-            print('---------------------------------------------')
+            print()
 
             # 2. sentence splitting
             # ## use built-in tagged sentence (for clarify)
             body_sents = nltk.sent_tokenize(body)
             print('Sentences splitting results:')
             print(body_sents)
-            print('---------------------------------------------')
+            print()
 
             # 3. POS tagging
             pos_tags: List[List[str]] = list()
@@ -122,20 +125,13 @@ class Pipeline:
                 pos_tags.append(body_pos_tags)
             print('Part-of-speech tagging results:')
             print(pos_tags)
-            print('---------------------------------------------')
-
+            print()
 
         except Exception as ex:
             print(ex.args[0])
 
 
 if __name__ == '__main__':
-
-    # TODO: change the fileid for different test cases
-    # test cases used in report and demo
-    #      training/267
-    #      training/279
-    #      training/6
 
     PreProcess = Pipeline(text)
     tokenizer_types = ['base', 'enhanced']
