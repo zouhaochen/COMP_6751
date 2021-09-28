@@ -4,11 +4,24 @@ from nltk.tokenize import RegexpTokenizer
 from nltk.corpus import reuters
 from typing import List
 
-print("Welcome to the text preprocess and proofreading results program!")
+print("\nWelcome to the text preprocess and proofreading results program!")
 print("\nPlease enter a file name to process")
 print("For example:【training/267】")
 
 text = input()
+
+
+def reformat_body(body: str) -> str:
+    """
+    Due to the body text may have new lines in the middle of a sentence,
+    perform a reformation before processing
+    :param body: body content
+    :return: one-line reformed body
+    """
+    reformed_body = ""
+    for line in body.split('\n'):
+        reformed_body += line.strip() + ' '
+    return reformed_body
 
 
 class TextPreprocess:
@@ -51,18 +64,6 @@ class TextPreprocess:
         else:
             return title, body
 
-    def reformat_body(self, body: str) -> str:
-        """
-        Due to the body text may have new lines in the middle of a sentence,
-        perform a reformation before processing
-        :param body: body content
-        :return: one-line reformed body
-        """
-        reformed_body = ""
-        for line in body.split('\n'):
-            reformed_body += line.strip() + ' '
-        return reformed_body
-
     def pre_process(self, tokenizer_type: str, tokenizer_types: List[str]):
         try:
             # read the text from NLTK
@@ -72,7 +73,7 @@ class TextPreprocess:
             title, body = self.split_title_and_body()
 
             # reformat the body as the text in assignment description
-            body = self.reformat_body(body)
+            body = reformat_body(body)
 
             ############################ Pipeline ############################
             # 1. tokenization
