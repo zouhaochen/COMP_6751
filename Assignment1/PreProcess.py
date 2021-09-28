@@ -6,7 +6,7 @@ from typing import List, Set
 
 print("\nWelcome to the text preprocess and proofreading results program!")
 print("\nPlease enter a file name to process")
-print("For example:【training/267】")
+print("For example: training/267")
 
 text = input()
 
@@ -87,7 +87,7 @@ class DateRecognition:
         return True
 
 
-def date_parse(dates: Set[str]):
+def date_parse(text_date: Set[str]):
     # support formats:
     #   on 2020-12-12, on 2020/12/12
     #   2020-12-12, 2020/12/12
@@ -117,7 +117,7 @@ def date_parse(dates: Set[str]):
         """)
     date_parser = nltk.ChartParser(date_parse_cfg)
 
-    for date in dates:
+    for date in text_date:
         if date.find('/') != -1 or date.find('-') != -1:
             # if the format is yyyy/mm/dd then each character is a token
             tokens = [ch for ch in date]
@@ -137,7 +137,7 @@ def date_parse(dates: Set[str]):
 class DateParser:
 
     def __init__(self, sentences: List[str], pos_tag_list: List[List[str]]):
-        self.sents = sentences
+        self.date_sentence = sentences
         self.pos_tag = pos_tag_list
 
 
@@ -146,7 +146,7 @@ class TextPreprocess:
     def __init__(self, fileid: str):
         self.fileid = fileid
         self.raw_text = ""
-        self.save_file_name = 'reuters-' + self.fileid.replace('/', '-') + '.txt'
+        self.save_file_name = 'reuters:' + self.fileid.replace('/', '-') + '.txt'
 
     def read_file(self):
         """
@@ -221,15 +221,15 @@ class TextPreprocess:
             title_tokens = regexp_tokenizer.tokenize(title)
             body_tokens = regexp_tokenizer.tokenize(body)
 
-            print('\nText Preprocess and proofreading result display as follows:')
-            print('\n【Tokenization】')
+            print('\nText Preprocess and proofreading results display as follows:')
+            print('\n1. Tokenization')
             print(title_tokens)
             print(body_tokens)
 
             # 2. sentence splitting
             # ## use built-in tagged sentence (for clarify)
             body_sentences = nltk.sent_tokenize(body)
-            print('\n【Sentences Splitting】')
+            print('\n2. Sentences Splitting')
             print(body_sentences)
 
             # 3. POS tagging
@@ -238,7 +238,7 @@ class TextPreprocess:
                 body_tokens = regexp_tokenizer.tokenize(body_sentence)
                 body_pos_tags = nltk.pos_tag(body_tokens)
                 pos_tags.append(body_pos_tags)
-            print('\n【POS Tagging】')
+            print('\n3. POS Tagging')
             print(pos_tags)
 
             # 4. number normalization
@@ -246,9 +246,9 @@ class TextPreprocess:
             # 5. date recognition
             date_recognition = DateRecognition(pos_tags)
             date = date_recognition.date_recognition()
-            print('\n【Date recognition】')
+            print('\n5. Date Recognition')
             print(date)
-            print('\n【Date parsing】')
+            print('\n6. Date Parsing')
             date_parse(date)
 
         except Exception as ex:
@@ -257,5 +257,5 @@ class TextPreprocess:
 
 if __name__ == '__main__':
     PreProcess = TextPreprocess(text)
-    tokenizer_types = ['base', 'enhanced']
+    tokenizer_types = ['based', 'improved']
     PreProcess.text_preprocess(tokenizer_types[1], tokenizer_types)
