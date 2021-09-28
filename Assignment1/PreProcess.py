@@ -67,14 +67,14 @@ class DateRecognition:
                         date = ' '.join(word for word in tokens)
 
                     # check if date satisfies all conditions
-                    validity = self.date_validity_check(date, tokens)
+                    validity = self.data_validate(date, tokens)
 
                     if validity:
                         self.date_list.add(date)
 
         return self.date_list
 
-    def date_validity_check(self, date_str: str, tokens: List[str]) -> bool:
+    def data_validate(self, date_str: str, tokens: List[str]) -> bool:
         # traverse tokens to check if numbers are valid
         for token in tokens:
             if token not in ['/', '-', ','] and not token.isalnum():
