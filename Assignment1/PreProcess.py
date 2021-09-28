@@ -248,6 +248,8 @@ class TextPreprocess:
             date = date_recognition.date_recognition()
             print('\n5. Date Recognition')
             print(date)
+
+            # 6. date parsing
             print('\n6. Date Parsing')
             date_parse(date)
 
