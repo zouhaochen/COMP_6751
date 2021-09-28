@@ -46,31 +46,31 @@ class TextPreprocess:
         with open(self.save_file_name, "w") as f:
             f.write(self.raw_text)
 
-    def split_title_and_body(self):
+    def title_content_split(self):
         # replace the html symbols with actual symbols
         self.raw_text = self.raw_text.replace('&lt;', '<')
         self.raw_text = self.raw_text.replace('&gt;', '>')
 
-        # split title and body content
-        title, body = self.raw_text.split('\n', 1)
+        # split title and content content
+        title, content = self.raw_text.split('\n', 1)
 
         # check if split is successful
         # check if title is in uppercase
         if title.upper() != title:
-            print('Warning: this file does not have a title.')
-            # consider all contents as body
-            body = title + body
-            return "", body
+            print('WARNING: The text file【' + str(text) + '】does not have a title!')
+            # consider all contents as content
+            content = title + content
+            return "", content
         else:
-            return title, body
+            return title, content
 
-    def pre_process(self, tokenizer_type: str, tokenizer_types: List[str]):
+    def text_preprocess(self, tokenizer_type: str, tokenizer_types: List[str]):
         try:
             # read the text from NLTK
             self.read_file()
 
             # get the title and body contents
-            title, body = self.split_title_and_body()
+            title, body = self.title_content_split()
 
             # reformat the body as the text in assignment description
             body = reformat_body(body)
@@ -135,4 +135,4 @@ if __name__ == '__main__':
 
     PreProcess = TextPreprocess(text)
     tokenizer_types = ['base', 'enhanced']
-    PreProcess.pre_process(tokenizer_types[1], tokenizer_types)
+    PreProcess.text_preprocess(tokenizer_types[1], tokenizer_types)
