@@ -64,7 +64,7 @@ class TextPreprocess:
         else:
             return title, content
 
-    def text_preprocess(self, tokenizer_type: str, tokenizer_types: List[str]):
+    def text_preprocess(self, tokenizer_type: str, tokenizer_list: List[str]):
         try:
             # read the text from NLTK
             self.read_file()
@@ -75,10 +75,9 @@ class TextPreprocess:
             # reformat the body as the text in assignment description
             body = reformat_body(body)
 
-            ############################ Pipeline ############################
             # 1. tokenization
-            if tokenizer_type == tokenizer_types[0]:
-                # use basic regular expression tokenzier (not enhanced) from NLTK book chapter 3
+            if tokenizer_type == tokenizer_list[0]:
+                # use basic regular expression tokenizer (not enhanced) from NLTK book chapter 3
                 pattern = r'''(?x)              # set flag to allow verbose regexps
                         (?:[A-Z]\.)+            # abbreviations, e.g. U.S.A.
                       | \w+(?:-\w+)*            # words with optional internal hyphens
@@ -86,7 +85,7 @@ class TextPreprocess:
                       | \.\.\.                  # ellipsis
                       | [][.,;"'?():-_`]        # these are separate tokens; includes ], [
                       '''
-            elif tokenizer_type == tokenizer_types[1]:
+            elif tokenizer_type == tokenizer_list[1]:
                 # use enhanced regular expression tokenizer based on basic regular expression tokenizer
                 pattern = r'''(?x)                  # set flag to allow verbose regexps
                         (?:[A-Z]\.)+                # abbreviations, e.g. U.S.
@@ -98,12 +97,12 @@ class TextPreprocess:
                       | \w+                         # word characters
                       '''
             else:
-                raise Exception("Error: tokenizer type \'" + str(tokenizer_type) + "\' does not exist in [" + (
-                    ', '.join(tokenizer_types)) + '].')
+                raise Exception("ERROR: Tokenizer type【\'" + str(tokenizer_type) + "\'】does not exist in【" + (
+                    ', '.join(tokenizer_list)) + '】.')
 
-            regex_tokenizer = RegexpTokenizer(pattern)
-            title_tokens = regex_tokenizer.tokenize(title)
-            body_tokens = regex_tokenizer.tokenize(body)
+            regexp_tokenizer = RegexpTokenizer(pattern)
+            title_tokens = regexp_tokenizer.tokenize(title)
+            body_tokens = regexp_tokenizer.tokenize(body)
             print()
 
             print('Text Preprocess and proofreading result display as follows:')
@@ -120,7 +119,7 @@ class TextPreprocess:
             # 3. POS tagging
             pos_tags: List[List[str]] = list()
             for body_sent in body_sents:
-                body_tokens = regex_tokenizer.tokenize(body_sent)
+                body_tokens = regexp_tokenizer.tokenize(body_sent)
                 body_pos_tags = nltk.pos_tag(body_tokens)
                 pos_tags.append(body_pos_tags)
             print('\n【POS Tagging】')
