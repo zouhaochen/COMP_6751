@@ -34,12 +34,12 @@ class DateRecognition:
         self.month = ('January', 'February', 'March', 'April', 'May', 'June', 'July',
                       'August', 'September', 'October', 'November', 'December',
                       'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday')
-        self.date_patterns = "(\d{4}[-/]?\d{2}[-/]?\d{2})" \
-                             "|(\w+\s\d{1,2}[a-zA-Z]{2}\s?,?\s?\d{4}?)" \
-                             "|(the\s\d{1,2}[a-zA-Z]{2}\sof\s[a-zA-Z]+)" \
-                             "|(the\s\w+\sof\s\w+)" \
-                             "|(\w+\s\d{1,2}[a-zA-Z]{2})" \
-                             "|(\w+\s\d{1,2})"
+        self.date_patterns = "(\\d{4}[-/]?\\d{2}[-/]?\\d{2})" \
+                             "|(\\w+\\s\\d{1,2}[a-zA-Z]{2}\\s?,?\\s?\\d{4}?)" \
+                             "|(the\\s\\d{1,2}[a-zA-Z]{2}\\sof\\s[a-zA-Z]+)" \
+                             "|(the\\s\\w+\\sof\\s\\w+)" \
+                             "|(\\w+\\s\\d{1,2}[a-zA-Z]{2})" \
+                             "|(\\w+\\s\\d{1,2})"
         self.date_regexp = re.compile(self.date_patterns)
 
     def data_recognition(self) -> Set[str]:
