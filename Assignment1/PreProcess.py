@@ -31,7 +31,7 @@ class TextPreprocess:
         self.raw_text = ""
         self.save_file_name = 'reuters-' + self.fileid.replace('/', '-') + '.txt'
 
-    def read_raw_and_save(self):
+    def read_file(self):
         """
         read text file from reuters corpus from NLTK and write it on local
         :return: True if successful, otherwise False
@@ -40,7 +40,7 @@ class TextPreprocess:
             # get the text using the NLTK corpus
             self.raw_text = reuters.raw(self.fileid)
         else:
-            raise Exception('Error: ' + str(text) + ' does not exist in reuters corpus.')
+            raise Exception('ERROR: In reuters corpus【' + str(text) + '】does not exist!')
 
         # save the raw text on local for backup
         with open(self.save_file_name, "w") as f:
@@ -67,7 +67,7 @@ class TextPreprocess:
     def pre_process(self, tokenizer_type: str, tokenizer_types: List[str]):
         try:
             # read the text from NLTK
-            self.read_raw_and_save()
+            self.read_file()
 
             # get the title and body contents
             title, body = self.split_title_and_body()
