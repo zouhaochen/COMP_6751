@@ -1,8 +1,11 @@
 import re
+from collections import defaultdict
+
 import nltk
 from nltk.tokenize import RegexpTokenizer
 from nltk.corpus import reuters
 from typing import List, Set
+
 
 print("\nWelcome to the text preprocess and proofreading results program!")
 print("\nPlease enter a file name to process")
@@ -51,10 +54,10 @@ class DateRecognition:
                     {<IN> <CD>}                     # E.g. in 2020, on 2020/12/12
                     {<IN> <JJ>}                     # E.g. on 2020-12-12
         """
-        cp = nltk.RegexpParser(date_recognition_cfg)
+        date_information = nltk.RegexpParser(date_recognition_cfg)
 
         for i in range(len(self.pos_tag)):
-            tree = cp.parse(self.pos_tag[i])
+            tree = date_information.parse(self.pos_tag[i])
             # tree.draw()
             for subtree in tree.subtrees():
                 if subtree.label() == 'DATE':
@@ -194,7 +197,7 @@ class TextPreprocess:
 
             # 1. tokenization
             if tokenizer_type == tokenizer_list[0]:
-                # use basic regular expression tokenizer (not enhanced) from NLTK book chapter 3
+                # use based regular expression tokenizer (not enhanced) from NLTK book chapter 3
                 pattern = r'''(?x)              # set flag to allow verbose regexps
                         (?:[A-Z]\.)+            # abbreviations, e.g. U.S.A.
                       | \w+(?:-\w+)*            # words with optional internal hyphens
@@ -203,7 +206,7 @@ class TextPreprocess:
                       | [][.,;"'?():-_`]        # these are separate tokens; includes ], [
                       '''
             elif tokenizer_type == tokenizer_list[1]:
-                # use enhanced regular expression tokenizer based on basic regular expression tokenizer
+                # use improved regular expression tokenizer based on basic regular expression tokenizer
                 pattern = r'''(?x)                  # set flag to allow verbose regexps
                         (?:[A-Z]\.)+                # abbreviations, e.g. U.S.
                       | \$?\d+(?:,\d+)?(?:\.\d+)?%? # currency or percentages or numbers that include a comma and/or a period e.g. $12.50, 52.25%, 30,000, 3.1415, 1,655.8
@@ -222,14 +225,14 @@ class TextPreprocess:
             body_tokens = regexp_tokenizer.tokenize(body)
 
             print('\nText Preprocess and proofreading results display as follows:')
-            print('\n1. Tokenization')
+            print('\n【Tokenization】')
             print(title_tokens)
             print(body_tokens)
 
             # 2. sentence splitting
             # ## use built-in tagged sentence (for clarify)
             body_sentences = nltk.sent_tokenize(body)
-            print('\n2. Sentences Splitting')
+            print('\n【Sentences Splitting】')
             print(body_sentences)
 
             # 3. POS tagging
@@ -238,7 +241,7 @@ class TextPreprocess:
                 body_tokens = regexp_tokenizer.tokenize(body_sentence)
                 body_pos_tags = nltk.pos_tag(body_tokens)
                 pos_tags.append(body_pos_tags)
-            print('\n3. POS Tagging')
+            print('\n【POS Tagging】')
             print(pos_tags)
 
             # 4. number normalization
@@ -246,11 +249,11 @@ class TextPreprocess:
             # 5. date recognition
             date_recognition = DateRecognition(pos_tags)
             date = date_recognition.date_recognition()
-            print('\n5. Date Recognition')
+            print('\n【Date Recognition】')
             print(date)
 
             # 6. date parsing
-            print('\n6. Date Parsing')
+            print('\n【Date Parsing】')
             date_parse(date)
 
         except Exception as ex:
