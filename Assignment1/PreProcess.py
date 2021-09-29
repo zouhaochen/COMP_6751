@@ -4,6 +4,8 @@ import nltk
 from nltk.tokenize import RegexpTokenizer
 from nltk.corpus import reuters
 from typing import List, Set
+from num2words import num2words
+from words2num import w2n
 
 
 print("\nWelcome to the text preprocess and proofreading results program!")
@@ -242,6 +244,10 @@ class TextPreprocess:
                 pos_tags.append(body_pos_tags)
             print('\n【POS Tagging】')
             print(pos_tags)
+
+            # number normalization
+            num2words('2')
+            w2n('two')
 
             # date recognition
             date_recognition = DateRecognition(pos_tags)
