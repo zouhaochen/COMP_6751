@@ -1,5 +1,4 @@
 import re
-from collections import defaultdict
 
 import nltk
 from nltk.tokenize import RegexpTokenizer
@@ -195,7 +194,7 @@ class TextPreprocess:
             # reformat the body as the text in assignment description
             body = body_reform(body)
 
-            # 1. tokenization
+            # tokenization
             if tokenizer_type == tokenizer_list[0]:
                 # use based regular expression tokenizer (not enhanced) from NLTK book chapter 3
                 pattern = r'''(?x)              # set flag to allow verbose regexps
@@ -229,13 +228,13 @@ class TextPreprocess:
             print(title_tokens)
             print(body_tokens)
 
-            # 2. sentence splitting
+            # sentence splitting
             # ## use built-in tagged sentence (for clarify)
             body_sentences = nltk.sent_tokenize(body)
             print('\n【Sentences Splitting】')
             print(body_sentences)
 
-            # 3. POS tagging
+            # POS tagging
             pos_tags: List[List[str]] = list()
             for body_sentence in body_sentences:
                 body_tokens = regexp_tokenizer.tokenize(body_sentence)
@@ -244,15 +243,13 @@ class TextPreprocess:
             print('\n【POS Tagging】')
             print(pos_tags)
 
-            # 4. number normalization
-
-            # 5. date recognition
+            # date recognition
             date_recognition = DateRecognition(pos_tags)
             date = date_recognition.date_recognition()
             print('\n【Date Recognition】')
             print(date)
 
-            # 6. date parsing
+            # date parsing
             print('\n【Date Parsing】')
             date_parse(date)
 
