@@ -1,8 +1,8 @@
 import re
 
 import nltk
-from nltk.tokenize import RegexpTokenizer
 from nltk.corpus import reuters
+from nltk.tokenize import RegexpTokenizer
 from typing import List, Set
 from num2words import num2words
 from words2num import w2n
