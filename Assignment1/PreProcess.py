@@ -23,10 +23,11 @@ text = input()
 def body_reform(body: str) -> str:
     """
     Inputs:
-      body  - body content of text file
+      body - body content of text file
     Output:
-      A body after reformation without lines between sentences
+      a body after reformation without lines between sentences
     """
+
     reformed_body = ""
     for line in body.split('\n'):
         reformed_body += line.strip() + ' '
@@ -35,6 +36,7 @@ def body_reform(body: str) -> str:
 
 class DateRecognition:
 
+    # initialize date information
     def __init__(self, pos_tag_list: List[List[str]]):
         self.pos_tag = pos_tag_list
         self.date_list: Set[str] = set()
@@ -54,6 +56,13 @@ class DateRecognition:
         self.date_regexp = re.compile(self.date_format)
 
     def date_recognition(self) -> Set[str]:
+        """
+        Inputs:
+          self - text file pos tag list
+        Output:
+          date information list
+        """
+
         # date recognition context free grammar definition
         date_recognition_cfg = r"""
             DATE:   {<NNP> <CD> <,>? <CD>}          # October 1st 2021
@@ -85,6 +94,13 @@ class DateRecognition:
         return self.date_list
 
     def date_validate(self, date_string: str, tokens: List[str]) -> bool:
+        """
+        Inputs:
+          self - text file date string and tokens
+        Output:
+          true if valid date information and false if invalid date information
+        """
+
         # validate date information check method
         for token in tokens:
             if token not in ['/', '-', ','] and not token.isalnum():
@@ -99,6 +115,12 @@ class DateRecognition:
 
 
 def date_parse(text_date: Set[str]):
+    """
+    Inputs:
+      text_date - text file date information list
+    Output:
+      date parsing tree
+    """
 
     # date parse context free grammar definition
     date_parse_cfg = nltk.CFG.fromstring("""
@@ -143,6 +165,7 @@ class DateParser:
 
 class TextPreprocess:
 
+    # initialize program pipeline
     def __init__(self, fileid: str):
         self.fileid = fileid
         self.raw_text = ""
@@ -150,67 +173,75 @@ class TextPreprocess:
 
     def read_file(self):
         """
-        read text file from reuters corpus from NLTK and write it on local
-        :return: True if successful, otherwise False
+        Inputs:
+          self - text file name
+        Output:
+          text file content if file name exist
+          print error if file name not exist
         """
+
+        # get text file from corpus
         if self.fileid in reuters.fileids():
-            # get the text using the NLTK corpus
             self.raw_text = reuters.raw(self.fileid)
         else:
             raise Exception('ERROR: In reuters corpus【' + str(text) + '】does not exist!')
 
-        # save the raw text on local for backup
         with open(self.save_file_name, "w") as f:
             f.write(self.raw_text)
 
     def title_content_split(self):
-        # replace the html symbols with actual symbols
+        """
+        Inputs:
+          self - text file content
+        Output:
+          split title and content
+        """
+
         self.raw_text = self.raw_text.replace('&lt;', '<')
         self.raw_text = self.raw_text.replace('&gt;', '>')
-
-        # split title and content content
         title, content = self.raw_text.split('\n', 1)
 
-        # check if split is successful
-        # check if title is in uppercase
+        # split title and content successfully check
         if title.upper() != title:
             print('WARNING: The text file【' + str(text) + '】does not have a title!')
-            # consider all contents as content
             content = title + content
             return "", content
         else:
             return title, content
 
     def text_preprocess(self, tokenizer_type: str, tokenizer_list: List[str]):
+        """
+        Inputs:
+          self - text file content
+        Output:
+          tokenize, sentence split, pos tag, number normalization, date recognize and date parse results.
+        """
+
         try:
-            # read the text from NLTK
             self.read_file()
-
-            # get the title and body contents
             title, body = self.title_content_split()
-
-            # reformat the body as the text in assignment description
             body = body_reform(body)
 
-            # tokenization
+            # tokenize the text file
             if tokenizer_type == tokenizer_list[0]:
-                # use based regular expression tokenizer (not enhanced) from NLTK book chapter 3
+                # basic regular expression tokenizer
                 pattern = r'''(?x)              # set flag to allow verbose regexps
                         (?:[A-Z]\.)+            # abbreviations, e.g. U.S.A.
                       | \w+(?:-\w+)*            # words with optional internal hyphens
                       | \$?\d+(?:\.\d+)?%?      # currency and percentages, e.g. $12.40, 82%
                       | \.\.\.                  # ellipsis
-                      | [][.,;"'?():-_`]        # these are separate tokens; includes ], [
+                      | [][.,;"'?():-_`]        # these are separate tokens
                       '''
+
             elif tokenizer_type == tokenizer_list[1]:
-                # use improved regular expression tokenizer based on basic regular expression tokenizer
+                # improved regular expression tokenizer
                 pattern = r'''(?x)                  # set flag to allow verbose regexps
-                        (?:[A-Z]\.)+                # abbreviations, e.g. U.S.
-                      | \$?\d+(?:,\d+)?(?:\.\d+)?%? # currency or percentages or numbers that include a comma and/or a period e.g. $12.50, 52.25%, 30,000, 3.1415, 1,655.8
-                      | \w+(?:-\w+)*                # words with optional internal hyphens e.g. state-of-the-art
-                      | \.\.\.                      # ellipsis ...
-                      | \'[sS]                      # tokenize "'s" together
-                      | [][.,;"'?():-_`]            # these are separate tokens; include ], [
+                        (?:[A-Z]\.)+                # abbreviations, e.g. U.S.A.
+                      | \w+(?:-\w+)*                # words with optional internal hyphens
+                      | \$?\d+(?:,\d+)?(?:\.\d+)?%? # currency and percentages and number normalization
+                      | \.\.\.                      # ellipsis
+                      | [][.,;"'?():-_`]            # these are separate tokens
+                      | \'[sS]                      # possessive nouns
                       | \w+                         # word characters
                       '''
             else:
@@ -227,7 +258,6 @@ class TextPreprocess:
             print(body_tokens)
 
             # sentence splitting
-            # ## use built-in tagged sentence (for clarify)
             body_sentences = nltk.sent_tokenize(body)
             print('\n【Sentences Splitting】')
             print(body_sentences)
