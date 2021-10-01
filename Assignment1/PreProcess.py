@@ -4,8 +4,6 @@ import nltk
 from nltk.corpus import reuters
 from nltk.tokenize import RegexpTokenizer
 from typing import List, Set
-from num2words import num2words
-from words2num import w2n
 
 
 print("\nWelcome to the text preprocess and proofreading results program!")
@@ -69,14 +67,14 @@ class DateRecognition:
                         date = ' '.join(word for word in tokens)
 
                     # check if date satisfies all conditions
-                    validate = self.data_validate(date, tokens)
+                    validate = self.date_validate(date, tokens)
 
                     if validate:
                         self.date_list.add(date)
 
         return self.date_list
 
-    def data_validate(self, date_str: str, tokens: List[str]) -> bool:
+    def date_validate(self, date_str: str, tokens: List[str]) -> bool:
         # traverse tokens to check if numbers are valid
         for token in tokens:
             if token not in ['/', '-', ','] and not token.isalnum():
@@ -245,10 +243,6 @@ class TextPreprocess:
             print('\n【POS Tagging】')
             print(pos_tags)
 
-            # number normalization
-            num2words('2')
-            w2n('two')
-
             # date recognition
             date_recognition = DateRecognition(pos_tags)
             date = date_recognition.date_recognition()
@@ -265,5 +259,5 @@ class TextPreprocess:
 
 if __name__ == '__main__':
     PreProcess = TextPreprocess(text)
-    tokenizer_types = ['based', 'improved']
+    tokenizer_types = ['basic', 'improved']
     PreProcess.text_preprocess(tokenizer_types[1], tokenizer_types)
