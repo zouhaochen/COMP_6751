@@ -1,3 +1,10 @@
+"""
+Project 1 for COMP 6751 Natural Language Analyst
+Text Pre-processing Pipeline and Proofreading Results Program
+Be sure to read the project description page for further information about the expected behavior of the program
+@author: Haochen Zou
+"""
+
 import re
 
 import nltk
@@ -15,10 +22,10 @@ text = input()
 
 def body_reform(body: str) -> str:
     """
-    Due to the body text may have new lines in the middle of a sentence,
-    perform a reformation before processing
-    :param body: body content
-    :return: one-line reformed body
+    Inputs:
+      body  - body content of text file
+    Output:
+      A body after reformation without lines between sentences
     """
     reformed_body = ""
     for line in body.split('\n'):
@@ -31,33 +38,37 @@ class DateRecognition:
     def __init__(self, pos_tag_list: List[List[str]]):
         self.pos_tag = pos_tag_list
         self.date_list: Set[str] = set()
+
+        # date information month definition
         self.month = ('January', 'February', 'March', 'April', 'May', 'June', 'July',
                       'August', 'September', 'October', 'November', 'December',
                       'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday')
-        self.date_patterns = "(\\d{4}[-/]?\\d{2}[-/]?\\d{2})" \
+
+        # date information format definition
+        self.date_format = "(\\d{4}[-/]?\\d{2}[-/]?\\d{2})" \
                              "|(\\w+\\s\\d{1,2}[a-zA-Z]{2}\\s?,?\\s?\\d{4}?)" \
                              "|(the\\s\\d{1,2}[a-zA-Z]{2}\\sof\\s[a-zA-Z]+)" \
                              "|(the\\s\\w+\\sof\\s\\w+)" \
                              "|(\\w+\\s\\d{1,2}[a-zA-Z]{2})" \
                              "|(\\w+\\s\\d{1,2})"
-        self.date_regexp = re.compile(self.date_patterns)
+        self.date_regexp = re.compile(self.date_format)
 
     def date_recognition(self) -> Set[str]:
-        # extract different format of dates from the each sentence
+        # date recognition context free grammar definition
         date_recognition_cfg = r"""
-            DATE:   {<NNP> <CD> <,>? <CD>}          # E.g. December 12th 2020, December 12th , 2020
-                    {<DT> <NN> <IN> <NNP>}          # E.g. the twelfth of December
-                    {<DT> <CD> <IN> <NNP>}          # E.g. the 12th of December
-                    {<IN> <NNP> <CD>}               # E.g. on December 12th
-                    {<NNP> <CD>}                    # E.g. March 30
-                    {<IN> <CD>}                     # E.g. in 2020, on 2020/12/12
-                    {<IN> <JJ>}                     # E.g. on 2020-12-12
+            DATE:   {<NNP> <CD> <,>? <CD>}          # October 1st 2021
+                    {<DT> <CD> <IN> <NNP>}          # the 1st of October
+                    {<DT> <NN> <IN> <NNP>}          # the first of October
+                    {<IN> <NNP> <CD>}               # on October 1st
+                    {<NNP> <CD>}                    # October 1st
+                    {<IN> <CD>}                     # in 2021
+                    {<IN> <JJ>}                     # on 2021-10-1
         """
         date_information = nltk.RegexpParser(date_recognition_cfg)
 
+        # draw a parse tree for date information
         for i in range(len(self.pos_tag)):
             tree = date_information.parse(self.pos_tag[i])
-            # tree.draw()
             for subtree in tree.subtrees():
                 if subtree.label() == 'DATE':
                     tokens = [tup[0] for tup in subtree.leaves()]
@@ -66,23 +77,21 @@ class DateRecognition:
                     else:
                         date = ' '.join(word for word in tokens)
 
-                    # check if date satisfies all conditions
+                    # validate date information check
                     validate = self.date_validate(date, tokens)
-
                     if validate:
                         self.date_list.add(date)
 
         return self.date_list
 
-    def date_validate(self, date_str: str, tokens: List[str]) -> bool:
-        # traverse tokens to check if numbers are valid
+    def date_validate(self, date_string: str, tokens: List[str]) -> bool:
+        # validate date information check method
         for token in tokens:
             if token not in ['/', '-', ','] and not token.isalnum():
-                # meaning that tokens may have float, special characters or non-alphanumeric characters
                 return False
 
-        # check if data_str satisfies the date_patterns
-        check = self.date_regexp.findall(date_str)
+        # validate date string in date format
+        check = self.date_regexp.findall(date_string)
         if len(check) == 0 or check == []:
             return False
 
@@ -90,38 +99,26 @@ class DateRecognition:
 
 
 def date_parse(text_date: Set[str]):
-    # support formats:
-    #   on 2020-12-12, on 2020/12/12
-    #   2020-12-12, 2020/12/12
-    #   December 12, 2020
-    #   December 12
-    #   December 2020
-    #   on December 12th
-    #   December 12th 2020
-    #   December 12th, 2020
-    #   December 12th
-    #   the twelfth of December
-    #   the 12th of December
-    #   in 2020
-    #   in December 2020
+
+    # date parse context free grammar definition
     date_parse_cfg = nltk.CFG.fromstring("""
         DATE -> IN YEAR SEP MONTH_NUM SEP DAY | YEAR SEP MONTH_NUM SEP DAY | MONTH_STR DAY SEP YEAR | MONTH_STR DAY | MONTH_STR YEAR | IN MONTH_STR NN_NUM | MONTH_STR NN_NUM YEAR | MONTH_STR NN_NUM SEP YEAR | MONTH_STR NN_NUM | DT NN_STR IN MONTH_STR | DT NN_NUM IN MONTH_STR | IN YEAR | IN MONTH_STR YEAR
-        SEP -> "/" | "-" | ","
+        DIGIT -> "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
         YEAR -> DIGIT DIGIT DIGIT DIGIT
         MONTH_NUM -> DIGIT | DIGIT DIGIT
+        MONTH_STR -> "January" | "February" | "March" | "April" | "May" | "June" | "July" | "August" | "September" | "October" | "November" | "December"
         DAY -> DIGIT | DIGIT DIGIT
+        NN_NUM -> "1st" | "2nd" | "3rd" | "4th" | "5th" | "6th" | "7th" | "8th" | "9th" | "10th" | "11th" | "12th" | "13th" | "14th" | "15th" | "16th" | "17th" | "18th" | "19th" | "20th" | "21st" | "22nd" | "23rd" | "24th" | "25th" | "26th" | "27th" | "28th" | "29th" | "30th" | "31st"
+        NN_STR -> "first" | "second" | "third" | "fourth" | "fifth" | "sixth" | "seventh" | "eighth" | "ninth" | "tenth" | "eleventh" | "twelfth" | "thirteenth" | "fourteenth" | "fifteenth" | "sixteenth" | "seventeenth" | "eighteenth" | "nineteenth" | "twentieth" | "twenty-first" | "twenty-second" | "twenty-third" | "twenty-fourth" | "twenty-fifth" | "twenty-sixth" | "twenty-seventh" | "twenty-eighth" | "twenty-ninth" | "thirtieth" | "thirty-first"
         DT -> "the"
         IN -> "of" | "in" | "on"
-        NN_STR -> "first" | "second" | "third" | "fourth" | "fifth" | "sixth" | "seventh" | "eighth" | "ninth" | "tenth" | "eleventh" | "twelfth" | "thirteenth" | "fourteenth" | "fifteenth" | "sixteenth" | "seventeenth" | "eighteenth" | "nineteenth" | "twentieth" | "twenty-first" | "twenty-second" | "twenty-third" | "twenty-fourth" | "twenty-fifth" | "twenty-sixth" | "twenty-seventh" | "twenty-eighth" | "twenty-ninth" | "thirtieth" | "thirty-first"
-        MONTH_STR -> "January" | "February" | "March" | "April" | "May" | "June" | "July" | "August" | "September" | "October" | "November" | "December"
-        NN_NUM -> "1st" | "2nd" | "3rd" | "4th" | "5th" | "6th" | "7th" | "8th" | "9th" | "10th" | "11th" | "12th" | "13th" | "14th" | "15th" | "16th" | "17th" | "18th" | "19th" | "20th" | "21st" | "22nd" | "23rd" | "24th" | "25th" | "26th" | "27th" | "28th" | "29th" | "30th" | "31st"
-        DIGIT -> "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+        SEP -> "/" | "-" | ","
         """)
     date_parser = nltk.ChartParser(date_parse_cfg)
 
+    # search token according to the date information format
     for date in text_date:
         if date.find('/') != -1 or date.find('-') != -1:
-            # if the format is yyyy/mm/dd then each character is a token
             tokens = [ch for ch in date]
         else:
             tokens = []
@@ -138,6 +135,7 @@ def date_parse(text_date: Set[str]):
 
 class DateParser:
 
+    # initialize date parser
     def __init__(self, sentences: List[str], pos_tag_list: List[List[str]]):
         self.date_sentence = sentences
         self.pos_tag = pos_tag_list
