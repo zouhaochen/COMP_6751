@@ -235,36 +235,16 @@ if __name__ == '__main__':
         save = True
     grammar_file_url = 'grammar/grammar.fcfg'
     parser = Parser(grammar_file_url, pprint, save)
-    print("For example: training/267")
+    print("Please enter the text you want to parse:")
     text = input()
+    file_name = 'text.txt'
 
-    file_name = 'data/test.txt'
-
-    with open('test.txt', 'w') as file:
+    with open('text.txt', 'w') as file:
         file.write(text)
 
     # TODO: this is the file path to read and parse, please change the path to the testing file path
     # TODO: it is possible to add a new file under the directory "data/" and rename data_file to the new file
-    data_file = 'test.txt'
-    # data_file = 'data/sent2.txt'
-    # data_file = 'data/sent3.txt'
-    # data_file = 'data/sent4.txt'
-    # data_file = 'data/sent5.txt'
-    # data_file = 'data/sent6.txt'
-    # data_file = 'data/sent7.txt'
-    # data_file = 'data/sent8.txt'
-    # data_file = 'data/sent9.txt'
-    # data_file = 'data/challenge1.txt'
-    # data_file = 'data/challenge2.txt'
-    # data_file = 'data/challenge3.txt'
-    # data_file = 'data/challenge4.txt'
-    # data_file = 'data/challenge5.txt'
-    # data_file = 'data/challenge6.txt'
-    # data_file = 'data/limitation.txt'
-    # data_file = 'data/compare1.txt'
-    # data_file = 'data/compare2.txt'
-
-    # run pipeline to validate the data
+    data_file = 'text.txt'
     pipeline = Pipeline(parser, data_file)
     pipeline.run_validation()
 
