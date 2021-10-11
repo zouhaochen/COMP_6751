@@ -5,26 +5,28 @@ and Name Entity Module.
 
 import os
 import nltk
-from nltk import sent_tokenize, word_tokenize, load_parser, FeatureEarleyChartParser
+import re
+from nltk import sent_tokenize, word_tokenize, load_parser, FeatureEarleyChartParser, parse
 from typing import List, Tuple, Set
 from nltk.draw.tree import TreeView
 
 
 class Parser:
-    def __init__(self, grammar_url: str, pprint: bool=False, save: bool=False):
+    def __init__(self, grammar_url: str, print_result: bool = False, save_result: bool = False):
         """
         constructor
         :param grammar_url: grammar file URL
         """
         self.cp = load_parser(grammar_url, trace=0, parser=FeatureEarleyChartParser)
-        self.print = pprint
-        self.save = save
+        self.print = print_result
+        self.save = save_result
         self.tree_no = 1
 
     def parse(self, tokens: List[str]) -> None:
         """
         parse sentences in sent and print the parse tree
-        :param sentences: sentences
+        :param tokens:
+        :param
         """
         for tree in self.cp.parse(tokens):
             print(tree)     # print the tree
@@ -156,15 +158,35 @@ class Pipeline:
             # run the Earley parser written in context-free grammar to validate data
             print('Parsing results:')
             self.parse_and_validate(token_lists, pos_tags)
+            print('---------------------------------------------')
+
+            with open("text.txt", "r") as f:
+                data = f.read()
+            sent = data
+            out = re.sub(r'[^\w\s]','',sent)
+            tokens = out.split()
+            cp = parse.load_parser('grammar/grammar.fcfg', trace=1)
+            trees = cp.parse(tokens)
+            print(trees)
 
         except Exception as ex:
             print(ex.args[0])
 
 
 if __name__ == '__main__':
+
     # define an Earley parser and load the grammar rules
-    input_pprint = input('Do you want to print the parse tree diagrams on the console? (Y/N) ')
-    input_save = input('Do you want to save the parse tree in the directory result/? (Y/N) ')
+    print("Please enter the text you want to parse:")
+    text = input()
+    file_name = 'text.txt'
+
+    with open('text.txt', 'w') as file:
+        file.write(text)
+    data_file = 'text.txt'
+
+    print("Options to the results: save/print")
+    input_save = input('Do you want to save the parse tree? ')
+    input_pprint = input('Do you want to print the parse tree? ')
     pprint = False
     save = False
     if input_pprint.upper() == 'Y' or input_pprint.lower() == 'yes':
@@ -173,17 +195,6 @@ if __name__ == '__main__':
         save = True
     grammar_file_url = 'grammar/grammar.fcfg'
     parser = Parser(grammar_file_url, pprint, save)
-
-    print("Please enter the text you want to parse:")
-    text = input()
-    file_name = 'text.txt'
-
-    with open('text.txt', 'w') as file:
-        file.write(text)
-
-    # TODO: this is the file path to read and parse, please change the path to the testing file path
-    # TODO: it is possible to add a new file under the directory "data/" and rename data_file to the new file
-    data_file = 'text.txt'
 
     # run pipeline to validate the data
     pipeline = Pipeline(parser, data_file)
