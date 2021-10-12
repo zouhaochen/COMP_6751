@@ -11,7 +11,7 @@ from typing import List, Tuple, Set
 from nltk.draw.tree import TreeView
 
 
-def part_of_speech_tagging(words: List[str]) -> List[Tuple[str, str]]:
+def pos_tagging(words: List[str]) -> List[Tuple[str, str]]:
     """
     perform part-of-speech tagging using StanfordPOSTagger
     :param words: a list of words in a sentence
@@ -75,7 +75,7 @@ class Parser:
                     writer.write(str(tree))
             self.tree_no += 1
 
-    def clear_directory(self):
+    def save_result(self):
         if self.save:
             # delete all files in /results/.. directory
             direction = 'results/'
@@ -94,7 +94,7 @@ class Pipeline:
         self.sentence = sentence_content
         self.raw = None
 
-    def read_raw_data(self):
+    def text_read(self):
         """
         read raw data from the url
         """
@@ -106,35 +106,35 @@ class Pipeline:
         else:
             raise Exception('Error: File ' + sent_content + ' does not exist!')
 
-    def reformat_raw(self) -> str:
+    def text_reformation(self) -> str:
         """
         If text in raw data file contains multiple lines, then merge into 1 lines separated by a space.
         :return one-line reformed raw text
         """
-        raw_reformat = ""
+        text_reformat = ""
         for line in self.raw.split('\n'):
-            raw_reformat += line.strip() + ' '
-        return raw_reformat
+            text_reformat += line.strip() + ' '
+        return text_reformat
 
-    def parse_and_validate(self, token_lists: List[List[str]], pos_tags: List[List[str]]) -> None:
+    def parse_print_text(self, token_lists: List[List[str]]) -> None:
         """
         parse the sentences and print the parse trees
         :param token_lists: a list of token lists of sentences
         """
-        self.parser.clear_directory()
+        self.parser.save_result()
         for ts in token_lists:
             self.parser.parse(ts)
 
-    def run_validation(self):
+    def text_preprocess(self):
         try:
             # read the text from a local file
-            self.read_raw_data()
+            self.text_read()
             # reformat the text
-            raw = self.reformat_raw()
+            raw = self.text_reformation()
 
             # sentence splitting
             sentence = sent_tokenize(raw)
-            print('\nSentences splitting results:')
+            print('\n【Sentences Splitting】')
             print(sentence)
 
             # tokenization + pos tagging
@@ -149,17 +149,17 @@ class Pipeline:
                 token_list.append(words[:-1])   # omit the last period
                 name_entity = name_entity.union(name_entity)
                 # part-of-speech tagging
-                pos_tag.append(part_of_speech_tagging(words))
+                pos_tag.append(pos_tagging(words))
 
-            print('\nPart-of-speech tagging results:')
+            print('\n【POS Tagging】')
             print(pos_tag)
 
-            print('\nName entities:')
+            print('\n【Name Entities】')
             print(name_entity)
 
             # run the Earley parser written in context-free grammar to validate data
-            print('\nParsing results:')
-            self.parse_and_validate(token_list, pos_tag)
+            print('\n【Earley Parsing】')
+            self.parse_print_text(token_list)
 
             with open("text.txt", "r") as f:
                 data = f.read()
@@ -168,7 +168,7 @@ class Pipeline:
             tokens = sentence_without_punctuation.split()
             cp = parse.load_parser('grammar.fcfg', trace=1)
 
-            print('\nEarley parse process:')
+            print('\n【Earley Parse Process】')
             trees = cp.parse(tokens)
             print(trees)
 
@@ -182,7 +182,6 @@ if __name__ == '__main__':
     print("Please enter the text you want to parse:")
     text = input()
     file_name = 'text.txt'
-
     with open('text.txt', 'w') as file:
         file.write(text)
     data_file = 'text.txt'
@@ -201,5 +200,5 @@ if __name__ == '__main__':
 
     # run pipeline to validate the data
     pipeline = Pipeline(parser, data_file)
-    pipeline.run_validation()
+    pipeline.text_preprocess()
 
