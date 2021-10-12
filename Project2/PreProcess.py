@@ -11,6 +11,41 @@ from typing import List, Tuple, Set
 from nltk.draw.tree import TreeView
 
 
+def part_of_speech_tagging(words: List[str]) -> List[Tuple[str, str]]:
+    """
+    perform part-of-speech tagging using StanfordPOSTagger
+    :param words: a list of words in a sentence
+    :param multi_word_name_entities: a set of multi-word name entities
+    :return: part-of-speech tag of the sentence
+    """
+    normal_pos_tag = nltk.pos_tag(words[:-1])   # omit the last period
+
+    return normal_pos_tag
+
+
+def name_entity_module(word_list: List[str]) -> Tuple[List[str], Set[str]]:
+    """
+    perform named entity recognition using StanfordNERTagger
+    :param word_list: token list
+    :return: a token list after merging name entities + a set of name entities
+    """
+    pos_tag_list = nltk.tag.pos_tag(word_list)  # do POS tagging before chunking
+    ne_parse_tree = nltk.ne_chunk(pos_tag_list)
+    name_entity: Set[str] = set()
+    word_list_merge: List[str] = list()
+
+    for node in ne_parse_tree:
+        if isinstance(node, nltk.tree.Tree) and node.label() in ['PERSON', 'ORGANIZATION', 'GPE']:
+            ne = ' '.join([word for (word, tag) in node.leaves()])
+            name_entity.add(ne)
+            word_list_merge.append(ne)
+        elif isinstance(node, tuple):
+            word_list_merge.append(node[0])
+        elif isinstance(node, str):
+            word_list_merge.append(node)
+    return word_list_merge, name_entity
+
+
 class Parser:
     def __init__(self, grammar_content: str, print_result: bool = False, save_result: bool = False):
         """
@@ -69,50 +104,17 @@ class Pipeline:
             with open(sent_content) as file_content:
                 self.raw = file_content.read()
         else:
-            raise Exception('Error: ' + sent_content + ' does not exist on local.')
+            raise Exception('Error: File ' + sent_content + ' does not exist!')
 
     def reformat_raw(self) -> str:
         """
         If text in raw data file contains multiple lines, then merge into 1 lines separated by a space.
         :return one-line reformed raw text
         """
-        reformed_raw = ""
+        raw_reformat = ""
         for line in self.raw.split('\n'):
-            reformed_raw += line.strip() + ' '
-        return reformed_raw
-
-    def part_of_speech_tagging(self, words: List[str]) -> List[Tuple[str, str]]:
-        """
-        perform part-of-speech tagging using StanfordPOSTagger
-        :param words: a list of words in a sentence
-        :param multi_word_name_entities: a set of multi-word name entities
-        :return: part-of-speech tag of the sentence
-        """
-        normal_pos_tag = nltk.pos_tag(words[:-1])   # omit the last period
-
-        return normal_pos_tag
-
-    def name_entity_module(self, word_list: List[str]) -> Tuple[List[str], Set[str]]:
-        """
-        perform named entity recognition using StanfordNERTagger
-        :param word_list: token list
-        :return: a token list after merging name entities + a set of name entities
-        """
-        pos_tag_list = nltk.tag.pos_tag(word_list)  # do POS tagging before chunking
-        ne_parse_tree = nltk.ne_chunk(pos_tag_list)
-        name_entities: Set[str] = set()
-        word_list_merged: List[str] = list()
-
-        for node in ne_parse_tree:
-            if isinstance(node, nltk.tree.Tree) and node.label() in ['PERSON', 'ORGANIZATION', 'GPE']:
-                ne = ' '.join([word for (word, tag) in node.leaves()])
-                name_entities.add(ne)
-                word_list_merged.append(ne)
-            elif isinstance(node, tuple):
-                word_list_merged.append(node[0])
-            elif isinstance(node, str):
-                word_list_merged.append(node)
-        return word_list_merged, name_entities
+            raw_reformat += line.strip() + ' '
+        return raw_reformat
 
     def parse_and_validate(self, token_lists: List[List[str]], pos_tags: List[List[str]]) -> None:
         """
@@ -144,11 +146,11 @@ class Pipeline:
                 # word tokenization
                 words = word_tokenize(sent)
                 # name entity module
-                words, name_entity = self.name_entity_module(words)
+                words, name_entity = name_entity_module(words)
                 token_lists.append(words[:-1])   # omit the last period
                 name_entities = name_entities.union(name_entity)
                 # part-of-speech tagging
-                pos_tags.append(self.part_of_speech_tagging(words))
+                pos_tags.append(part_of_speech_tagging(words))
             print('Part-of-speech tagging results:')
             print(pos_tags)
             print('Name entities:')
