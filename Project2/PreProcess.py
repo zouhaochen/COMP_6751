@@ -12,12 +12,12 @@ from nltk.draw.tree import TreeView
 
 
 class Parser:
-    def __init__(self, grammar_url: str, print_result: bool = False, save_result: bool = False):
+    def __init__(self, grammar_content: str, print_result: bool = False, save_result: bool = False):
         """
         constructor
-        :param grammar_url: grammar file URL
+        :param grammar_content: grammar file URL
         """
-        self.cp = load_parser(grammar_url, trace=0, parser=FeatureEarleyChartParser)
+        self.cp = load_parser(grammar_content, trace=0, parser=FeatureEarleyChartParser)
         self.print = print_result
         self.save = save_result
         self.tree_no = 1
@@ -34,7 +34,7 @@ class Parser:
                 tree.draw()     # display the tree diagram
             if self.save:
                 # save the tree diagram
-                TreeView(tree)._cframe.print_to_file('results/Tree' + str(self.tree_no) + '_diagram' + '.ps')
+                TreeView(tree).cframe.print_to_file('results/Tree' + str(self.tree_no) + '_diagram' + '.ps')
                 # save the tree text
                 with open('results/Tree' + str(self.tree_no) + '_text' + '.txt', "w", encoding='utf-8') as writer:
                     writer.write(str(tree))
@@ -43,20 +43,20 @@ class Parser:
     def clear_directory(self):
         if self.save:
             # delete all files in /results/.. directory
-            dir = 'results/'
-            filelist = [f for f in os.listdir(dir)]
-            for f in filelist:
-                os.remove(os.path.join(dir, f))
+            direction = 'results/'
+            file_list = [f for f in os.listdir(direction)]
+            for f in file_list:
+                os.remove(os.path.join(direction, f))
 
 
 class Pipeline:
-    def __init__(self, parser: Parser, sent_url: str):
+    def __init__(self, parse_method: Parser, sentence_content: str):
         """
         constructor
-        :param parser: parser that will be used in pipeline
+        :param parse_method: parser that will be used in pipeline
         """
-        self.parser = parser
-        self.sent_url = sent_url
+        self.parser = parse_method
+        self.sentence = sentence_content
         self.raw = None
 
     def read_raw_data(self):
@@ -64,12 +64,12 @@ class Pipeline:
         read raw data from the url
         """
         # check data file validity and read sentence from the file
-        sent_url = self.sent_url
-        if os.path.exists(sent_url):
-            with open(sent_url) as file:
-                self.raw = file.read()
+        sent_content = self.sentence
+        if os.path.exists(sent_content):
+            with open(sent_content) as file_content:
+                self.raw = file_content.read()
         else:
-            raise Exception('Error: ' + sent_url + ' does not exist on local.')
+            raise Exception('Error: ' + sent_content + ' does not exist on local.')
 
     def reformat_raw(self) -> str:
         """

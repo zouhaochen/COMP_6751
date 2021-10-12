@@ -74,7 +74,7 @@ COMMA -> ','
 ### -------------------------------------------------------- ###
 # Proper nouns
 NNP[NUM=?n] -> PropN[NUM=?n]
-PropN[NUM=sg] -> 'John' | 'Mary' | "John O'Malley" | "O'Malley" | 'Sue'
+PropN[NUM=sg] -> 'John' | 'Mary' | "John O'Malley" | "O'Malley" | 'Sue' | "OMalley"
 
 ### -------------------------------------------------------- ###
 # Nouns
