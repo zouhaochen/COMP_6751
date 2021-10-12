@@ -133,16 +133,16 @@ class Pipeline:
             raw = self.reformat_raw()
 
             # sentence splitting
-            sents = sent_tokenize(raw)
+            sentence = sent_tokenize(raw)
             print('Sentences splitting results:')
-            print(sents)
+            print(sentence)
             print('---------------------------------------------')
 
             # tokenization + pos tagging
             pos_tags: List[List[str]] = list()
             token_lists: List[List[str]] = list()
             name_entities: Set[str] = set()
-            for sent in sents:
+            for sent in sentence:
                 # word tokenization
                 words = word_tokenize(sent)
                 # name entity module
