@@ -4,8 +4,8 @@ and Name Entity Module.
 """
 
 import os
-import nltk
 import re
+import nltk
 from nltk import sent_tokenize, word_tokenize, load_parser, FeatureEarleyChartParser, parse
 from typing import List, Tuple, Set
 from nltk.draw.tree import TreeView
