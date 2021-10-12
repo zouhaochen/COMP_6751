@@ -134,40 +134,41 @@ class Pipeline:
 
             # sentence splitting
             sentence = sent_tokenize(raw)
-            print('Sentences splitting results:')
+            print('\nSentences splitting results:')
             print(sentence)
-            print('---------------------------------------------')
 
             # tokenization + pos tagging
-            pos_tags: List[List[str]] = list()
-            token_lists: List[List[str]] = list()
-            name_entities: Set[str] = set()
-            for sent in sentence:
+            pos_tag: List[List[str]] = list()
+            token_list: List[List[str]] = list()
+            name_entity: Set[str] = set()
+            for text_sentence in sentence:
                 # word tokenization
-                words = word_tokenize(sent)
+                words = word_tokenize(text_sentence)
                 # name entity module
                 words, name_entity = name_entity_module(words)
-                token_lists.append(words[:-1])   # omit the last period
-                name_entities = name_entities.union(name_entity)
+                token_list.append(words[:-1])   # omit the last period
+                name_entity = name_entity.union(name_entity)
                 # part-of-speech tagging
-                pos_tags.append(part_of_speech_tagging(words))
-            print('Part-of-speech tagging results:')
-            print(pos_tags)
-            print('Name entities:')
-            print(name_entities)
-            print('---------------------------------------------')
+                pos_tag.append(part_of_speech_tagging(words))
+
+            print('\nPart-of-speech tagging results:')
+            print(pos_tag)
+
+            print('\nName entities:')
+            print(name_entity)
 
             # run the Earley parser written in context-free grammar to validate data
-            print('Parsing results:')
-            self.parse_and_validate(token_lists, pos_tags)
-            print('---------------------------------------------')
+            print('\nParsing results:')
+            self.parse_and_validate(token_list, pos_tag)
 
             with open("text.txt", "r") as f:
                 data = f.read()
-            sent = data
-            out = re.sub(r'[^\w\s]','',sent)
-            tokens = out.split()
-            cp = parse.load_parser('grammar/grammar.fcfg', trace=1)
+            text_sentence = data
+            sentence_without_punctuation = re.sub(r'[^\w\s]','',text_sentence)
+            tokens = sentence_without_punctuation.split()
+            cp = parse.load_parser('grammar.fcfg', trace=1)
+
+            print('\nEarley parse process:')
             trees = cp.parse(tokens)
             print(trees)
 
@@ -186,7 +187,7 @@ if __name__ == '__main__':
         file.write(text)
     data_file = 'text.txt'
 
-    print("Options to the results: save/print")
+    print("\nOptions to the results: save/print")
     input_save = input('Do you want to save the parse tree? ')
     input_pprint = input('Do you want to print the parse tree? ')
     pprint = False
@@ -195,7 +196,7 @@ if __name__ == '__main__':
         pprint = True
     if input_save.upper() == 'Y' or input_save.lower() == 'yes':
         save = True
-    grammar_file_url = 'grammar/grammar.fcfg'
+    grammar_file_url = 'grammar.fcfg'
     parser = Parser(grammar_file_url, pprint, save)
 
     # run pipeline to validate the data
