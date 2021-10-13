@@ -144,7 +144,6 @@ IV[TENSE=past] -> 'intended' | 'ate'
 ### -------------------------------------------------------- ###
 # Wh-pronoun
 
-
 ### -------------------------------------------------------- ###
 # Date
 DATE -> YEAR SEP MONTH_NUM SEP DAY | MONTH_STR DAY SEP YEAR | MONTH_STR DAY | MONTH_STR YEAR | PP COMMA NP[NUM=?n] TV[NUM=?n] INTRO S  MONTH_STR NN_NUM YEAR | MONTH_STR NN_NUM SEP YEAR | MONTH_STR NN_NUM | YEAR | MONTH_STR YEAR | WEEK | JJ WEEK
@@ -171,3 +170,5 @@ DAY -> '00' | '01' | '02' | '03' | '04' | '05' | '06' | '07' | '08' | '09' | '10
 ### -------------------------------------------------------- ###
 # sub-clause introducer
 INTRO -> 'that'
+
+NP[+WH] -> 'who'
