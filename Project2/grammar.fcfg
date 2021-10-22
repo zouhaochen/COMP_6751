@@ -3,7 +3,6 @@
 # Grammar Productions
 # ###################
 
-# S expansion productions
 S -> NP[NUM=?n] VP[NUM=?n] | CC NP[NUM=?n] VP[NUM=?n] | NP[NUM=?n] VP[NUM=?n] DATE
 S -> NP[NUM=?n] VP[NUM=?n] CC TV[NUM=?n] INTRO S
 S -> NP[NUM=?n] TV[NUM=?n] INTRO S | NP[NUM=?n] TV[NUM=?n] INTRO S CC IN S
@@ -12,8 +11,6 @@ S -> PP COMMA NP[NUM=?n] TV[NUM=?n] INTRO S | DATE COMMA NP[NUM=?n] TV[NUM=?n] I
 S -> PP COMMA DATE COMMA NP[NUM=?n] TV[NUM=?n] NP[NUM=?n] INTRO S
 S -> RB COMMA NP[NUM=?n] VP[NUM=?n]
 
-### -------------------------------------------------------- ###
-# NP expansion productions
 NP[NUM=?n] -> DT[NUM=?n] Nom[NUM=?n] | DT[NUM=?n] Nom[NUM=?n] PP | Nom[NUM=?n] PP
 NP[NUM=?n] -> PRP | Nom[NUM=?n]
 NP[NUM=?n] -> PRP NP[NUM=?n] | PRP DATE PP
@@ -21,32 +18,20 @@ NP[NUM=?n] -> DT[NUM=?n] JJ NP[NUM=?n]
 NP[NUM=?n] -> N[NUM=?n] CC NP[NUM=?n] | NNP[NUM=?n] CC NP[NUM=?n]
 Nom[NUM=?n] -> N Nom[NUM=?n] | N | NNP[NUM=?n]
 
-### -------------------------------------------------------- ###
-# VP expansion productions
 VP[TENSE=?t, NUM=?n] -> VP[TENSE=?t, NUM=?n] PP
 VP[TENSE=?t, NUM=?n] -> TV[TENSE=?t, NUM=?n] NP | RB TV[TENSE=?t, NUM=?n] NP | MD[TENSE=?t] TV[TENSE=inf] NP RB
 VP[TENSE=?t, NUM=?n] -> MD[TENSE=?t] TV[TENSE=inf] NP | MD[TENSE=?t] AUX[TENSE=inf] JJ | AUX[TENSE=?t] JJ | MD[TENSE=?t] AUX[TENSE=inf] | MD[TENSE=?t] IV[TENSE=inf]
 VP[TENSE=?t, NUM=?n] -> IV[TENSE=?t] TO VP[TENSE=inf]
 VP[TENSE=?t, NUM=?n] -> VP[TENSE=?t, NUM=?n] PP | IV[TENSE=?t]
 
-### -------------------------------------------------------- ###
-# PP expansion productions
 PP -> IN NP | IN DATE
 
-
-# ###################
-# Lexical Productions
-# ###################
-
-# Determiners
 DT[NUM=?n] -> Det[NUM=?n]
-## singular determiners
+
 Det[NUM=sg] -> 'an' | 'a'
 
-## plural determiners
 Det[NUM=pl] -> 'these' | 'some' | 'all'
 
-## all-purpose determiners
 Det[NUM=?n] -> 'the'
 
 ### -------------------------------------------------------- ###
