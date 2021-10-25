@@ -1,6 +1,8 @@
 """
-This is the base version which use nltk.pos_tag and nltk.ne_chunk for POS Tagging
-and Name Entity Module.
+Project 2 for COMP 6751 Natural Language Analyst
+Context Free Grammar Development Program
+Be sure to read the project description page for further information about the expected behavior of the program
+@author: Haochen Zou
 """
 
 import os
@@ -13,10 +15,10 @@ from nltk.draw.tree import TreeView
 
 def pos_tagging(words: List[str]) -> List[Tuple[str, str]]:
     """
-    perform part-of-speech tagging using StanfordPOSTagger
-    :param words: a list of words in a sentence
-    :param multi_word_name_entities: a set of multi-word name entities
-    :return: part-of-speech tag of the sentence
+    Inputs:
+      words - words content of text file
+    Output:
+      part of speech tag results
     """
     normal_pos_tag = nltk.pos_tag(words[:-1])   # omit the last period
 
@@ -25,11 +27,12 @@ def pos_tagging(words: List[str]) -> List[Tuple[str, str]]:
 
 def name_entity_module(word_list: List[str]) -> Tuple[List[str], Set[str]]:
     """
-    perform named entity recognition using StanfordNERTagger
-    :param word_list: token list
-    :return: a token list after merging name entities + a set of name entities
+    Inputs:
+      word_list - word token list of text file
+    Output:
+      token list with name entities
     """
-    pos_tag_list = nltk.tag.pos_tag(word_list)  # do POS tagging before chunking
+    pos_tag_list = nltk.tag.pos_tag(word_list)
     ne_parse_tree = nltk.ne_chunk(pos_tag_list)
     name_entity: Set[str] = set()
     word_list_merge: List[str] = list()
@@ -47,11 +50,9 @@ def name_entity_module(word_list: List[str]) -> Tuple[List[str], Set[str]]:
 
 
 class Parser:
+
+    # initialize parser structure information
     def __init__(self, grammar_content: str, print_result: bool = False, save_result: bool = False):
-        """
-        constructor
-        :param grammar_content: grammar file URL
-        """
         self.cp = load_parser(grammar_content, trace=0, parser=FeatureEarleyChartParser)
         self.print = print_result
         self.save = save_result
@@ -59,25 +60,31 @@ class Parser:
 
     def parse(self, tokens: List[str]) -> None:
         """
-        parse sentences in sent and print the parse tree
-        :param tokens:
-        :param
+        Inputs:
+          self - text file sentence content
+          tokens - token for parse
+        Output:
+          parse tree result print
+          save the tree in text and diagram format
         """
         for tree in self.cp.parse(tokens):
-            print(tree)     # print the tree
+            print(tree)
             if self.print:
-                tree.draw()     # display the tree diagram
+                tree.draw()
             if self.save:
-                # save the tree diagram
                 TreeView(tree).cframe.print_to_file('results/Tree' + str(self.tree_no) + '_diagram' + '.ps')
-                # save the tree text
                 with open('results/Tree' + str(self.tree_no) + '_text' + '.txt', "w", encoding='utf-8') as writer:
                     writer.write(str(tree))
             self.tree_no += 1
 
     def save_result(self):
+        """
+        Inputs:
+          self - text file sentence content
+        Output:
+          save result in direction
+        """
         if self.save:
-            # delete all files in /results/.. directory
             direction = 'results/'
             file_list = [f for f in os.listdir(direction)]
             for f in file_list:
@@ -85,6 +92,8 @@ class Parser:
 
 
 class Pipeline:
+
+    # pipeline constructor
     def __init__(self, parse_method: Parser, sentence_content: str):
         """
         constructor
