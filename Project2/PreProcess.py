@@ -18,7 +18,7 @@ def pos_tagging(words: List[str]) -> List[Tuple[str, str]]:
     Inputs:
       words - words content of text file
     Output:
-      part of speech tag results
+      part-of-speech tagging results
     """
     normal_pos_tag = nltk.pos_tag(words[:-1])   # omit the last period
 
@@ -95,19 +95,17 @@ class Pipeline:
 
     # pipeline constructor
     def __init__(self, parse_method: Parser, sentence_content: str):
-        """
-        constructor
-        :param parse_method: parser that will be used in pipeline
-        """
         self.parser = parse_method
         self.sentence = sentence_content
         self.raw = None
 
     def text_read(self):
         """
-        read raw data from the url
+        Inputs:
+          self - text file sentence content
+        Output:
+          file exist or not, display content if exist
         """
-        # check data file validity and read sentence from the file
         sent_content = self.sentence
         if os.path.exists(sent_content):
             with open(sent_content) as file_content:
@@ -117,8 +115,10 @@ class Pipeline:
 
     def text_reformation(self) -> str:
         """
-        If text in raw data file contains multiple lines, then merge into 1 lines separated by a space.
-        :return one-line reformed raw text
+        Inputs:
+          self - text file sentence content
+        Output:
+          reformat text file
         """
         text_reformat = ""
         for line in self.raw.split('\n'):
@@ -127,8 +127,11 @@ class Pipeline:
 
     def parse_print_text(self, token_lists: List[List[str]]) -> None:
         """
-        parse the sentences and print the parse trees
-        :param token_lists: a list of token lists of sentences
+        Inputs:
+          self - text file sentence content
+          token_lists - a list of token lists of sentences
+        Output:
+          parse tree
         """
         self.parser.save_result()
         for ts in token_lists:
@@ -136,9 +139,7 @@ class Pipeline:
 
     def text_preprocess(self):
         try:
-            # read the text from a local file
             self.text_read()
-            # reformat the text
             raw = self.text_reformation()
 
             # sentence splitting
@@ -146,27 +147,26 @@ class Pipeline:
             print('\n【Sentences Splitting】')
             print(sentence)
 
-            # tokenization + pos tagging
+            # tokenize, name entity and part-of-speech tagging
             pos_tag: List[List[str]] = list()
             token_list: List[List[str]] = list()
             name_entity: Set[str] = set()
             for text_sentence in sentence:
-                # word tokenization
                 words = word_tokenize(text_sentence)
-                # name entity module
                 words, name_entity = name_entity_module(words)
-                token_list.append(words[:-1])   # omit the last period
+                token_list.append(words[:-1])
                 name_entity = name_entity.union(name_entity)
-                # part-of-speech tagging
                 pos_tag.append(pos_tagging(words))
 
+            # part-of-speech tagging result
             print('\n【POS Tagging】')
             print(pos_tag)
 
+            # name entities result
             print('\n【Name Entities】')
             print(name_entity)
 
-            # run the Earley parser written in context-free grammar to validate data
+            # Earley parsing result
             print('\n【Earley Parsing】')
             self.parse_print_text(token_list)
 
