@@ -170,6 +170,7 @@ class Pipeline:
             print('\n【Earley Parsing】')
             self.parse_print_text(token_list)
 
+            # Write and read text file content form a txt file
             with open("text.txt", "r") as f:
                 data = f.read()
             text_sentence = data
@@ -177,6 +178,7 @@ class Pipeline:
             tokens = sentence_without_punctuation.split()
             cp = parse.load_parser('grammar.fcfg', trace=1)
 
+            # Earley parsing process result
             print('\n【Earley Parse Process】')
             trees = cp.parse(tokens)
             print(trees)
@@ -207,7 +209,7 @@ if __name__ == '__main__':
     grammar_file_url = 'grammar.fcfg'
     parser = Parser(grammar_file_url, pprint, save)
 
-    # run pipeline to validate the data
+    # pipeline initializer
     pipeline = Pipeline(parser, data_file)
     pipeline.text_preprocess()
 
