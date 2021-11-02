@@ -59,7 +59,7 @@ S[-INV, SENTIMENT=neutral] -> S[-INV, SENTIMENT=positive] CC[CONJUNCTION=or] S[-
 ### -------------------------------------------------------- ###
 # SBAR (subordinate clause) expansion productions
 ## the people *who were there*
-SBAR[SENTIMENT=?s] -> WP[+wh] V[+AUX] RB[-negation, SENTIMENT=?s]
+SBAR[SENTIMENT=?s] -> NP[+WH] V[+AUX] RB[-negation, SENTIMENT=?s]
 ## the way *it's told by people who were there*
 SBAR[SENTIMENT=?s] -> S[SENTIMENT=?s] SBAR[SENTIMENT=?s]
 
@@ -201,5 +201,5 @@ V[SUBCAT=trans, -AUX, +passive] -> 'told'
 
 ### -------------------------------------------------------- ###
 # Wh-pronoun
-WP[+wh] -> 'who'
+NP[+WH] -> 'who'
 
