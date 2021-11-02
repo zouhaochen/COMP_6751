@@ -1,480 +1,201 @@
-it's a compelling story .
-positive	|	[positive]
+% start S
+# ###################
+# Grammar Productions
+# ###################
+#
+# Common Attributes:
+#   TENSE  -> tense = inf, pres, past, future, pastpart
+#   NUM    -> number of subject = sg, pl
+#   PERSON -> subject person = 1, 2, 3
+#   SENTIMENT  -> sentiment = positive, negative, neutral
+#
+# Other Attributes:
+# S:
+#   +-INV -> inversion?
+# V:
+#   SUBCAT -> verb subcategory = trans, intrans, clause, dative
+#   +-AUX -> auxiliary verb?
+#   +-passive -> passive mode
+# RB:
+#   +-negation -> negation?
+# CC:
+#   +-and -> and relation?
+#   +-but -> but relation?
+#   +-or  -> or relation?
+# WP:
+#   +-wh -> heading by 'wh'
+# IN:
+#   +-of -> of
 
-(S[-INV, SENTIMENT='positive']
-  (NP[NUM='sg', PERSON=3, SENTIMENT=?s, -WH]
-    (PRP[NUM='sg', PERSON=3] it))
-  (VP[NUM='sg', PERSON=3, SENTIMENT='positive', TENSE='pres']
-    (V[+AUX, NUM='sg', PERSON=3, TENSE='pres', -passive] 's)
-    (NP[NUM='sg', PERSON=?p, SENTIMENT=?s, -WH] (DT[NUM='sg'] a))
-    (NP[NUM='sg', PERSON=?p, SENTIMENT='positive', -WH]
-      (JJ[SENTIMENT='positive'] compelling)
-      (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
-        (N[NUM='sg', SENTIMENT='neutral'] story)))))
--------------------------------------------------------------------
-it has low impact but it's a compelling story .
-positive	|	[positive]
 
-(S[-INV, SENTIMENT='positive']
-  (S[-INV, SENTIMENT='neutral']
-    (NP[NUM='sg', PERSON=3, SENTIMENT=?s, -WH]
-      (PRP[NUM='sg', PERSON=3] it))
-    (VP[NUM='sg', PERSON=3, SENTIMENT='neutral', TENSE='pres']
-      (V[+AUX, NUM='sg', PERSON=3, TENSE='pres', -passive] has)
-      (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
-        (JJ[SENTIMENT='neutral'] low)
-        (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
-          (N[NUM='sg', SENTIMENT='neutral'] impact)))))
-  (CC[CONJUNCTION='but'] but)
-  (S[-INV, SENTIMENT='positive']
-    (NP[NUM='sg', PERSON=3, SENTIMENT=?s, -WH]
-      (PRP[NUM='sg', PERSON=3] it))
-    (VP[NUM='sg', PERSON=3, SENTIMENT='positive', TENSE='pres']
-      (V[+AUX, NUM='sg', PERSON=3, TENSE='pres', -passive] 's)
-      (NP[NUM='sg', PERSON=?p, SENTIMENT=?s, -WH] (DT[NUM='sg'] a))
-      (NP[NUM='sg', PERSON=?p, SENTIMENT='positive', -WH]
-        (JJ[SENTIMENT='positive'] compelling)
-        (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
-          (N[NUM='sg', SENTIMENT='neutral'] story))))))
--------------------------------------------------------------------
-it has gut-wrenching impact and it is a compelling story .
-positive	|	[positive]
+# S expansion productions
+S[-INV, SENTIMENT=?s] -> NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=?s]
 
-(S[-INV, SENTIMENT='positive']
-  (S[-INV, SENTIMENT='neutral']
-    (NP[NUM='sg', PERSON=3, SENTIMENT=?s, -WH]
-      (PRP[NUM='sg', PERSON=3] it))
-    (VP[NUM='sg', PERSON=3, SENTIMENT='neutral', TENSE='pres']
-      (V[+AUX, NUM='sg', PERSON=3, TENSE='pres', -passive] has)
-      (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
-        (JJ[SENTIMENT='neutral'] gut-wrenching)
-        (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
-          (N[NUM='sg', SENTIMENT='neutral'] impact)))))
-  (CC[CONJUNCTION='and'] and)
-  (S[-INV, SENTIMENT='positive']
-    (NP[NUM='sg', PERSON=3, SENTIMENT=?s, -WH]
-      (PRP[NUM='sg', PERSON=3] it))
-    (VP[NUM='sg', PERSON=3, SENTIMENT='positive', TENSE='pres']
-      (V[+AUX, NUM='sg', PERSON=3, TENSE='pres', -passive] is)
-      (NP[NUM='sg', PERSON=?p, SENTIMENT=?s, -WH] (DT[NUM='sg'] a))
-      (NP[NUM='sg', PERSON=?p, SENTIMENT='positive', -WH]
-        (JJ[SENTIMENT='positive'] compelling)
-        (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
-          (N[NUM='sg', SENTIMENT='neutral'] story))))))
--------------------------------------------------------------------
-this does not have gut-wrenching impact but it's a compelling story .
-positive	|	[positive]
+## e.g. a perfect example
+S[-INV, SENTIMENT=?s] -> NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s]
 
-(S[-INV, SENTIMENT='positive']
-  (S[-INV, SENTIMENT=?s]
-    (NP[NUM='sg', PERSON=?p, SENTIMENT=?s, -WH] (DT[NUM='sg'] this))
-    (VP[NUM='sg', PERSON=3, SENTIMENT=?s, TENSE='pres']
-      (V[+AUX, NUM='sg', PERSON=3, TENSE='pres', -passive] does)
-      (RB[+negation] not)
-      (VP[NUM='sg', PERSON=?p, SENTIMENT='neutral', TENSE='inf']
-        (V[-AUX, SUBCAT='trans', TENSE='inf', -passive] have)
-        (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
-          (JJ[SENTIMENT='neutral'] gut-wrenching)
-          (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
-            (N[NUM='sg', SENTIMENT='neutral'] impact))))))
-  (CC[CONJUNCTION='but'] but)
-  (S[-INV, SENTIMENT='positive']
-    (NP[NUM='sg', PERSON=3, SENTIMENT=?s, -WH]
-      (PRP[NUM='sg', PERSON=3] it))
-    (VP[NUM='sg', PERSON=3, SENTIMENT='positive', TENSE='pres']
-      (V[+AUX, NUM='sg', PERSON=3, TENSE='pres', -passive] 's)
-      (NP[NUM='sg', PERSON=?p, SENTIMENT=?s, -WH] (DT[NUM='sg'] a))
-      (NP[NUM='sg', PERSON=?p, SENTIMENT='positive', -WH]
-        (JJ[SENTIMENT='positive'] compelling)
-        (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
-          (N[NUM='sg', SENTIMENT='neutral'] story))))))
--------------------------------------------------------------------
-this compelling story with gut-wrenching impact .
-positive	|	[positive, neutral]
+## e.g. Is this example good or bad?
+S[+INV, SENTIMENT=?s] -> V[+AUX] NP[-WH, NUM=?n] ADJP[SENTIMENT=?s]
 
-(S[-INV, SENTIMENT='positive']
-  (NP[NUM='sg', PERSON=?p, SENTIMENT='positive', -WH]
-    (DT[NUM='sg'] this)
-    (NP[NUM='sg', PERSON=?p, SENTIMENT='positive', -WH]
-      (JJ[SENTIMENT='positive'] compelling)
-      (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
-        (N[NUM='sg', SENTIMENT='neutral'] story)))
-    (PP[SENTIMENT='neutral']
-      (IN[-of] with)
-      (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
-        (JJ[SENTIMENT='neutral'] gut-wrenching)
-        (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
-          (N[NUM='sg', SENTIMENT='neutral'] impact))))))
-(S[-INV, SENTIMENT='neutral']
-  (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
-    (DT[NUM='sg'] this)
-    (NP[NUM='sg', PERSON=?p, SENTIMENT='positive', -WH]
-      (JJ[SENTIMENT='positive'] compelling)
-      (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
-        (N[NUM='sg', SENTIMENT='neutral'] story)))
-    (PP[SENTIMENT='neutral']
-      (IN[-of] with)
-      (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
-        (JJ[SENTIMENT='neutral'] gut-wrenching)
-        (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
-          (N[NUM='sg', SENTIMENT='neutral'] impact))))))
--------------------------------------------------------------------
-this may not have the dramatic gut-wrenching impact of other holocaust films , but it's a compelling story , mainly because of the way it's told by the people who were there .
-positive	|	[positive]
+## and relations
+S[-INV, SENTIMENT=positive] -> S[-INV, SENTIMENT=positive] CC[CONJUNCTION=and] S[-INV, SENTIMENT=positive] | S[-INV, SENTIMENT=positive] CC[CONJUNCTION=and] S[-INV, SENTIMENT=neutral] | S[-INV, SENTIMENT=neutral] CC[CONJUNCTION=and] S[-INV, SENTIMENT=positive]
+S[-INV, SENTIMENT=negative] -> S[-INV, SENTIMENT=negative] CC[CONJUNCTION=and] S[-INV, SENTIMENT=negative] | S[-INV, SENTIMENT=negative] CC[CONJUNCTION=and] S[-INV, SENTIMENT=neutral] | S[-INV, SENTIMENT=neutral] CC[CONJUNCTION=and] S[-INV, SENTIMENT=negative]
+S[-INV, SENTIMENT=neutral] -> S[-INV, SENTIMENT=neutral] CC[CONJUNCTION=and] S[-INV, SENTIMENT=neutral]
 
-(S[-INV, SENTIMENT='positive']
-  (S[-INV, SENTIMENT=?s]
-    (NP[NUM='sg', PERSON=?p, SENTIMENT=?s, -WH] (DT[NUM='sg'] this))
-    (VP[NUM='sg', PERSON=?p, SENTIMENT=?s, TENSE='inf']
-      (V[+AUX, TENSE='inf', -passive] may)
-      (RB[+negation] not)
-      (VP[NUM='sg', PERSON=?p, SENTIMENT='neutral', TENSE='inf']
-        (V[-AUX, SUBCAT='trans', TENSE='inf', -passive] have)
-        (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
-          (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
-            (DT[NUM='sg'] the)
-            (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
-              (JJ[SENTIMENT='neutral'] dramatic)
-              (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
-                (JJ[SENTIMENT='neutral'] gut-wrenching)
-                (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
-                  (N[NUM='sg', SENTIMENT='neutral'] impact)))))
-          (IN[+of] of)
-          (NP[NUM='pl', PERSON=?p, SENTIMENT='neutral', -WH]
-            (JJ[SENTIMENT='neutral'] other)
-            (NP[NUM='pl', PERSON=?p, SENTIMENT='neutral', -WH]
-              (N[NUM='sg', SENTIMENT='negative'] holocaust)
-              (NP[NUM='pl', PERSON=?p, SENTIMENT='neutral', -WH]
-                (N[NUM='pl', SENTIMENT='neutral'] films))))))))
-  (COMMA[] ,)
-  (CC[CONJUNCTION='but'] but)
-  (S[-INV, SENTIMENT='positive']
-    (NP[NUM='sg', PERSON=3, SENTIMENT=?s, -WH]
-      (PRP[NUM='sg', PERSON=3] it))
-    (VP[NUM='sg', PERSON=3, SENTIMENT='positive', TENSE='pres']
-      (V[+AUX, NUM='sg', PERSON=3, TENSE='pres', -passive] 's)
-      (NP[NUM='sg', PERSON=?p, SENTIMENT='positive', -WH]
-        (DT[NUM='sg'] a)
-        (NP[NUM='sg', PERSON=?p, SENTIMENT='positive', -WH]
-          (JJ[SENTIMENT='positive'] compelling)
-          (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
-            (N[NUM='sg', SENTIMENT='neutral'] story))))
-      (COMMA[] ,)
-      (PP[SENTIMENT='neutral']
-        (RB[SENTIMENT='neutral', -negation] mainly)
-        (IN[-of] because)
-        (IN[+of] of)
-        (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
-          (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
-            (DT[NUM='sg'] the)
-            (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
-              (N[NUM='sg', SENTIMENT='neutral'] way)))
-          (SBAR[SENTIMENT='neutral']
-            (S[-INV, SENTIMENT=?s]
-              (NP[NUM='sg', PERSON=3, SENTIMENT=?s, -WH]
-                (PRP[NUM='sg', PERSON=3] it))
-              (VP[NUM='sg', PERSON=3, SENTIMENT=?s, TENSE='pres']
-                (V[+AUX, NUM='sg', PERSON=3, TENSE='pres', -passive]
-                  's)
-                (V[-AUX, SUBCAT='trans', +passive] told)
-                (PP[SENTIMENT=?s]
-                  (IN[-of] by)
-                  (NP[NUM='sg', PERSON=?p, SENTIMENT=?s, -WH]
-                    (DT[NUM='sg'] the)))))
-            (SBAR[SENTIMENT='neutral']
-              (S[-INV, SENTIMENT='neutral']
-                (NP[NUM='pl', PERSON=?p, SENTIMENT='neutral', -WH]
-                  (N[NUM='pl', SENTIMENT='neutral'] people)))
-              (SBAR[SENTIMENT='neutral']
-                (NP[NUM=?n, PERSON=?p, SENTIMENT='neutral', +WH] who)
-                (V[+AUX, NUM='pl', TENSE='past', -passive] were)
-                (RB[SENTIMENT='neutral', -negation] there)))))))))
--------------------------------------------------------------------
-a perfect example .
-positive	|	[positive]
+## but relations
+S[-INV, SENTIMENT=?s] -> S[-INV, SENTIMENT=neutral] CC[CONJUNCTION=but] S[-INV, SENTIMENT=?s]
+## e.g. it is a compelling story but it has low impact
+S[-INV, SENTIMENT=negative] -> S[-INV, SENTIMENT=positive] CC[CONJUNCTION=but] S[-INV, SENTIMENT=negative] | S[-INV, SENTIMENT=positive] CC[CONJUNCTION=but] S[-INV, SENTIMENT=neutral]
+S[-INV, SENTIMENT=positive] -> S[-INV, SENTIMENT=negative] CC[CONJUNCTION=but] S[-INV, SENTIMENT=positive] | S[-INV, SENTIMENT=negative] CC[CONJUNCTION=but] S[-INV, SENTIMENT=neutral]
+## e.g. it is a compelling story , but it has low impact
+S[-INV, SENTIMENT=negative] -> S[-INV, SENTIMENT=positive] COMMA CC[CONJUNCTION=but] S[-INV, SENTIMENT=negative] | S[-INV, SENTIMENT=positive] COMMA CC[CONJUNCTION=but] S[-INV, SENTIMENT=neutral]
+S[-INV, SENTIMENT=positive] -> S[-INV, SENTIMENT=negative] COMMA CC[CONJUNCTION=but] S[-INV, SENTIMENT=positive] | S[-INV, SENTIMENT=negative] COMMA CC[CONJUNCTION=but] S[-INV, SENTIMENT=neutral]
 
-(S[-INV, SENTIMENT='positive']
-  (NP[NUM='sg', PERSON=?p, SENTIMENT='positive', -WH]
-    (DT[NUM='sg'] a)
-    (NP[NUM='sg', PERSON=?p, SENTIMENT='positive', -WH]
-      (JJ[SENTIMENT='positive'] perfect)
-      (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
-        (N[NUM='sg', SENTIMENT='neutral'] example)))))
--------------------------------------------------------------------
-well-intentioned movie making .
-positive	|	[positive]
+## or relation
+S[-INV, SENTIMENT=?s] -> S[-INV, SENTIMENT=?s] CC[CONJUNCTION=or] S[-INV, SENTIMENT=?s]
+S[-INV, SENTIMENT=neutral] -> S[-INV, SENTIMENT=positive] CC[CONJUNCTION=or] S[-INV, SENTIMENT=negative] | S[-INV, SENTIMENT=negative] CC[CONJUNCTION=or] S[-INV, SENTIMENT=positive]
 
-(S[-INV, SENTIMENT='positive']
-  (NP[NUM='sg', PERSON=?p, SENTIMENT='positive', -WH]
-    (JJ[SENTIMENT='positive'] well-intentioned)
-    (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
-      (N[NUM='sg', SENTIMENT='neutral'] movie)
-      (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
-        (N[NUM='sg', SENTIMENT='neutral'] making)))))
--------------------------------------------------------------------
-It was too long but entertaining .
-positive	|	[positive]
 
-(S[-INV, SENTIMENT='positive']
-  (NP[NUM='sg', PERSON=3, SENTIMENT=?s, -WH]
-    (PRP[NUM='sg', PERSON=3] It))
-  (VP[NUM='sg', PERSON=?p, SENTIMENT='positive', TENSE='past']
-    (V[+AUX, NUM='sg', TENSE='past', -passive] was)
-    (ADJP[SENTIMENT='positive']
-      (RB[SENTIMENT='neutral', -negation] too)
-      (ADJP[SENTIMENT='positive']
-        (JJ[SENTIMENT='neutral'] long)
-        (CC[CONJUNCTION='but'] but)
-        (JJ[SENTIMENT='positive'] entertaining)))))
--------------------------------------------------------------------
-it's a compelling story , but it has low impact .
-negative	|	[negative]
+### -------------------------------------------------------- ###
+# SBAR (subordinate clause) expansion productions
+## the people *who were there*
+SBAR[SENTIMENT=?s] -> NP[+WH] V[+AUX] RB[-negation, SENTIMENT=?s]
+## the way *it's told by people who were there*
+SBAR[SENTIMENT=?s] -> S[SENTIMENT=?s] SBAR[SENTIMENT=?s]
 
-(S[-INV, SENTIMENT='negative']
-  (S[-INV, SENTIMENT='positive']
-    (NP[NUM='sg', PERSON=3, SENTIMENT=?s, -WH]
-      (PRP[NUM='sg', PERSON=3] it))
-    (VP[NUM='sg', PERSON=3, SENTIMENT='positive', TENSE='pres']
-      (V[+AUX, NUM='sg', PERSON=3, TENSE='pres', -passive] 's)
-      (NP[NUM='sg', PERSON=?p, SENTIMENT=?s, -WH] (DT[NUM='sg'] a))
-      (NP[NUM='sg', PERSON=?p, SENTIMENT='positive', -WH]
-        (JJ[SENTIMENT='positive'] compelling)
-        (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
-          (N[NUM='sg', SENTIMENT='neutral'] story)))))
-  (COMMA[] ,)
-  (CC[CONJUNCTION='but'] but)
-  (S[-INV, SENTIMENT='neutral']
-    (NP[NUM='sg', PERSON=3, SENTIMENT=?s, -WH]
-      (PRP[NUM='sg', PERSON=3] it))
-    (VP[NUM='sg', PERSON=3, SENTIMENT='neutral', TENSE='pres']
-      (V[+AUX, NUM='sg', PERSON=3, TENSE='pres', -passive] has)
-      (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
-        (JJ[SENTIMENT='neutral'] low)
-        (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
-          (N[NUM='sg', SENTIMENT='neutral'] impact))))))
--------------------------------------------------------------------
-manipulative movie making .
-negative	|	[negative]
 
-(S[-INV, SENTIMENT='negative']
-  (NP[NUM='sg', PERSON=?p, SENTIMENT='negative', -WH]
-    (JJ[SENTIMENT='negative'] manipulative)
-    (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
-      (N[NUM='sg', SENTIMENT='neutral'] movie)
-      (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
-        (N[NUM='sg', SENTIMENT='neutral'] making)))))
--------------------------------------------------------------------
-shamelessly manipulative movie making .
-negative	|	[negative]
+### -------------------------------------------------------- ###
+# NP (noun phrase) expansion productions
+NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] -> N[NUM=?n, PERSON=?p, SENTIMENT=?s] | NNP[NUM=?n, PERSON=?p] | PRP[NUM=?n, PERSON=?p]
 
-(S[-INV, SENTIMENT='negative']
-  (NP[NUM='sg', PERSON=?p, SENTIMENT='negative', -WH]
-    (ADJP[SENTIMENT='negative']
-      (RB[SENTIMENT='negative', -negation] shamelessly)
-      (JJ[SENTIMENT='negative'] manipulative))
-    (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
-      (N[NUM='sg', SENTIMENT='neutral'] movie)
-      (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
-        (N[NUM='sg', SENTIMENT='neutral'] making)))))
--------------------------------------------------------------------
-well-intentioned but manipulative movie making .
-negative	|	[negative]
+## e.g. *this* is not good
+NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] -> DT[NUM=?n]
+## e.g. this is *an example*, *a perfect example of well-intentioned but manipulated movie making*
+NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] -> DT[NUM=?n] NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] | DT[NUM=?n] NP[-WH, NUM=?n, PERSON=?p] PP[SENTIMENT=?s] | DT[NUM=?n] NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] PP
+## e.g. this is a *perfect example*
+NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] -> JJ[SENTIMENT=?s] NP[-WH, NUM=?n, PERSON=?p] | JJ[SENTIMENT=neutral] NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] | JJ[SENTIMENT=?s] NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s]
+## e.g. movie making
+NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] -> N NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s]
+## e.g. shamelessly manipulative movie making
+NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] -> ADJP[SENTIMENT=?s] NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] | ADJP[SENTIMENT=?s] NP[-WH, NUM=?n, PERSON=?p] | ADJP[SENTIMENT=neutral] NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s]
+## e.g. the way it's told by the people who were there
+NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] -> NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] SBAR[SENTIMENT=?s]
+## e.g. an *example of moving making*
+NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] -> NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] IN[+of] NP | NP[-WH, NUM=?n, PERSON=?p] IN[+of] NP[-WH, SENTIMENT=?s]
 
-(S[-INV, SENTIMENT='negative']
-  (NP[NUM='sg', PERSON=?p, SENTIMENT='negative', -WH]
-    (ADJP[SENTIMENT='negative']
-      (JJ[SENTIMENT='positive'] well-intentioned)
-      (CC[CONJUNCTION='but'] but)
-      (JJ[SENTIMENT='negative'] manipulative))
-    (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
-      (N[NUM='sg', SENTIMENT='neutral'] movie)
-      (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
-        (N[NUM='sg', SENTIMENT='neutral'] making)))))
--------------------------------------------------------------------
-a perfect example of well-intentioned but manipulative movie making .
-negative	|	[positive, negative]
+## e.g. it was *a mess and a hazard*, it was *a good example and a positive review*
+NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] -> NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] CC[CONJUNCTION=and] NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] | NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=neutral] CC[CONJUNCTION=and] NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] | NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] CC[CONJUNCTION=and] NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=neutral]
+## e.g. it was *a negative review or a positive review*
+NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] -> NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] CC[CONJUNCTION=or] NP[-WH, NUM=?n, PERSON=?p] | NP[-WH, NUM=?n, PERSON=?p] CC[CONJUNCTION=or] NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s]
+NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=neutral] -> NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=positive] CC[CONJUNCTION=or] NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=negative] | NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=negative] CC[CONJUNCTION=or] NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=positive]
+NP[+WH, NUM=?n, PERSON=?p, SENTIMENT=neutral] -> 'who'
 
-(S[-INV, SENTIMENT='positive']
-  (NP[NUM='sg', PERSON=?p, SENTIMENT='positive', -WH]
-    (NP[NUM='sg', PERSON=?p, SENTIMENT='positive', -WH]
-      (DT[NUM='sg'] a)
-      (NP[NUM='sg', PERSON=?p, SENTIMENT='positive', -WH]
-        (JJ[SENTIMENT='positive'] perfect)
-        (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
-          (N[NUM='sg', SENTIMENT='neutral'] example))))
-    (IN[+of] of)
-    (NP[NUM='sg', PERSON=?p, SENTIMENT='negative', -WH]
-      (ADJP[SENTIMENT='negative']
-        (JJ[SENTIMENT='positive'] well-intentioned)
-        (CC[CONJUNCTION='but'] but)
-        (JJ[SENTIMENT='negative'] manipulative))
-      (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
-        (N[NUM='sg', SENTIMENT='neutral'] movie)
-        (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
-          (N[NUM='sg', SENTIMENT='neutral'] making))))))
-(S[-INV, SENTIMENT='negative']
-  (NP[NUM='sg', PERSON=?p, SENTIMENT='negative', -WH]
-    (NP[NUM='sg', PERSON=?p, SENTIMENT='positive', -WH]
-      (DT[NUM='sg'] a)
-      (NP[NUM='sg', PERSON=?p, SENTIMENT='positive', -WH]
-        (JJ[SENTIMENT='positive'] perfect)
-        (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
-          (N[NUM='sg', SENTIMENT='neutral'] example))))
-    (IN[+of] of)
-    (NP[NUM='sg', PERSON=?p, SENTIMENT='negative', -WH]
-      (ADJP[SENTIMENT='negative']
-        (JJ[SENTIMENT='positive'] well-intentioned)
-        (CC[CONJUNCTION='but'] but)
-        (JJ[SENTIMENT='negative'] manipulative))
-      (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
-        (N[NUM='sg', SENTIMENT='neutral'] movie)
-        (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
-          (N[NUM='sg', SENTIMENT='neutral'] making))))))
--------------------------------------------------------------------
-a perfect example of rancid , well-intentioned , but shamelessly manipulative movie making .
-negative	|	[positive, negative]
+### -------------------------------------------------------- ###
+# VP (verb phrase) expansion productions
+VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=?s] -> V[TENSE=?t, NUM=?n, PERSON=?p, SUBCAT=trans, SENTIMENT=?s] NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s]
+VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=?s] -> V[TENSE=?t, NUM=?n, PERSON=?p, SUBCAT=trans, SENTIMENT=?s] NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] PP | V[TENSE=?t, NUM=?n, PERSON=?p, SUBCAT=trans, SENTIMENT=?s] NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] COMMA PP
 
-(S[-INV, SENTIMENT='positive']
-  (NP[NUM='sg', PERSON=?p, SENTIMENT='positive', -WH]
-    (NP[NUM='sg', PERSON=?p, SENTIMENT='positive', -WH]
-      (DT[NUM='sg'] a)
-      (NP[NUM='sg', PERSON=?p, SENTIMENT='positive', -WH]
-        (JJ[SENTIMENT='positive'] perfect)
-        (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
-          (N[NUM='sg', SENTIMENT='neutral'] example))))
-    (IN[+of] of)
-    (NP[NUM='sg', PERSON=?p, SENTIMENT='negative', -WH]
-      (ADJP[SENTIMENT='negative']
-        (JJ[SENTIMENT='negative'] rancid)
-        (COMMA[] ,)
-        (ADJP[SENTIMENT='negative']
-          (JJ[SENTIMENT='positive'] well-intentioned)
-          (COMMA[] ,)
-          (CC[CONJUNCTION='but'] but)
-          (ADJP[SENTIMENT='negative']
-            (RB[SENTIMENT='negative', -negation] shamelessly)
-            (JJ[SENTIMENT='negative'] manipulative))))
-      (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
-        (N[NUM='sg', SENTIMENT='neutral'] movie)
-        (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
-          (N[NUM='sg', SENTIMENT='neutral'] making))))))
-(S[-INV, SENTIMENT='negative']
-  (NP[NUM='sg', PERSON=?p, SENTIMENT='negative', -WH]
-    (NP[NUM='sg', PERSON=?p, SENTIMENT='positive', -WH]
-      (DT[NUM='sg'] a)
-      (NP[NUM='sg', PERSON=?p, SENTIMENT='positive', -WH]
-        (JJ[SENTIMENT='positive'] perfect)
-        (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
-          (N[NUM='sg', SENTIMENT='neutral'] example))))
-    (IN[+of] of)
-    (NP[NUM='sg', PERSON=?p, SENTIMENT='negative', -WH]
-      (ADJP[SENTIMENT='negative']
-        (JJ[SENTIMENT='negative'] rancid)
-        (COMMA[] ,)
-        (ADJP[SENTIMENT='negative']
-          (JJ[SENTIMENT='positive'] well-intentioned)
-          (COMMA[] ,)
-          (CC[CONJUNCTION='but'] but)
-          (ADJP[SENTIMENT='negative']
-            (RB[SENTIMENT='negative', -negation] shamelessly)
-            (JJ[SENTIMENT='negative'] manipulative))))
-      (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
-        (N[NUM='sg', SENTIMENT='neutral'] movie)
-        (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
-          (N[NUM='sg', SENTIMENT='neutral'] making))))))
--------------------------------------------------------------------
-He gave her an ugly sweater .
-negative	|	[negative]
+## e.g. this *does not have gut-wrenching impact*
+VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=?s] -> V[TENSE=?t, NUM=?n, PERSON=?p, +AUX] RB[+negation] VP[NUM=?n, SENTIMENT=neutral]
+VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=positive] -> V[TENSE=?t, NUM=?n, PERSON=?p, +AUX] RB[+negation] VP[NUM=?n, SENTIMENT=negative]
+VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=negative] -> V[TENSE=?t, NUM=?n, PERSON=?p, +AUX] RB[+negation] VP[NUM=?n, SENTIMENT=positive]
 
-(S[-INV, SENTIMENT='negative']
-  (NP[NUM='sg', PERSON=3, SENTIMENT=?s, -WH]
-    (PRP[NUM='sg', PERSON=3] He))
-  (VP[NUM='sg', PERSON=3, SENTIMENT='negative', TENSE='past']
-    (V[-AUX, SUBCAT='dative', TENSE='past', -passive] gave)
-    (NP[NUM='sg', PERSON=3, SENTIMENT=?s, -WH]
-      (PRP[NUM='sg', PERSON=3] her))
-    (NP[NUM='sg', PERSON=?p, SENTIMENT='negative', -WH]
-      (DT[NUM='sg'] an)
-      (NP[NUM='sg', PERSON=?p, SENTIMENT='negative', -WH]
-        (JJ[SENTIMENT='negative'] ugly)
-        (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
-          (N[NUM='sg', SENTIMENT='neutral'] sweater))))))
--------------------------------------------------------------------
-I saw a dull and scary movie .
-negative	|	[negative]
+## e.g. this *may not have the dramatic gut-wrenching impact of other holocaust films*
+VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=?s] -> MD RB[+negation] VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=?s]
+VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=positive] -> MD RB[+negation] VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=negative]
+VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=negative] -> MD RB[+negation] VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=positive]
 
-(S[-INV, SENTIMENT='negative']
-  (NP[NUM='sg', PERSON=1, SENTIMENT=?s, -WH]
-    (PRP[NUM='sg', PERSON=1] I))
-  (VP[NUM='sg', PERSON=?p, SENTIMENT='negative', TENSE='past']
-    (V[-AUX, SUBCAT='trans', TENSE='past', -passive] saw)
-    (NP[NUM='sg', PERSON=?p, SENTIMENT='negative', -WH]
-      (DT[NUM='sg'] a)
-      (NP[NUM='sg', PERSON=?p, SENTIMENT='negative', -WH]
-        (ADJP[SENTIMENT='negative']
-          (JJ[SENTIMENT='negative'] dull)
-          (CC[CONJUNCTION='and'] and)
-          (JJ[SENTIMENT='negative'] scary))
-        (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
-          (N[NUM='sg', SENTIMENT='neutral'] movie))))))
--------------------------------------------------------------------
-It was a mess and a hazard .
-negative	|	[negative]
+## e.g. it*'s told by the people*
+VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=?s] -> V[TENSE=?t, NUM=?n, PERSON=?p, +AUX, -passive] V[SUBCAT=trans, -AUX, +passive] PP[SENTIMENT=?s]
 
-(S[-INV, SENTIMENT='negative']
-  (NP[NUM='sg', PERSON=3, SENTIMENT=?s, -WH]
-    (PRP[NUM='sg', PERSON=3] It))
-  (VP[NUM='sg', PERSON=?p, SENTIMENT='negative', TENSE='past']
-    (V[+AUX, NUM='sg', TENSE='past', -passive] was)
-    (NP[NUM='sg', PERSON=?p, SENTIMENT='negative', -WH]
-      (NP[NUM='sg', PERSON=?p, SENTIMENT='negative', -WH]
-        (DT[NUM='sg'] a)
-        (NP[NUM='sg', PERSON=?p, SENTIMENT='negative', -WH]
-          (N[NUM='sg', SENTIMENT='negative'] mess)))
-      (CC[CONJUNCTION='and'] and)
-      (NP[NUM='sg', PERSON=?p, SENTIMENT=?s, -WH] (DT[NUM='sg'] a)))
-    (NP[NUM='sg', PERSON=?p, SENTIMENT='negative', -WH]
-      (N[NUM='sg', SENTIMENT='negative'] hazard))))
--------------------------------------------------------------------
-it has low impact .
-neutral	|	[neutral]
+## e.g. He *gave her a sweater*
+VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=?s] -> V[TENSE=?t, NUM=?n, PERSON=?p, SUBCAT=dative, SENTIMENT=?s] NP[-WH, NUM=?n, PERSON=?p] NP[-WH, SENTIMENT=?s]
 
-(S[-INV, SENTIMENT='neutral']
-  (NP[NUM='sg', PERSON=3, SENTIMENT=?s, -WH]
-    (PRP[NUM='sg', PERSON=3] it))
-  (VP[NUM='sg', PERSON=3, SENTIMENT='neutral', TENSE='pres']
-    (V[+AUX, NUM='sg', PERSON=3, TENSE='pres', -passive] has)
-    (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
-      (JJ[SENTIMENT='neutral'] low)
-      (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
-        (N[NUM='sg', SENTIMENT='neutral'] impact)))))
--------------------------------------------------------------------
-this is an example .
-neutral	|	[neutral]
+## e.g. it *was too long but entertaining*
+VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=?s] -> V[TENSE=?t, NUM=?n, PERSON=?p, +AUX, -passive] JJ[SENTIMENT=?s] | V[TENSE=?t, NUM=?n, PERSON=?p, +AUX, -passive] ADJP[SENTIMENT=?s]
 
-(S[-INV, SENTIMENT='neutral']
-  (NP[NUM='sg', PERSON=?p, SENTIMENT=?s, -WH] (DT[NUM='sg'] this))
-  (VP[NUM='sg', PERSON=3, SENTIMENT='neutral', TENSE='pres']
-    (V[+AUX, NUM='sg', PERSON=3, TENSE='pres', -passive] is)
-    (NP[NUM='sg', PERSON=?p, SENTIMENT=?s, -WH] (DT[NUM='sg'] an))
-    (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
-      (N[NUM='sg', SENTIMENT='neutral'] example))))
--------------------------------------------------------------------
-this is an example of movie making .
-neutral	|	[neutral]
 
-(S[-INV, SENTIMENT='neutral']
-  (NP[NUM='sg', PERSON=?p, SENTIMENT=?s, -WH] (DT[NUM='sg'] this))
-  (VP[NUM='sg', PERSON=3, SENTIMENT='neutral', TENSE='pres']
-    (V[+AUX, NUM='sg', PERSON=3, TENSE='pres', -passive] is)
-    (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
-      (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
-        (DT[NUM='sg'] an)
-        (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
-          (N[NUM='sg', SENTIMENT='neutral'] example)))
-      (IN[+of] of)
-      (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
-        (N[NUM='sg', SENTIMENT='neutral'] movie)))
-    (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
-      (N[NUM='sg', SENTIMENT='neutral'] making))))
--------------------------------------------------------------------
+### -------------------------------------------------------- ###
+# PP (prepositional phrase) expansion productions
+PP[SENTIMENT=?s] -> IN[-of] NP[-WH, SENTIMENT=?s] | RB[-negation] IN[-of] IN[+of] NP[-WH, SENTIMENT=?s]
+
+
+### -------------------------------------------------------- ###
+# ADJP (adjective phrase) expansion productions
+## e.g. dull and scary and boring
+ADJP[SENTIMENT=?s] -> JJ[SENTIMENT=?s] CC[CONJUNCTION=and] JJ[SENTIMENT=?s] | JJ[SENTIMENT=?s] CC[CONJUNCTION=and] ADJP[SENTIMENT=?s]
+## e.g. dull, scary and boring
+ADJP[SENTIMENT=?s] -> JJ[SENTIMENT=?s] COMMA ADJP[SENTIMENT=?s]
+## e.g. well-intentioned but manipulative
+ADJP[SENTIMENT=?s] -> JJ CC[CONJUNCTION=but] JJ[SENTIMENT=?s]
+## e.g. well-intentioned , but shamelessly manipulative
+ADJP[SENTIMENT=?s] -> JJ COMMA CC[CONJUNCTION=but] JJ[SENTIMENT=?s] | JJ COMMA CC[CONJUNCTION=but] ADJP[SENTIMENT=?s]
+## e.g. good or bad
+ADJP[SENTIMENT=?s] -> JJ[SENTIMENT=?s] CC[CONJUNCTION=or] JJ[SENTIMENT=?s]
+ADJP[SENTIMENT=neutral] -> JJ[SENTIMENT=positive] CC[CONJUNCTION=or] JJ[SENTIMENT=negative] | JJ[SENTIMENT=negative] CC[CONJUNCTION=or] JJ[SENTIMENT=positive]
+## e.g. shamelessly manipulative
+ADJP[SENTIMENT=?s] -> RB[-negation, SENTIMENT=?s] JJ[SENTIMENT=?s]
+## e.g. too long but entertaining
+ADJP[SENTIMENT=?s] -> RB[-negation] ADJP[SENTIMENT=?s]
+
+
+# ###################
+# Lexical Productions
+# ###################
+
+# Determiners
+DT[NUM=sg] -> 'a' | 'an' | 'this' | 'This' | 'the'
+
+### -------------------------------------------------------- ###
+# Modal
+MD -> 'may'
+
+### -------------------------------------------------------- ###
+# Punctuations
+COMMA -> ',' | '.'
+
+### -------------------------------------------------------- ###
+# Nouns
+N[NUM=sg, SENTIMENT=neutral] -> 'story' | 'impact' | 'example' | 'movie' | 'making' | 'way' | 'sweater'
+N[NUM=pl, SENTIMENT=neutral] -> 'films' | 'people'
+N[NUM=sg, SENTIMENT=negative] -> 'holocaust' | 'mess' | 'hazard'
+
+### -------------------------------------------------------- ###
+# Possessive Pronoun
+PRP[NUM=sg, PERSON=1] -> 'I'
+PRP[NUM=sg, PERSON=3] -> 'it' | 'It' | 'He' | 'her'
+
+### -------------------------------------------------------- ###
+# Prepositions
+IN[-of] -> 'with' | 'because' | 'by'
+IN[+of] -> 'of'
+
+### -------------------------------------------------------- ###
+# Coordinating Conjunction
+CC[CONJUNCTION=and] -> 'and' | 'And'
+CC[CONJUNCTION=but] -> 'but' | 'But'
+CC[CONJUNCTION=or] -> 'or' | 'Or'
+
+### -------------------------------------------------------- ###
+# Adjective
+JJ[SENTIMENT=positive] -> 'compelling' | 'perfect' | 'well-intentioned' | 'entertaining'
+JJ[SENTIMENT=negative] -> 'manipulative' | 'rancid' | 'ugly' | 'dull' | 'scary'
+JJ[SENTIMENT=neutral] -> 'dramatic' | 'gut-wrenching' | 'low' | 'other' | 'long'
+
+### -------------------------------------------------------- ###
+# Adverb
+RB[+negation] -> 'not' | 'Not' | "n't"
+RB[-negation, SENTIMENT=neutral] -> 'mainly' | 'too' | 'there' | 'here'
+RB[-negation, SENTIMENT=negative] -> 'shamelessly'
+
+### -------------------------------------------------------- ###
+# Verb
+V[TENSE=pres, NUM=sg, PERSON=3, +AUX, -passive] -> 'is' | "'s" | 'has' | 'does'
+V[TENSE=inf, +AUX, -passive] -> 'may'
+V[TENSE=inf, SUBCAT=trans, -AUX, -passive] -> 'have'
+V[TENSE=past, NUM=sg, +AUX, -passive] -> 'was'
+V[TENSE=past, NUM=pl, +AUX, -passive] -> 'were'
+V[TENSE=past, SUBCAT=trans, -AUX, -passive] -> 'saw'
+V[TENSE=past, SUBCAT=dative, -AUX, -passive] -> 'gave'
+V[SUBCAT=trans, -AUX, +passive] -> 'told'
+

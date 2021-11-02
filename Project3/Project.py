@@ -6,6 +6,7 @@ from collections import Counter
 from nltk.draw.tree import TreeView
 from collections import defaultdict
 
+
 class SentParser:
 
     def __init__(self, grammar_url_s: str, print: bool = False, draw: bool = False, save: bool = False):
@@ -44,7 +45,7 @@ class SentParser:
                 with open('saved_results/Tree' + str(self.tree_no) + '_text.txt', "w", encoding='utf-8') as writer:
                     writer.write(str(tree))
             # append the root's SENTI attribute value to the list
-            senti_label = tree.label()['SENTI']
+            senti_label = tree.label()['SENTIMENT']
             if senti_label in ['negative', 'positive', 'neutral']:
                 sentiment.append(senti_label)
                 parse_trees[senti_label].append(str(tree))
@@ -66,6 +67,7 @@ class SentParser:
         filelist = [f for f in os.listdir(dir)]
         for f in filelist:
             os.remove(os.path.join(dir, f))
+
 
 class DataLoader:
     def __init__(self):
@@ -124,6 +126,7 @@ class DataLoader:
     def get_neutral_sents(self) -> List[str]:
         return self.neutral_sentences
 
+
 class SentimentPipeline:
     def __init__(self, parser: SentParser, lexica: DataLoader):
         """
@@ -145,7 +148,7 @@ class SentimentPipeline:
         perform part-of-speech tagging
         :param words: a list of words
         """
-        normal_pos_tag = nltk.pos_tag(words[:-1])   # omit the last period
+        normal_pos_tag = nltk.pos_tag(words[:-1])  # omit the last period
         return normal_pos_tag
 
     def parse_and_sentify(self, token_list: List[str]) -> Tuple[List[Tuple[Any, int]], Dict[str, str]]:
@@ -155,7 +158,7 @@ class SentimentPipeline:
         :return return the most possible sentiment
         """
         # retrieve sentiment labels of all possible parse trees
-        sentiments, parse_trees = self.parser.parse(token_list[:-1]) # omit the last period
+        sentiments, parse_trees = self.parser.parse(token_list[:-1])  # omit the last period
         # return the most probable sentiment
         return Counter(sentiments).most_common(), parse_trees
 
@@ -198,7 +201,8 @@ class SentimentPipeline:
         except Exception as ex:
             print(ex.args[0])
 
-    def output_results(self, sentence: str, ground_truth: str, labels: List[Tuple[Any, int]], trees: Dict[str, str]) -> None:
+    def output_results(self, sentence: str, ground_truth: str, labels: List[Tuple[Any, int]],
+                       trees: Dict[str, str]) -> None:
         """
         write the result with the following format
             sentence1
@@ -219,7 +223,7 @@ class SentimentPipeline:
                 writer.write(ground_truth + '\t|\t')
                 # write the prediction labels
                 writer.write('[')
-                for i in range(len(labels)-1):
+                for i in range(len(labels) - 1):
                     writer.write(labels[i][0] + ', ')
                 writer.write(labels[-1][0] + ']')
                 writer.write('\r\n\r\n')
@@ -281,6 +285,7 @@ class SentimentPipeline:
         print('negative sentences:')
         for sent in self.lexica.get_negative_sents():
             print(sent)
+
 
 if __name__ == '__main__':
     # define the parser
