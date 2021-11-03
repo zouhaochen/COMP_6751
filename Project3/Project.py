@@ -40,9 +40,9 @@ class SentParser:
                 tree.draw()
             if self.save:
                 # save the tree diagram
-                TreeView(tree)._cframe.print_to_file('saved_results/Tree' + str(self.tree_no) + '_diagram.ps')
+                TreeView(tree)._cframe.print_to_file('Tree' + str(self.tree_no) + '_diagram.ps')
                 # save the tree text
-                with open('saved_results/Tree' + str(self.tree_no) + '_text.txt', "w", encoding='utf-8') as writer:
+                with open('Tree' + str(self.tree_no) + '_text.txt', "w", encoding='utf-8') as writer:
                     writer.write(str(tree))
             # append the root's SENTI attribute value to the list
             senti_label = tree.label()['SENTIMENT']
@@ -216,7 +216,7 @@ class SentimentPipeline:
         """
         if ground_truth in [label[0] for label in labels]:
             # write the sentence and the ground_truth and label to Good.txt
-            with open("saved_results/Good.txt", "a+") as writer:
+            with open("Good.txt", "a+") as writer:
                 # write the input sentence
                 writer.write(sentence + '\r\n')
                 # write the ground-truth label
@@ -241,7 +241,7 @@ class SentimentPipeline:
                 self.true_neutral += 1
         else:
             # write the sentence and the ground_truth and label to False.txt
-            with open("saved_results/False.txt", "a+") as writer:
+            with open("False.txt", "a+") as writer:
                 # write the input sentence
                 writer.write(sentence + '\r\n')
                 # write the ground-truth label
@@ -289,7 +289,7 @@ class SentimentPipeline:
 
 if __name__ == '__main__':
     # define the parser
-    grammar_url_s = 'grammar/grammar.fcfg'
+    grammar_url_s = 'grammar.fcfg'
     parser = SentParser(grammar_url_s, False, False, False)
     # load the data from nltk
     data = DataLoader()
