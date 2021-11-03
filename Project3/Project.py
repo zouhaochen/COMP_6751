@@ -289,7 +289,7 @@ class SentimentPipeline:
 
 if __name__ == '__main__':
     # define the parser
-    grammar_url_s = 'grammar/sentianalysis_grammar_s.fcfg'
+    grammar_url_s = 'grammar/grammar.fcfg'
     parser = SentParser(grammar_url_s, False, False, False)
     # load the data from nltk
     data = DataLoader()
