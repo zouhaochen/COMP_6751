@@ -69,9 +69,9 @@ SBAR[SENTIMENT=?s] -> S[SENTIMENT=?s] SBAR[SENTIMENT=?s]
 NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] -> N[NUM=?n, PERSON=?p, SENTIMENT=?s] | NNP[NUM=?n, PERSON=?p] | PRP[NUM=?n, PERSON=?p]
 
 ## e.g. *this* is not good
-NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] -> DT[NUM=?n]
+NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] -> DET[NUM=?n]
 ## e.g. this is *an example*, *a perfect example of well-intentioned but manipulated movie making*
-NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] -> DT[NUM=?n] NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] | DT[NUM=?n] NP[-WH, NUM=?n, PERSON=?p] PP[SENTIMENT=?s] | DT[NUM=?n] NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] PP
+NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] -> DET[NUM=?n] NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] | DET[NUM=?n] NP[-WH, NUM=?n, PERSON=?p] PP[SENTIMENT=?s] | DET[NUM=?n] NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] PP
 ## e.g. this is a *perfect example*
 NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] -> JJ[SENTIMENT=?s] NP[-WH, NUM=?n, PERSON=?p] | JJ[SENTIMENT=neutral] NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] | JJ[SENTIMENT=?s] NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s]
 ## e.g. movie making
@@ -144,11 +144,7 @@ ADJP[SENTIMENT=?s] -> RB[-negation] ADJP[SENTIMENT=?s]
 # ###################
 
 # Determiners
-DT[NUM=sg] -> 'a' | 'an' | 'this' | 'This' | 'the'
-
-### -------------------------------------------------------- ###
-# Modal
-MD -> 'may'
+DET[NUM=sg] -> 'a' | 'an' | 'this' | 'This' | 'the'
 
 ### -------------------------------------------------------- ###
 # Punctuations
@@ -184,18 +180,20 @@ JJ[SENTIMENT=neutral] -> 'dramatic' | 'gut-wrenching' | 'low' | 'other' | 'long'
 
 ### -------------------------------------------------------- ###
 # Adverb
-RB[+negation] -> 'not' | 'Not' | "n't"
-RB[-negation, SENTIMENT=neutral] -> 'mainly' | 'too' | 'there' | 'here'
-RB[-negation, SENTIMENT=negative] -> 'shamelessly'
+RB[+NEGATION] -> 'not' | 'Not' | "n't"
+RB[-NEGATION, SENTIMENT=neutral] -> 'mainly' | 'too' | 'there' | 'here'
+RB[-NEGATION, SENTIMENT=negative] -> 'shamelessly'
 
 ### -------------------------------------------------------- ###
 # Verb
-V[TENSE=pres, NUM=sg, PERSON=3, +AUX, -passive] -> 'is' | "'s" | 'has' | 'does'
-V[TENSE=inf, +AUX, -passive] -> 'may'
-V[TENSE=inf, SUBCAT=trans, -AUX, -passive] -> 'have'
-V[TENSE=past, NUM=sg, +AUX, -passive] -> 'was'
-V[TENSE=past, NUM=pl, +AUX, -passive] -> 'were'
-V[TENSE=past, SUBCAT=trans, -AUX, -passive] -> 'saw'
-V[TENSE=past, SUBCAT=dative, -AUX, -passive] -> 'gave'
-V[SUBCAT=trans, -AUX, +passive] -> 'told'
+V[TENSE=pres, NUM=sg, PERSON=3, +AUX] -> 'is' | "'s" | 'does'
+V[TENSE=pres, +AUX] -> 'may'
+V[TENSE=past, NUM=sg, +AUX] -> 'was'
+V[TENSE=past, NUM=pl, +AUX] -> 'were'
+V[TENSE=pres, SUBCAT=trans, NUM=sg, PERSON=3, -AUX] -> 'has'
+V[TENSE=pres, SUBCAT=trans, -AUX] -> 'have'
+V[TENSE=past, SUBCAT=trans, -AUX] -> 'saw'
+V[TENSE=past, SUBCAT=trans, -AUX] -> 'told'
+V[TENSE=past, SUBCAT=dative, -AUX] -> 'gave'
+
 
