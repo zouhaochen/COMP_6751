@@ -153,8 +153,9 @@ COMMA -> ',' | '.'
 ### -------------------------------------------------------- ###
 # Nouns
 N[NUM=sg, SENTIMENT=neutral] -> 'story' | 'impact' | 'example' | 'movie' | 'making' | 'way' | 'sweater'
-N[NUM=pl, SENTIMENT=neutral] -> 'films' | 'people'
 N[NUM=sg, SENTIMENT=negative] -> 'holocaust' | 'mess' | 'hazard'
+N[NUM=pl, SENTIMENT=neutral] -> 'films' | 'people'
+
 
 ### -------------------------------------------------------- ###
 # Possessive Pronoun
@@ -195,5 +196,3 @@ V[TENSE=pres, SUBCAT=trans, -AUX] -> 'have'
 V[TENSE=past, SUBCAT=trans, -AUX] -> 'saw'
 V[TENSE=past, SUBCAT=trans, -AUX] -> 'told'
 V[TENSE=past, SUBCAT=dative, -AUX] -> 'gave'
-
-
