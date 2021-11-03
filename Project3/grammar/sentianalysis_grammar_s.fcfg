@@ -2,190 +2,138 @@
 # ###################
 # Grammar Productions
 # ###################
-#
-# Common Attributes:
-#   TENSE  -> tense = inf, pres, past, future, pastpart
-#   NUM    -> number of subject = sg, pl
-#   PERSON -> subject person = 1, 2, 3
-#   SENTIMENT  -> sentiment = positive, negative, neutral
-#
-# Other Attributes:
-# S:
-#   +-INV -> inversion?
-# V:
-#   SUBCAT -> verb subcategory = trans, intrans, clause, dative
-#   +-AUX -> auxiliary verb?
-#   +-passive -> passive mode
-# RB:
-#   +-negation -> negation?
-# CC:
-#   +-and -> and relation?
-#   +-but -> but relation?
-#   +-or  -> or relation?
-# WP:
-#   +-wh -> heading by 'wh'
-# IN:
-#   +-of -> of
 
 
-# S expansion productions
-S[-INV, SENTIMENT=?s] -> NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=?s]
-
-## e.g. a perfect example
+# ######################################
+# S: SENTENCE
+## A compelling story.
 S[-INV, SENTIMENT=?s] -> NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s]
-
-## e.g. Is this example good or bad?
+## It is a compelling story.
+S[-INV, SENTIMENT=?s] -> NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=?s]
+## Is the story compelling.
 S[+INV, SENTIMENT=?s] -> V[+AUX] NP[-WH, NUM=?n] ADJP[SENTIMENT=?s]
 
-## and relations
+## Conjunction AND of sentiment bearing sentence
+### It has gut-wrenching impact and it is a compelling story.
 S[-INV, SENTIMENT=positive] -> S[-INV, SENTIMENT=positive] CC[CONJUNCTION=and] S[-INV, SENTIMENT=positive] | S[-INV, SENTIMENT=positive] CC[CONJUNCTION=and] S[-INV, SENTIMENT=neutral] | S[-INV, SENTIMENT=neutral] CC[CONJUNCTION=and] S[-INV, SENTIMENT=positive]
 S[-INV, SENTIMENT=negative] -> S[-INV, SENTIMENT=negative] CC[CONJUNCTION=and] S[-INV, SENTIMENT=negative] | S[-INV, SENTIMENT=negative] CC[CONJUNCTION=and] S[-INV, SENTIMENT=neutral] | S[-INV, SENTIMENT=neutral] CC[CONJUNCTION=and] S[-INV, SENTIMENT=negative]
 S[-INV, SENTIMENT=neutral] -> S[-INV, SENTIMENT=neutral] CC[CONJUNCTION=and] S[-INV, SENTIMENT=neutral]
+### It has gut-wrenching impact, and it is a compelling story.
+S[-INV, SENTIMENT=positive] -> S[-INV, SENTIMENT=positive] PUNCT CC[CONJUNCTION=and] S[-INV, SENTIMENT=positive] | S[-INV, SENTIMENT=positive] PUNCT CC[CONJUNCTION=and] S[-INV, SENTIMENT=neutral] | S[-INV, SENTIMENT=neutral] PUNCT CC[CONJUNCTION=and] S[-INV, SENTIMENT=positive]
+S[-INV, SENTIMENT=negative] -> S[-INV, SENTIMENT=negative] PUNCT CC[CONJUNCTION=and] S[-INV, SENTIMENT=negative] | S[-INV, SENTIMENT=negative] PUNCT CC[CONJUNCTION=and] S[-INV, SENTIMENT=neutral] | S[-INV, SENTIMENT=neutral] PUNCT CC[CONJUNCTION=and] S[-INV, SENTIMENT=negative]
+S[-INV, SENTIMENT=neutral] -> S[-INV, SENTIMENT=neutral] PUNCT CC[CONJUNCTION=and] S[-INV, SENTIMENT=neutral]
 
-## but relations
-S[-INV, SENTIMENT=?s] -> S[-INV, SENTIMENT=neutral] CC[CONJUNCTION=but] S[-INV, SENTIMENT=?s]
-## e.g. it is a compelling story but it has low impact
-S[-INV, SENTIMENT=negative] -> S[-INV, SENTIMENT=positive] CC[CONJUNCTION=but] S[-INV, SENTIMENT=negative] | S[-INV, SENTIMENT=positive] CC[CONJUNCTION=but] S[-INV, SENTIMENT=neutral]
-S[-INV, SENTIMENT=positive] -> S[-INV, SENTIMENT=negative] CC[CONJUNCTION=but] S[-INV, SENTIMENT=positive] | S[-INV, SENTIMENT=negative] CC[CONJUNCTION=but] S[-INV, SENTIMENT=neutral]
-## e.g. it is a compelling story , but it has low impact
-S[-INV, SENTIMENT=negative] -> S[-INV, SENTIMENT=positive] COMMA CC[CONJUNCTION=but] S[-INV, SENTIMENT=negative] | S[-INV, SENTIMENT=positive] COMMA CC[CONJUNCTION=but] S[-INV, SENTIMENT=neutral]
-S[-INV, SENTIMENT=positive] -> S[-INV, SENTIMENT=negative] COMMA CC[CONJUNCTION=but] S[-INV, SENTIMENT=positive] | S[-INV, SENTIMENT=negative] COMMA CC[CONJUNCTION=but] S[-INV, SENTIMENT=neutral]
-
-## or relation
+## Conjunction OR of sentiment bearing sentence
+### It has gut-wrenching impact or it is a compelling story.
 S[-INV, SENTIMENT=?s] -> S[-INV, SENTIMENT=?s] CC[CONJUNCTION=or] S[-INV, SENTIMENT=?s]
 S[-INV, SENTIMENT=neutral] -> S[-INV, SENTIMENT=positive] CC[CONJUNCTION=or] S[-INV, SENTIMENT=negative] | S[-INV, SENTIMENT=negative] CC[CONJUNCTION=or] S[-INV, SENTIMENT=positive]
 
+## Conjunction BUT of sentiment bearing sentence
+### It does not have gut-wrenching impact but it is a compelling story.
+S[-INV, SENTIMENT=?s] -> S[-INV, SENTIMENT=neutral] CC[CONJUNCTION=but] S[-INV, SENTIMENT=?s]
+### It has low impact but it is a compelling story.
+S[-INV, SENTIMENT=negative] -> S[-INV, SENTIMENT=positive] CC[CONJUNCTION=but] S[-INV, SENTIMENT=negative] | S[-INV, SENTIMENT=positive] CC[CONJUNCTION=but] S[-INV, SENTIMENT=neutral]
+S[-INV, SENTIMENT=positive] -> S[-INV, SENTIMENT=negative] CC[CONJUNCTION=but] S[-INV, SENTIMENT=positive] | S[-INV, SENTIMENT=negative] CC[CONJUNCTION=but] S[-INV, SENTIMENT=neutral]
+### It is a compelling story, but it has low impact.
+S[-INV, SENTIMENT=negative] -> S[-INV, SENTIMENT=positive] PUNCT CC[CONJUNCTION=but] S[-INV, SENTIMENT=negative] | S[-INV, SENTIMENT=positive] PUNCT CC[CONJUNCTION=but] S[-INV, SENTIMENT=neutral]
+S[-INV, SENTIMENT=positive] -> S[-INV, SENTIMENT=negative] PUNCT CC[CONJUNCTION=but] S[-INV, SENTIMENT=positive] | S[-INV, SENTIMENT=negative] PUNCT CC[CONJUNCTION=but] S[-INV, SENTIMENT=neutral]
+# ######################################
 
-### -------------------------------------------------------- ###
-# SBAR (subordinate clause) expansion productions
-## the people *who were there*
-SBAR[SENTIMENT=?s] -> NP[+WH] V[+AUX] RB[-negation, SENTIMENT=?s]
-## the way *it's told by people who were there*
-SBAR[SENTIMENT=?s] -> S[SENTIMENT=?s] SBAR[SENTIMENT=?s]
 
-
-### -------------------------------------------------------- ###
-# NP (noun phrase) expansion productions
+# ######################################
+# NP: Noun Phrase
+## Story; Montreal; You
 NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] -> N[NUM=?n, PERSON=?p, SENTIMENT=?s] | NNP[NUM=?n, PERSON=?p] | PRP[NUM=?n, PERSON=?p]
-
-## e.g. *this* is not good
+## Who
+NP[+WH, NUM=?n, PERSON=?p, SENTIMENT=?s] -> 'who'
+## This
 NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] -> DET[NUM=?n]
-## e.g. this is *an example*, *a perfect example of well-intentioned but manipulated movie making*
-NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] -> DET[NUM=?n] NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] | DET[NUM=?n] NP[-WH, NUM=?n, PERSON=?p] PP[SENTIMENT=?s] | DET[NUM=?n] NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] PP
-## e.g. this is a *perfect example*
-NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] -> JJ[SENTIMENT=?s] NP[-WH, NUM=?n, PERSON=?p] | JJ[SENTIMENT=neutral] NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] | JJ[SENTIMENT=?s] NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s]
-## e.g. movie making
+## Movie Making
 NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] -> N NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s]
-## e.g. shamelessly manipulative movie making
+## Manipulate Movie Making
+NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] -> ADJ[SENTIMENT=?s] NP[-WH, NUM=?n, PERSON=?p] | ADJ[SENTIMENT=neutral] NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] | ADJ[SENTIMENT=?s] NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s]
+## Shamelessly Manipulative Movie Making
 NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] -> ADJP[SENTIMENT=?s] NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] | ADJP[SENTIMENT=?s] NP[-WH, NUM=?n, PERSON=?p] | ADJP[SENTIMENT=neutral] NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s]
-## e.g. the way it's told by the people who were there
-NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] -> NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] SBAR[SENTIMENT=?s]
-## e.g. an *example of moving making*
-NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] -> NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] IN[+of] NP | NP[-WH, NUM=?n, PERSON=?p] IN[+of] NP[-WH, SENTIMENT=?s]
-
-## e.g. it was *a mess and a hazard*, it was *a good example and a positive review*
+## Example Of Moving Making
+NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] -> NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] PREP NP | NP[-WH, NUM=?n, PERSON=?p] PREP NP[-WH, SENTIMENT=?s]
+## A Perfect Example And A Well Intentioned Movie Making
 NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] -> NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] CC[CONJUNCTION=and] NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] | NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=neutral] CC[CONJUNCTION=and] NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] | NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] CC[CONJUNCTION=and] NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=neutral]
-## e.g. it was *a negative review or a positive review*
+## A Perfect Example Of Rancid But Manipulated Movie Making
+NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] -> DET[NUM=?n] NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] | DET[NUM=?n] NP[-WH, NUM=?n, PERSON=?p] PP[SENTIMENT=?s] | DET[NUM=?n] NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] PP
+## A Perfect Example Or A Well Intentioned Movie Making
 NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] -> NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] CC[CONJUNCTION=or] NP[-WH, NUM=?n, PERSON=?p] | NP[-WH, NUM=?n, PERSON=?p] CC[CONJUNCTION=or] NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s]
 NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=neutral] -> NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=positive] CC[CONJUNCTION=or] NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=negative] | NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=negative] CC[CONJUNCTION=or] NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=positive]
-NP[+WH, NUM=?n, PERSON=?p, SENTIMENT=neutral] -> 'who'
+## The Way It's Told By The People Who Were There
+NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] -> NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] SBAR[SENTIMENT=?s]
+# ######################################
 
-### -------------------------------------------------------- ###
-# VP (verb phrase) expansion productions
+
+# ######################################
+# VP: Verb Phrase
 VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=?s] -> V[TENSE=?t, NUM=?n, PERSON=?p, SUBCAT=trans, SENTIMENT=?s] NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s]
-VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=?s] -> V[TENSE=?t, NUM=?n, PERSON=?p, SUBCAT=trans, SENTIMENT=?s] NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] PP | V[TENSE=?t, NUM=?n, PERSON=?p, SUBCAT=trans, SENTIMENT=?s] NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] COMMA PP
-
-## e.g. this *does not have gut-wrenching impact*
-VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=?s] -> V[TENSE=?t, NUM=?n, PERSON=?p, +AUX] RB[+negation] VP[NUM=?n, SENTIMENT=neutral]
-VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=positive] -> V[TENSE=?t, NUM=?n, PERSON=?p, +AUX] RB[+negation] VP[NUM=?n, SENTIMENT=negative]
-VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=negative] -> V[TENSE=?t, NUM=?n, PERSON=?p, +AUX] RB[+negation] VP[NUM=?n, SENTIMENT=positive]
-
-## e.g. this *may not have the dramatic gut-wrenching impact of other holocaust films*
-VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=?s] -> MD RB[+negation] VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=?s]
-VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=positive] -> MD RB[+negation] VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=negative]
-VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=negative] -> MD RB[+negation] VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=positive]
-
-## e.g. it*'s told by the people*
-VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=?s] -> V[TENSE=?t, NUM=?n, PERSON=?p, +AUX, -passive] V[SUBCAT=trans, -AUX, +passive] PP[SENTIMENT=?s]
-
-## e.g. He *gave her a sweater*
+VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=?s] -> V[TENSE=?t, NUM=?n, PERSON=?p, SUBCAT=trans, SENTIMENT=?s] NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] PP | V[TENSE=?t, NUM=?n, PERSON=?p, SUBCAT=trans, SENTIMENT=?s] NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] PUNCT PP
+## Is Rancid
+VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=?s] -> V[TENSE=?t, NUM=?n, PERSON=?p, +AUX, -passive] ADJ[SENTIMENT=?s] | V[TENSE=?t, NUM=?n, PERSON=?p, +AUX, -passive] ADJP[SENTIMENT=?s]
+## Give Her A Sweater
 VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=?s] -> V[TENSE=?t, NUM=?n, PERSON=?p, SUBCAT=dative, SENTIMENT=?s] NP[-WH, NUM=?n, PERSON=?p] NP[-WH, SENTIMENT=?s]
+## Does Not Have Gut-wrenching Impact
+VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=?s] -> V[TENSE=?t, NUM=?n, PERSON=?p, +AUX] ADV[+negation] VP[NUM=?n, SENTIMENT=neutral]
+VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=positive] -> V[TENSE=?t, NUM=?n, PERSON=?p, +AUX] ADV[+negation] VP[NUM=?n, SENTIMENT=negative]
+VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=negative] -> V[TENSE=?t, NUM=?n, PERSON=?p, +AUX] ADV[+negation] VP[NUM=?n, SENTIMENT=positive]
+## Is Told By The People Who Were There
+VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=?s] -> V[TENSE=?t, NUM=?n, PERSON=?p, +AUX, -passive] V[SUBCAT=trans, -AUX, +passive] PP[SENTIMENT=?s]
+## May Not Have The Dramatic Gut-wrenching Impact Of Other Holocaust Films
+VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=?s] -> V[TENSE=pres, +AUX] ADV[+negation] VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=?s]
+VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=positive] -> V[TENSE=pres, +AUX] ADV[+negation] VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=negative]
+VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=negative] -> V[TENSE=pres, +AUX] ADV[+negation] VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=positive]
+# ######################################
 
-## e.g. it *was too long but entertaining*
-VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=?s] -> V[TENSE=?t, NUM=?n, PERSON=?p, +AUX, -passive] JJ[SENTIMENT=?s] | V[TENSE=?t, NUM=?n, PERSON=?p, +AUX, -passive] ADJP[SENTIMENT=?s]
+
+# ######################################
+# PP: Prepositional Phrase
+## Of Other Holocaust Films; The Way It's Told By The People Who Were There
+PP[SENTIMENT=?s] -> PREP NP[-WH, SENTIMENT=?s] | ADV[-negation] PREP PREP NP[-WH, SENTIMENT=?s]
+# ######################################
 
 
-### -------------------------------------------------------- ###
-# PP (prepositional phrase) expansion productions
-PP[SENTIMENT=?s] -> IN[-of] NP[-WH, SENTIMENT=?s] | RB[-negation] IN[-of] IN[+of] NP[-WH, SENTIMENT=?s]
+# ######################################
+# SBAR: Subordinate Clause
+## The People Who Were There; Mainly Because Of The Way It's Told By The People Who Were There
+SBAR[SENTIMENT=?s] -> NP[+WH] V[+AUX] ADV[-negation, SENTIMENT=?s] | S[SENTIMENT=?s] SBAR[SENTIMENT=?s]
+# ######################################
 
 
-### -------------------------------------------------------- ###
-# ADJP (adjective phrase) expansion productions
-## e.g. dull and scary and boring
-ADJP[SENTIMENT=?s] -> JJ[SENTIMENT=?s] CC[CONJUNCTION=and] JJ[SENTIMENT=?s] | JJ[SENTIMENT=?s] CC[CONJUNCTION=and] ADJP[SENTIMENT=?s]
-## e.g. dull, scary and boring
-ADJP[SENTIMENT=?s] -> JJ[SENTIMENT=?s] COMMA ADJP[SENTIMENT=?s]
-## e.g. well-intentioned but manipulative
-ADJP[SENTIMENT=?s] -> JJ CC[CONJUNCTION=but] JJ[SENTIMENT=?s]
-## e.g. well-intentioned , but shamelessly manipulative
-ADJP[SENTIMENT=?s] -> JJ COMMA CC[CONJUNCTION=but] JJ[SENTIMENT=?s] | JJ COMMA CC[CONJUNCTION=but] ADJP[SENTIMENT=?s]
-## e.g. good or bad
-ADJP[SENTIMENT=?s] -> JJ[SENTIMENT=?s] CC[CONJUNCTION=or] JJ[SENTIMENT=?s]
-ADJP[SENTIMENT=neutral] -> JJ[SENTIMENT=positive] CC[CONJUNCTION=or] JJ[SENTIMENT=negative] | JJ[SENTIMENT=negative] CC[CONJUNCTION=or] JJ[SENTIMENT=positive]
-## e.g. shamelessly manipulative
-ADJP[SENTIMENT=?s] -> RB[-negation, SENTIMENT=?s] JJ[SENTIMENT=?s]
-## e.g. too long but entertaining
-ADJP[SENTIMENT=?s] -> RB[-negation] ADJP[SENTIMENT=?s]
+# ######################################
+# ADJP: Adjective Phrase
+## Rancid, Well-intentioned
+ADJP[SENTIMENT=?s] -> ADJ[SENTIMENT=?s] PUNCT ADJP[SENTIMENT=?s]
+## Shamelessly Manipulative
+ADJP[SENTIMENT=?s] -> ADV[-negation] ADJ[SENTIMENT=?s]
+ADJP[SENTIMENT=?s] -> ADV[-negation] ADJP[SENTIMENT=?s]
+ADJP[SENTIMENT=?s] -> ADV[-negation, SENTIMENT=?s] ADJ[SENTIMENT=?s]
+## Adjective AND Adjective
+ADJP[SENTIMENT=?s] -> ADJ[SENTIMENT=?s] CC[CONJUNCTION=and] ADJ[SENTIMENT=?s] | ADJ[SENTIMENT=?s] CC[CONJUNCTION=and] ADJP[SENTIMENT=?s]
+## Adjective OR Adjective
+ADJP[SENTIMENT=?s] -> ADJ[SENTIMENT=?s] CC[CONJUNCTION=or] ADJ[SENTIMENT=?s] | ADJ[SENTIMENT=positive] CC[CONJUNCTION=or] ADJ[SENTIMENT=negative] | ADJ[SENTIMENT=negative] CC[CONJUNCTION=or] ADJ[SENTIMENT=positive]
+## Adjective BUT Adjective
+ADJP[SENTIMENT=?s] -> ADJ CC[CONJUNCTION=but] ADJ[SENTIMENT=?s] | ADJ PUNCT CC[CONJUNCTION=but] ADJ[SENTIMENT=?s] | ADJ PUNCT CC[CONJUNCTION=but] ADJP[SENTIMENT=?s]
+# ######################################
 
 
 # ###################
 # Lexical Productions
 # ###################
 
-# Determiners
+
+# ######################################
+# DET: Determiners
 DET[NUM=sg] -> 'a' | 'an' | 'this' | 'This' | 'the'
-
-### -------------------------------------------------------- ###
-# Punctuations
-COMMA -> ',' | '.'
-
-### -------------------------------------------------------- ###
-# Nouns
+# ######################################
+# N: Nouns
 N[NUM=sg, SENTIMENT=neutral] -> 'story' | 'impact' | 'example' | 'movie' | 'making' | 'way' | 'sweater'
-N[NUM=sg, SENTIMENT=negative] -> 'holocaust' | 'mess' | 'hazard'
 N[NUM=pl, SENTIMENT=neutral] -> 'films' | 'people'
-
-
-### -------------------------------------------------------- ###
-# Possessive Pronoun
-PRP[NUM=sg, PERSON=1] -> 'I'
-PRP[NUM=sg, PERSON=3] -> 'it' | 'It' | 'He' | 'her'
-
-### -------------------------------------------------------- ###
-# Prepositions
-IN[-of] -> 'with' | 'because' | 'by'
-IN[+of] -> 'of'
-
-### -------------------------------------------------------- ###
-# Coordinating Conjunction
-CC[CONJUNCTION=and] -> 'and' | 'And'
-CC[CONJUNCTION=but] -> 'but' | 'But'
-CC[CONJUNCTION=or] -> 'or' | 'Or'
-
-### -------------------------------------------------------- ###
-# Adjective
-JJ[SENTIMENT=positive] -> 'compelling' | 'perfect' | 'well-intentioned' | 'entertaining'
-JJ[SENTIMENT=negative] -> 'manipulative' | 'rancid' | 'ugly' | 'dull' | 'scary'
-JJ[SENTIMENT=neutral] -> 'dramatic' | 'gut-wrenching' | 'low' | 'other' | 'long'
-
-### -------------------------------------------------------- ###
-# Adverb
-RB[+NEGATION] -> 'not' | 'Not' | "n't"
-RB[-NEGATION, SENTIMENT=neutral] -> 'mainly' | 'too' | 'there' | 'here'
-RB[-NEGATION, SENTIMENT=negative] -> 'shamelessly'
-
-### -------------------------------------------------------- ###
+N[NUM=sg, SENTIMENT=negative] -> 'holocaust' | 'mess' | 'hazard'
+# ######################################
 # Verb
 V[TENSE=pres, NUM=sg, PERSON=3, +AUX] -> 'is' | "'s" | 'does'
 V[TENSE=pres, +AUX] -> 'may'
@@ -196,3 +144,30 @@ V[TENSE=pres, SUBCAT=trans, -AUX] -> 'have'
 V[TENSE=past, SUBCAT=trans, -AUX] -> 'saw'
 V[TENSE=past, SUBCAT=trans, -AUX] -> 'told'
 V[TENSE=past, SUBCAT=dative, -AUX] -> 'gave'
+# ######################################
+# PRP: Possessive Pronoun
+PRP[NUM=sg, PERSON=1] -> 'I'
+PRP[NUM=sg, PERSON=2] -> 'you' | 'You'
+PRP[NUM=sg, PERSON=3] -> 'it' | 'It' | 'He' | 'her'
+# ######################################
+# ADJ: Adjective
+ADJ[SENTIMENT=positive] -> 'compelling' | 'perfect' | 'well-intentioned' | 'entertaining'
+ADJ[SENTIMENT=negative] -> 'manipulative' | 'rancid' | 'ugly' | 'dull' | 'scary'
+ADJ[SENTIMENT=neutral] -> 'dramatic' | 'gut-wrenching' | 'low' | 'other' | 'long'
+# ######################################
+# ADV: Adverb
+ADV[+NEGATION] -> 'not' | 'Not' | "n't"
+ADV[-NEGATION, SENTIMENT=neutral] -> 'mainly' | 'too' | 'there' | 'here'
+ADV[-NEGATION, SENTIMENT=negative] -> 'shamelessly'
+# ######################################
+# PREP: Prepositions
+PREP -> 'with' | 'because' | 'by' | 'of'
+# ######################################
+# CC: Coordinating Conjunction
+CC[CONJUNCTION=and] -> 'and' | 'And'
+CC[CONJUNCTION=but] -> 'but' | 'But'
+CC[CONJUNCTION=or] -> 'or' | 'Or'
+# ######################################
+# PUNCT: Punctuations
+PUNCT -> ',' | '.' | '?'
+# ######################################
