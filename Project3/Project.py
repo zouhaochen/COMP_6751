@@ -38,12 +38,7 @@ class SentParser:
                 print(tree)
             if self.draw:
                 tree.draw()
-            if self.save:
-                # save the tree diagram
-                TreeView(tree)._cframe.print_to_file('Tree' + str(self.tree_no) + '_diagram.ps')
-                # save the tree text
-                with open('Tree' + str(self.tree_no) + '_text.txt', "w", encoding='utf-8') as writer:
-                    writer.write(str(tree))
+
             # append the root's SENTI attribute value to the list
             senti_label = tree.label()['SENTIMENT']
             if senti_label in ['negative', 'positive', 'neutral']:
@@ -56,18 +51,6 @@ class SentParser:
 
         return sentiment, parse_trees
 
-    def clear_directory(self) -> None:
-        """
-        clear the saved_results directory
-        """
-        # delete all files in ./saved_results/ directory
-        print("clearing the files in 'saved_results/' directory...")
-        print()
-        dir = 'saved_results/'
-        filelist = [f for f in os.listdir(dir)]
-        for f in filelist:
-            os.remove(os.path.join(dir, f))
-
 
 class DataLoader:
     def __init__(self):
@@ -78,44 +61,21 @@ class DataLoader:
         self.negative_sentences = []
         self.neutral_sentences = []
 
-        # response = input('Are you going to use default testing files? (Y/N) ')
-        response = "yes"
-        if response.lower() == 'y' or response.lower() == 'yes':
-            positive_filepath = 'data/positive.txt'
-            negative_filepath = 'data/negative.txt'
-            neutral_filepath = 'data/neutral.txt'
-        else:
-            positive_filepath = input('Input your file path containing positive sentences: ')
-            negative_filepath = input('Input your file path containing negative sentences: ')
-            neutral_filepath = input('Input your file path containing neutral sentences: ')
-        print('positive file path:', positive_filepath)
-        print('negative file path:', negative_filepath)
-        print('neutral file path:', neutral_filepath)
-        print()
+        positive_filepath = 'positive.txt'
+        negative_filepath = 'negative.txt'
+        neutral_filepath = 'neutral.txt'
 
-        # read positive sentences
-        if os.path.exists(positive_filepath):
-            with open(positive_filepath, "r") as reader:
-                self.positive_sentences = reader.readlines()
-            self.positive_sentences = [sent.rstrip() for sent in self.positive_sentences]
-        else:
-            print(positive_filepath + ' does not exist on local.')
+        with open(positive_filepath, "r") as reader:
+            self.positive_sentences = reader.readlines()
+        self.positive_sentences = [sent.rstrip() for sent in self.positive_sentences]
 
-        # read negative sentences
-        if os.path.exists(negative_filepath):
-            with open(negative_filepath, "r") as reader:
-                self.negative_sentences = reader.readlines()
-            self.negative_sentences = [sent.rstrip() for sent in self.negative_sentences]
-        else:
-            print(negative_filepath + ' does not exist on local.')
+        with open(negative_filepath, "r") as reader:
+            self.negative_sentences = reader.readlines()
+        self.negative_sentences = [sent.rstrip() for sent in self.negative_sentences]
 
-        # read neutral sentences
-        if os.path.exists(neutral_filepath):
-            with open(neutral_filepath, "r") as reader:
-                self.neutral_sentences = reader.readlines()
-            self.neutral_sentences = [sent.rstrip() for sent in self.neutral_sentences]
-        else:
-            print(neutral_filepath + ' does not exist on local.')
+        with open(neutral_filepath, "r") as reader:
+            self.neutral_sentences = reader.readlines()
+        self.neutral_sentences = [sent.rstrip() for sent in self.neutral_sentences]
 
     def get_negative_sents(self) -> List[str]:
         return self.negative_sentences
@@ -167,8 +127,6 @@ class SentimentPipeline:
         run the sentiment pipeline
         """
         try:
-            # clear the previous result files
-            self.parser.clear_directory()
 
             # tokenization + pos tagging
             # positive sentences
@@ -265,27 +223,6 @@ class SentimentPipeline:
             if 'neutral' in labels:
                 self.false_neutral += 1
 
-    def performance(self) -> None:
-        recall = self.true_positive / (self.true_positive + self.false_negative)
-        precision = self.true_positive / (self.true_positive + self.false_positive)
-        f1_score = (precision * recall) / (precision + recall)
-        print('True Negative =', self.true_negative)
-        print('True Positive =', self.true_positive)
-        print('False Negative =', self.false_negative)
-        print('False Positive =', self.false_negative)
-        print('Precision =', precision)
-        print('Recall =', recall)
-        print('F1 measure =', f1_score)
-
-    def print_lexica(self):
-        print('positive sentences:')
-        for sent in self.lexica.get_positive_sents():
-            print(sent)
-        print()
-        print('negative sentences:')
-        for sent in self.lexica.get_negative_sents():
-            print(sent)
-
 
 if __name__ == '__main__':
     # define the parser
@@ -298,5 +235,3 @@ if __name__ == '__main__':
     sp = SentimentPipeline(parser, data)
     # sp.print_lexica()
     sp.run_pipeline()
-    print()
-    print("The results are saved in the file 'saved_results/Good.txt' and 'saved_results/False.txt'.")
