@@ -13,8 +13,7 @@ from collections import defaultdict
 
 class SentenceParser:
 
-    def __init__(self, grammar_file: str, print_parse_tree: bool = False,
-                 draw_parse_tree: bool = False, save_parse_tree: bool = False):
+    def __init__(self, grammar_file: str, print_parse_tree: bool = False, save_parse_tree: bool = False):
         """
         sentence tree parser initializer
         Input:
@@ -31,8 +30,7 @@ class SentenceParser:
         """
         self.cp = load_parser(grammar_file, trace=0, parser=FeatureEarleyChartParser)
         self.print_result = print_parse_tree
-        self.draw_result = draw_parse_tree
-        self.save_result = save_parse_tree
+        self.draw_result = save_parse_tree
         self.tree_number = 1
 
     def parse(self, token: List[str]) -> Tuple[list, Dict[str, List[str]]]:
@@ -226,9 +224,8 @@ class Pipeline:
 
 if __name__ == '__main__':
 
-    grammar_url_s = 'grammar.fcfg'
-    parser = SentenceParser(grammar_url_s, False, False, False)
+    feature_grammar = 'grammar.fcfg'
+    parser = SentenceParser(feature_grammar, False, False)
     data = DataReader()
-
-    sp = Pipeline(parser, data)
-    sp.sentiment_analysis()
+    result = Pipeline(parser, data)
+    result.sentiment_analysis()
