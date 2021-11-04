@@ -73,33 +73,33 @@ NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] -> NP[-WH, NUM=?n, PERSON=?p, SENTIMENT
 VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=?s] -> V[TENSE=?t, NUM=?n, PERSON=?p, SUBCAT=trans, SENTIMENT=?s] NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s]
 VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=?s] -> V[TENSE=?t, NUM=?n, PERSON=?p, SUBCAT=trans, SENTIMENT=?s] NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] PP | V[TENSE=?t, NUM=?n, PERSON=?p, SUBCAT=trans, SENTIMENT=?s] NP[-WH, NUM=?n, PERSON=?p, SENTIMENT=?s] PUNCT PP
 ## Is Rancid
-VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=?s] -> V[TENSE=?t, NUM=?n, PERSON=?p, +AUX, -passive] ADJ[SENTIMENT=?s] | V[TENSE=?t, NUM=?n, PERSON=?p, +AUX, -passive] ADJP[SENTIMENT=?s]
+VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=?s] -> V[TENSE=?t, NUM=?n, PERSON=?p, +AUX] ADJ[SENTIMENT=?s] | V[TENSE=?t, NUM=?n, PERSON=?p] ADJP[SENTIMENT=?s]
 ## Give Her A Sweater
 VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=?s] -> V[TENSE=?t, NUM=?n, PERSON=?p, SUBCAT=dative, SENTIMENT=?s] NP[-WH, NUM=?n, PERSON=?p] NP[-WH, SENTIMENT=?s]
 ## Does Not Have Gut-wrenching Impact
-VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=?s] -> V[TENSE=?t, NUM=?n, PERSON=?p, +AUX] ADV[+negation] VP[NUM=?n, SENTIMENT=neutral]
-VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=positive] -> V[TENSE=?t, NUM=?n, PERSON=?p, +AUX] ADV[+negation] VP[NUM=?n, SENTIMENT=negative]
-VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=negative] -> V[TENSE=?t, NUM=?n, PERSON=?p, +AUX] ADV[+negation] VP[NUM=?n, SENTIMENT=positive]
+VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=?s] -> V[TENSE=?t, NUM=?n, PERSON=?p, +AUX] ADV[+NEGATION] VP[NUM=?n, SENTIMENT=neutral]
+VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=positive] -> V[TENSE=?t, NUM=?n, PERSON=?p, +AUX] ADV[+NEGATION] VP[NUM=?n, SENTIMENT=negative]
+VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=negative] -> V[TENSE=?t, NUM=?n, PERSON=?p, +AUX] ADV[+NEGATION] VP[NUM=?n, SENTIMENT=positive]
 ## Is Told By The People Who Were There
-VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=?s] -> V[TENSE=?t, NUM=?n, PERSON=?p, +AUX, -passive] V[SUBCAT=trans, -AUX, +passive] PP[SENTIMENT=?s]
+VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=?s] -> V[TENSE=?t, NUM=?n, PERSON=?p, +AUX] V[SUBCAT=trans, -AUX] PP[SENTIMENT=?s]
 ## May Not Have The Dramatic Gut-wrenching Impact Of Other Holocaust Films
-VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=?s] -> V[TENSE=pres, +AUX] ADV[+negation] VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=?s]
-VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=positive] -> V[TENSE=pres, +AUX] ADV[+negation] VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=negative]
-VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=negative] -> V[TENSE=pres, +AUX] ADV[+negation] VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=positive]
+VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=?s] -> V[TENSE=pres, +AUX] ADV[+NEGATION] VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=?s]
+VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=positive] -> V[TENSE=pres, +AUX] ADV[+NEGATION] VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=negative]
+VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=negative] -> V[TENSE=pres, +AUX] ADV[+NEGATION] VP[TENSE=?t, NUM=?n, PERSON=?p, SENTIMENT=positive]
 # ######################################
 
 
 # ######################################
 # PP: Prepositional Phrase
 ## Of Other Holocaust Films; The Way It's Told By The People Who Were There
-PP[SENTIMENT=?s] -> PREP NP[-WH, SENTIMENT=?s] | ADV[-negation] PREP PREP NP[-WH, SENTIMENT=?s]
+PP[SENTIMENT=?s] -> PREP NP[-WH, SENTIMENT=?s] | ADV[-NEGATION] PREP PREP NP[-WH, SENTIMENT=?s]
 # ######################################
 
 
 # ######################################
 # SBAR: Subordinate Clause
 ## The People Who Were There; Mainly Because Of The Way It's Told By The People Who Were There
-SBAR[SENTIMENT=?s] -> NP[+WH] V[+AUX] ADV[-negation, SENTIMENT=?s] | S[SENTIMENT=?s] SBAR[SENTIMENT=?s]
+SBAR[SENTIMENT=?s] -> NP[+WH] V[+AUX] ADV[-NEGATION, SENTIMENT=?s] | S[SENTIMENT=?s] SBAR[SENTIMENT=?s]
 # ######################################
 
 
@@ -108,9 +108,9 @@ SBAR[SENTIMENT=?s] -> NP[+WH] V[+AUX] ADV[-negation, SENTIMENT=?s] | S[SENTIMENT
 ## Rancid, Well-intentioned
 ADJP[SENTIMENT=?s] -> ADJ[SENTIMENT=?s] PUNCT ADJP[SENTIMENT=?s]
 ## Shamelessly Manipulative
-ADJP[SENTIMENT=?s] -> ADV[-negation] ADJ[SENTIMENT=?s]
-ADJP[SENTIMENT=?s] -> ADV[-negation] ADJP[SENTIMENT=?s]
-ADJP[SENTIMENT=?s] -> ADV[-negation, SENTIMENT=?s] ADJ[SENTIMENT=?s]
+ADJP[SENTIMENT=?s] -> ADV[-NEGATION] ADJ[SENTIMENT=?s]
+ADJP[SENTIMENT=?s] -> ADV[-NEGATION] ADJP[SENTIMENT=?s]
+ADJP[SENTIMENT=?s] -> ADV[-NEGATION, SENTIMENT=?s] ADJ[SENTIMENT=?s]
 ## Adjective AND Adjective
 ADJP[SENTIMENT=?s] -> ADJ[SENTIMENT=?s] CC[CONJUNCTION=and] ADJ[SENTIMENT=?s] | ADJ[SENTIMENT=?s] CC[CONJUNCTION=and] ADJP[SENTIMENT=?s]
 ## Adjective OR Adjective
@@ -126,15 +126,15 @@ ADJP[SENTIMENT=?s] -> ADJ CC[CONJUNCTION=but] ADJ[SENTIMENT=?s] | ADJ PUNCT CC[C
 
 
 # ######################################
-# DET: Determiners
+# DET: Determinate
 DET[NUM=sg] -> 'a' | 'A' | 'an' | 'An' | 'this' | 'This' | 'the' | 'The'
 # ######################################
-# N: Nouns
+# N: Noun
 N[NUM=sg, SENTIMENT=neutral] -> 'story' | 'impact' | 'example' | 'movie' | 'making' | 'way' | 'sweater'
 N[NUM=pl, SENTIMENT=neutral] -> 'films' | 'people'
 N[NUM=sg, SENTIMENT=negative] -> 'holocaust' | 'mess' | 'hazard'
 # ######################################
-# Verb
+# V: Verb
 V[TENSE=pres, NUM=sg, PERSON=3, +AUX] -> 'is' | "'s" | 'does'
 V[TENSE=pres, +AUX] -> 'may'
 V[TENSE=past, NUM=sg, +AUX] -> 'was'
@@ -160,7 +160,7 @@ ADV[+NEGATION] -> 'not' | 'Not' | "n't"
 ADV[-NEGATION, SENTIMENT=neutral] -> 'mainly' | 'too' | 'there' | 'here'
 ADV[-NEGATION, SENTIMENT=negative] -> 'shamelessly' | 'Shamelessly'
 # ######################################
-# PREP: Prepositions
+# PREP: Preposition
 PREP -> 'with' | 'because' | 'by' | 'of'
 # ######################################
 # CC: Coordinating Conjunction
@@ -168,6 +168,6 @@ CC[CONJUNCTION=and] -> 'and' | 'And'
 CC[CONJUNCTION=but] -> 'but' | 'But'
 CC[CONJUNCTION=or] -> 'or' | 'Or'
 # ######################################
-# PUNCT: Punctuations
+# PUNCT: Punctuation
 PUNCT -> ',' | '.' | '?'
 # ######################################

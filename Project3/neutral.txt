@@ -1,2 +1,4 @@
 It has low impact.
 This compelling story with gut-wrenching impact.
+It is a compelling story, but it has low impact.
+It has gut-wrenching impact, and it is a compelling story.

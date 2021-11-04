@@ -150,6 +150,7 @@ class Pipeline:
           sentiment analysis result
         """
         try:
+            print("Sentence Sentiment Analysis Program\n")
             print("Sentence Sentiment Analysis Start!")
 
             for positive_sentence in self.data_lexicon.read_positive_sentence():
