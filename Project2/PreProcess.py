@@ -70,7 +70,7 @@ class Parser:
         for tree in self.cp.parse(tokens):
             print(tree)
             if self.print:
-                tree.draw()
+                tree.draw_result()
             if self.save:
                 TreeView(tree).cframe.print_to_file('results/Tree' + str(self.tree_no) + '_diagram' + '.ps')
                 with open('results/Tree' + str(self.tree_no) + '_text' + '.txt', "w", encoding='utf-8') as writer:

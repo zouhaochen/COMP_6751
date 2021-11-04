@@ -1,94 +1,106 @@
-import os
+"""
+Project 3 for COMP 6751 Natural Language Analyst
+Sentence Analysis Development Program
+Be sure to read the project description page for further information about the expected behavior of the program
+@author: Haochen Zou (Luke) 40158179
+"""
 import nltk
 from nltk import word_tokenize, load_parser, FeatureEarleyChartParser
 from typing import List, Tuple, Dict, Any
 from collections import Counter
-from nltk.draw.tree import TreeView
 from collections import defaultdict
 
 
-class SentParser:
+class SentenceParser:
 
-    def __init__(self, grammar_url_s: str, print: bool = False, draw: bool = False, save: bool = False):
+    def __init__(self, grammar_file: str, print_parse_tree: bool = False,
+                 draw_parse_tree: bool = False, save_parse_tree: bool = False):
         """
-        constructor
-        :param grammar_url_s: grammar file URL
-        :param print: whether print the tree on console
-        :param draw: whether draw the parse tree on console
-        :param save: whether save the parse tree on drive
+        sentence tree parser initializer
+        Input:
+          self - text file sentence content
+          grammar_file - sentiment analysis grammar file
+          print_parse_tree - print parse tree result
+          draw_parse_tree - draw parse tree result
+          save_parse_tree - save parse tree result
+        Output:
+          print_result - print parse tree
+          draw_result - draw parse tree
+          save_result - save parse tree
+          tree_number - parse tree serial number
         """
-        self.cp_s = load_parser(grammar_url_s, trace=0, parser=FeatureEarleyChartParser)
-        self.print = print
-        self.draw = draw
-        self.save = save
-        self.tree_no = 1
+        self.cp = load_parser(grammar_file, trace=0, parser=FeatureEarleyChartParser)
+        self.print_result = print_parse_tree
+        self.draw_result = draw_parse_tree
+        self.save_result = save_parse_tree
+        self.tree_number = 1
 
-    def parse(self, tokens: List[str]) -> Tuple[list, Dict[str, List[str]]]:
+    def parse(self, token: List[str]) -> Tuple[list, Dict[str, List[str]]]:
         """
-        parse sentences in sent and print the parse tree
-        :param tokens: tokens of a sentence
-        :return all possible sentiment labels
+        parse the sentence
+        Input:
+          self - text file sentence content
+          token - sentence token
+        Output:
+          associate sentiment values to constituent label
         """
-        sentiment = []
-        parse_trees: Dict[str, List[str]] = defaultdict(list)
+        sentiment_value = []
+        parse_tree: Dict[str, List[str]] = defaultdict(list)
 
-        # parse the sentence where S is the root
-        for tree in self.cp_s.parse(tokens):
-            if self.print:
+        for tree in self.cp.parse(token):
+            if self.print_result:
                 print(tree)
-            if self.draw:
-                tree.draw()
+            if self.draw_result:
+                tree.draw_result()
 
-            # append the root's SENTI attribute value to the list
-            senti_label = tree.label()['SENTIMENT']
-            if senti_label in ['negative', 'positive', 'neutral']:
-                sentiment.append(senti_label)
-                parse_trees[senti_label].append(str(tree))
-            self.tree_no += 1
-        if len(sentiment) == 0:
-            sentiment.append('unknown')
-            parse_trees['unknown'].append('(unknown)')
+            sentiment_label = tree.label()['SENTIMENT']
+            if sentiment_label in ['negative', 'positive', 'neutral']:
+                sentiment_value.append(sentiment_label)
+                parse_tree[sentiment_label].append(str(tree))
+            self.tree_number += 1
 
-        return sentiment, parse_trees
+        return sentiment_value, parse_tree
 
 
-class DataLoader:
+class DataReader:
     def __init__(self):
         """
-        constructor
+        data reader initializer
+        Input:
+          self - data file sentence content
         """
-        self.positive_sentences = []
-        self.negative_sentences = []
-        self.neutral_sentences = []
+        self.sentence_positive = []
+        self.sentence_negative = []
+        self.sentence_neutral = []
 
-        positive_filepath = 'positive.txt'
-        negative_filepath = 'negative.txt'
-        neutral_filepath = 'neutral.txt'
+        sentence_positive_file = 'positive.txt'
+        sentence_negative_file = 'negative.txt'
+        sentence_neutral_file = 'neutral.txt'
 
-        with open(positive_filepath, "r") as reader:
-            self.positive_sentences = reader.readlines()
-        self.positive_sentences = [sent.rstrip() for sent in self.positive_sentences]
+        with open(sentence_positive_file, 'r') as reader:
+            self.sentence_positive = reader.readlines()
+        self.sentence_positive = [sent.rstrip() for sent in self.sentence_positive]
 
-        with open(negative_filepath, "r") as reader:
-            self.negative_sentences = reader.readlines()
-        self.negative_sentences = [sent.rstrip() for sent in self.negative_sentences]
+        with open(sentence_negative_file, 'r') as reader:
+            self.sentence_negative = reader.readlines()
+        self.sentence_negative = [sent.rstrip() for sent in self.sentence_negative]
 
-        with open(neutral_filepath, "r") as reader:
-            self.neutral_sentences = reader.readlines()
-        self.neutral_sentences = [sent.rstrip() for sent in self.neutral_sentences]
+        with open(sentence_neutral_file, 'r') as reader:
+            self.sentence_neutral = reader.readlines()
+        self.sentence_neutral = [sent.rstrip() for sent in self.sentence_neutral]
 
-    def get_negative_sents(self) -> List[str]:
-        return self.negative_sentences
+    def read_negative_sentences(self) -> List[str]:
+        return self.sentence_negative
 
-    def get_positive_sents(self) -> List[str]:
-        return self.positive_sentences
+    def read_positive_sentences(self) -> List[str]:
+        return self.sentence_positive
 
-    def get_neutral_sents(self) -> List[str]:
-        return self.neutral_sentences
+    def read_neutral_sentences(self) -> List[str]:
+        return self.sentence_neutral
 
 
-class SentimentPipeline:
-    def __init__(self, parser: SentParser, lexica: DataLoader):
+class Pipeline:
+    def __init__(self, parser: SentenceParser, lexica: DataReader):
         """
         constructor
         :param parser: Earley parser
@@ -130,32 +142,26 @@ class SentimentPipeline:
 
             # tokenization + pos tagging
             # positive sentences
-            for pos_sent in self.lexica.get_positive_sents():
+            for pos_sent in self.lexica.read_positive_sentences():
                 words = word_tokenize(pos_sent)
-                pos = self.part_of_speech_tagging(words)
-                # print('part-of-speech:', pos)
-                print('analyzing sentence:', pos_sent)
                 senti, trees = self.parse_and_sentify(words)
                 # write the sentencee and the ground-truth and the prediction to a result file
                 self.output_results(pos_sent, 'positive', senti, trees)
+                print("Positive Sentence Sentiment Value Analysis Complete")
             # negative sentences
-            for neg_sent in self.lexica.get_negative_sents():
+            for neg_sent in self.lexica.read_negative_sentences():
                 words = word_tokenize(neg_sent)
-                pos = self.part_of_speech_tagging(words)
-                # print('part-of-speech:', pos)
-                print('analyzing sentence:', neg_sent)
                 senti, trees = self.parse_and_sentify(words)
                 # write the ground-truth and prediction to a result file
                 self.output_results(neg_sent, 'negative', senti, trees)
+                print("Negative Sentence Sentiment Value Analysis Complete")
             # neutral sentences
-            for neu_sent in self.lexica.get_neutral_sents():
+            for neu_sent in self.lexica.read_neutral_sentences():
                 words = word_tokenize(neu_sent)
-                pos = self.part_of_speech_tagging(words)
-                # print('part-of-speech:', pos)
-                print('analyzing sentence:', neu_sent)
                 senti, trees = self.parse_and_sentify(words)
                 # write the ground-truth and prediction to a result file
                 self.output_results(neu_sent, 'neutral', senti, trees)
+                print("Neutral Sentence Sentiment Value Analysis Complete")
         except Exception as ex:
             print(ex.args[0])
 
@@ -227,11 +233,11 @@ class SentimentPipeline:
 if __name__ == '__main__':
     # define the parser
     grammar_url_s = 'grammar.fcfg'
-    parser = SentParser(grammar_url_s, False, False, False)
+    parser = SentenceParser(grammar_url_s, False, False, False)
     # load the data from nltk
-    data = DataLoader()
+    data = DataReader()
 
     # define and run pipeline
-    sp = SentimentPipeline(parser, data)
+    sp = Pipeline(parser, data)
     # sp.print_lexica()
     sp.run_pipeline()

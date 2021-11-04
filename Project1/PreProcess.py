@@ -152,7 +152,7 @@ def date_parse(text_date: Set[str]):
 
         for tree in date_parser.parse(tokens):
             print(tree)
-            tree.draw()
+            tree.draw_result()
 
 
 class DateParser:
