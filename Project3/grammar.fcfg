@@ -127,7 +127,7 @@ ADJP[SENTIMENT=?s] -> ADJ CC[CONJUNCTION=but] ADJ[SENTIMENT=?s] | ADJ PUNCT CC[C
 
 # ######################################
 # DET: Determiners
-DET[NUM=sg] -> 'a' | 'an' | 'this' | 'This' | 'the'
+DET[NUM=sg] -> 'a' | 'A' | 'an' | 'An' | 'this' | 'This' | 'the' | 'The'
 # ######################################
 # N: Nouns
 N[NUM=sg, SENTIMENT=neutral] -> 'story' | 'impact' | 'example' | 'movie' | 'making' | 'way' | 'sweater'
@@ -151,14 +151,14 @@ PRP[NUM=sg, PERSON=2] -> 'you' | 'You'
 PRP[NUM=sg, PERSON=3] -> 'it' | 'It' | 'He' | 'her'
 # ######################################
 # ADJ: Adjective
-ADJ[SENTIMENT=positive] -> 'compelling' | 'perfect' | 'well-intentioned' | 'entertaining'
-ADJ[SENTIMENT=negative] -> 'manipulative' | 'rancid' | 'ugly' | 'dull' | 'scary'
+ADJ[SENTIMENT=positive] -> 'compelling' | 'perfect' | 'well-intentioned' | 'Well-intentioned' | 'entertaining'
+ADJ[SENTIMENT=negative] -> 'manipulative' | 'Manipulative' | 'rancid' | 'Rancid' | 'ugly' | 'dull' | 'scary'
 ADJ[SENTIMENT=neutral] -> 'dramatic' | 'gut-wrenching' | 'low' | 'other' | 'long'
 # ######################################
 # ADV: Adverb
 ADV[+NEGATION] -> 'not' | 'Not' | "n't"
 ADV[-NEGATION, SENTIMENT=neutral] -> 'mainly' | 'too' | 'there' | 'here'
-ADV[-NEGATION, SENTIMENT=negative] -> 'shamelessly'
+ADV[-NEGATION, SENTIMENT=negative] -> 'shamelessly' | 'Shamelessly'
 # ######################################
 # PREP: Prepositions
 PREP -> 'with' | 'because' | 'by' | 'of'
