@@ -89,155 +89,146 @@ class DataReader:
             self.sentence_neutral = reader.readlines()
         self.sentence_neutral = [sent.rstrip() for sent in self.sentence_neutral]
 
-    def read_negative_sentences(self) -> List[str]:
-        return self.sentence_negative
-
-    def read_positive_sentences(self) -> List[str]:
+    def read_positive_sentence(self) -> List[str]:
         return self.sentence_positive
 
-    def read_neutral_sentences(self) -> List[str]:
+    def read_negative_sentence(self) -> List[str]:
+        return self.sentence_negative
+
+    def read_neutral_sentence(self) -> List[str]:
         return self.sentence_neutral
 
 
+def part_of_speech_tagging(word: List[str]) -> List[Tuple[str, str]]:
+    """
+    part-of-speech tagging function
+    Input:
+      word: pos word list
+    """
+    normal_pos_tag = nltk.pos_tag(word[:-1])
+    return normal_pos_tag
+
+
 class Pipeline:
-    def __init__(self, parser: SentenceParser, lexica: DataReader):
+    def __init__(self, earley_parser: SentenceParser, lexicon_data_reader: DataReader):
         """
-        constructor
-        :param parser: Earley parser
-        :param lexica: Lexica data loader
+        pipeline initializer
+        Input:
+          self - data file sentence content
+          earley_parser - sentence earley parser
+          lexicon_data_reader - lexicon data reader
+        Output:
+          sentiment analysis result
         """
-        self.parser = parser
-        self.lexica = lexica
-        self.true_positive = 0
-        self.false_positive = 0
-        self.true_negative = 0
-        self.false_negative = 0
-        self.true_neutral = 0
-        self.false_neutral = 0
+        self.data_parser = earley_parser
+        self.data_lexicon = lexicon_data_reader
 
-    def part_of_speech_tagging(self, words: List[str]) -> List[Tuple[str, str]]:
-        """
-        perform part-of-speech tagging
-        :param words: a list of words
-        """
-        normal_pos_tag = nltk.pos_tag(words[:-1])  # omit the last period
-        return normal_pos_tag
+        # initialize the value to compare the result between initial forecast and sentiment analysis
+        self.initial_forecast_positive = 0
+        self.initial_forecast_negative = 0
+        self.initial_forecast_neutral = 0
+        self.sentiment_analysis_positive = 0
+        self.sentiment_analysis_negative = 0
+        self.sentiment_analysis_neutral = 0
 
-    def parse_and_sentify(self, token_list: List[str]) -> Tuple[List[Tuple[Any, int]], Dict[str, str]]:
+    def sentiment_label_parse(self, token_list: List[str]) -> Tuple[List[Tuple[Any, int]], Dict[str, List[str]]]:
         """
-        parse the sentence
-        :param token_list: tokens of a sentence
-        :return return the most possible sentiment
+        parse the sentence with sentiment label
+        Input:
+          self - data file sentence content
+          token_list - sentiment token list
+        Output:
+          sentiment analysis result
         """
-        # retrieve sentiment labels of all possible parse trees
-        sentiments, parse_trees = self.parser.parse(token_list[:-1])  # omit the last period
-        # return the most probable sentiment
+        sentiments, parse_trees = self.data_parser.parse(token_list[:-1])
         return Counter(sentiments).most_common(), parse_trees
 
-    def run_pipeline(self) -> None:
+    def sentiment_analysis(self) -> None:
         """
-        run the sentiment pipeline
+        analysis sentence sentiment value
+        Input:
+          self - data file sentence content
+        Output:
+          sentiment analysis result
         """
         try:
+            print("Sentence Sentiment Analysis Start!")
 
-            # tokenization + pos tagging
-            # positive sentences
-            for pos_sent in self.lexica.read_positive_sentences():
-                words = word_tokenize(pos_sent)
-                senti, trees = self.parse_and_sentify(words)
-                # write the sentencee and the ground-truth and the prediction to a result file
-                self.output_results(pos_sent, 'positive', senti, trees)
-                print("Positive Sentence Sentiment Value Analysis Complete")
-            # negative sentences
-            for neg_sent in self.lexica.read_negative_sentences():
-                words = word_tokenize(neg_sent)
-                senti, trees = self.parse_and_sentify(words)
-                # write the ground-truth and prediction to a result file
-                self.output_results(neg_sent, 'negative', senti, trees)
-                print("Negative Sentence Sentiment Value Analysis Complete")
-            # neutral sentences
-            for neu_sent in self.lexica.read_neutral_sentences():
-                words = word_tokenize(neu_sent)
-                senti, trees = self.parse_and_sentify(words)
-                # write the ground-truth and prediction to a result file
-                self.output_results(neu_sent, 'neutral', senti, trees)
-                print("Neutral Sentence Sentiment Value Analysis Complete")
+            for positive_sentence in self.data_lexicon.read_positive_sentence():
+                sentence_word = word_tokenize(positive_sentence)
+                sentence_sentiment, parse_tree = self.sentiment_label_parse(sentence_word)
+                self.record_parse_result(positive_sentence, 'positive', sentence_sentiment, parse_tree)
+
+            for negative_sentence in self.data_lexicon.read_negative_sentence():
+                sentence_word = word_tokenize(negative_sentence)
+                sentence_sentiment, parse_tree = self.sentiment_label_parse(sentence_word)
+                self.record_parse_result(negative_sentence, 'negative', sentence_sentiment, parse_tree)
+
+            for neutral_sentence in self.data_lexicon.read_neutral_sentence():
+                sentence_word = word_tokenize(neutral_sentence)
+                sentence_sentiment, parse_tree = self.sentiment_label_parse(sentence_word)
+                self.record_parse_result(neutral_sentence, 'neutral', sentence_sentiment, parse_tree)
+
         except Exception as ex:
             print(ex.args[0])
 
-    def output_results(self, sentence: str, ground_truth: str, labels: List[Tuple[Any, int]],
-                       trees: Dict[str, str]) -> None:
+        print("Sentence Sentiment Analysis Complete!")
+
+    def record_parse_result(self, sentence: str, sentiment_value: str, sentiment_label: List[Tuple[Any, int]],
+                            parse_tree: Dict[str, str]) -> None:
         """
-        write the result with the following format
-            sentence1
-            ground_truth label  prediction label
-            sentence 2
-            ground_truth label  prediction label
-            ...
-        :param sentence: sentence
-        :param ground_truth: ground-truth label
-        :param label: prediction label
+        record the sentence sentiment value analysis result in a txt file
+        Input:
+          self - data file sentence content
+          sentiment_value - sentence sentiment value before analysis
+          sentiment_label - sentence sentiment label
+          parse_tree - sentence parse tree
+        Output:
+          sentiment analysis result txt file
         """
-        if ground_truth in [label[0] for label in labels]:
-            # write the sentence and the ground_truth and label to Good.txt
+        if sentiment_value in [label[0] for label in sentiment_label]:
+
             with open("Good.txt", "a+") as writer:
-                # write the input sentence
-                writer.write(sentence + '\r\n')
-                # write the ground-truth label
-                writer.write(ground_truth + '\t|\t')
-                # write the prediction labels
-                writer.write('[')
-                for i in range(len(labels) - 1):
-                    writer.write(labels[i][0] + ', ')
-                writer.write(labels[-1][0] + ']')
-                writer.write('\r\n\r\n')
-                # write the first tree with prediction label that has the most votes
-                for label in labels:
-                    writer.write(trees[label[0]][0])
+                writer.write('【Sentence for Analysis】\n' + sentence + '\r\n')
+                writer.write('【Initial Forecast Sentiment Value】\n' + sentiment_value + '\r\n')
+                writer.write('【Program Analysis Sentiment Value】\n' + sentiment_label[-1][0] + '\r\n')
+                writer.write('【Earley Parse Result】\r\n')
+                for label in sentiment_label:
+                    writer.write(parse_tree[label[0]][0])
                     writer.write('\r\n')
-                writer.write('-------------------------------------------------------------------\r\n')
-            # record performance
-            if ground_truth == 'negative':
-                self.true_negative += 1
-            elif ground_truth == 'positive':
-                self.true_positive += 1
-            elif ground_truth == 'neutral':
-                self.true_neutral += 1
+                writer.write('\r\n')
+
+            if sentiment_value == 'negative':
+                self.initial_forecast_negative += 1
+            elif sentiment_value == 'positive':
+                self.initial_forecast_positive += 1
+            elif sentiment_value == 'neutral':
+                self.initial_forecast_neutral += 1
         else:
-            # write the sentence and the ground_truth and label to False.txt
+
             with open("False.txt", "a+") as writer:
-                # write the input sentence
-                writer.write(sentence + '\r\n')
-                # write the ground-truth label
-                writer.write(ground_truth + '\t|\t')
-                # write the prediction labels
-                writer.write('[')
-                for i in range(len(labels) - 1):
-                    writer.write(labels[i][0] + ', ')
-                writer.write(labels[-1][0] + ']')
-                writer.write('\r\n\r\n')
-                # write the first tree with prediction label that has the most votes
-                for label in labels:
-                    writer.write(trees[label[0]][0])
+                writer.write('【Sentence for Analysis】\n' + sentence + '\r\n')
+                writer.write('【Initial Forecast Sentiment Value】\n' + sentiment_value + '\r\n')
+                writer.write('【Program Analysis Sentiment Value】\n' + sentiment_label[-1][0] + '\r\n')
+                writer.write('【Earley Parse Result】\r\n')
+                for label in sentiment_label:
+                    writer.write(parse_tree[label[0]][0])
                     writer.write('\r\n')
-                writer.write('-------------------------------------------------------------------\r\n')
-            # record performance
-            if 'negative' in labels:
-                self.false_negative += 1
-            if 'positive' in labels:
-                self.false_positive += 1
-            if 'neutral' in labels:
-                self.false_neutral += 1
+                writer.write('\r\n')
+
+            if 'negative' in sentiment_label:
+                self.sentiment_analysis_negative += 1
+            if 'positive' in sentiment_label:
+                self.sentiment_analysis_positive += 1
+            if 'neutral' in sentiment_label:
+                self.sentiment_analysis_neutral += 1
 
 
 if __name__ == '__main__':
-    # define the parser
+
     grammar_url_s = 'grammar.fcfg'
     parser = SentenceParser(grammar_url_s, False, False, False)
-    # load the data from nltk
     data = DataReader()
 
-    # define and run pipeline
     sp = Pipeline(parser, data)
-    # sp.print_lexica()
-    sp.run_pipeline()
+    sp.sentiment_analysis()
