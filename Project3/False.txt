@@ -1,0 +1,60 @@
+【Sentence for Analysis】
+It is a compelling story, but it has low impact.
+【Initial Forecast Sentiment Value】
+neutral
+【Program Analysis Sentiment Value】
+negative
+【Earley Parse Result】
+(S[-INV, SENTIMENT='negative']
+  (S[-INV, SENTIMENT='positive']
+    (NP[NUM='sg', PERSON=3, SENTIMENT=?s, -WH]
+      (PRP[NUM='sg', PERSON=3] It))
+    (VP[NUM='sg', PERSON=3, SENTIMENT='positive', TENSE='pres']
+      (V[+AUX, NUM='sg', PERSON=3, TENSE='pres'] is)
+      (NP[NUM='sg', PERSON=?p, SENTIMENT=?s, -WH] (DET[NUM='sg'] a))
+      (NP[NUM='sg', PERSON=?p, SENTIMENT='positive', -WH]
+        (ADJ[SENTIMENT='positive'] compelling)
+        (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
+          (N[NUM='sg', SENTIMENT='neutral'] story)))))
+  (PUNCT[] ,)
+  (CC[CONJUNCTION='but'] but)
+  (S[-INV, SENTIMENT='neutral']
+    (NP[NUM='sg', PERSON=3, SENTIMENT=?s, -WH]
+      (PRP[NUM='sg', PERSON=3] it))
+    (VP[NUM='sg', PERSON=3, SENTIMENT='neutral', TENSE='pres']
+      (V[-AUX, NUM='sg', PERSON=3, SUBCAT='trans', TENSE='pres'] has)
+      (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
+        (ADJ[SENTIMENT='neutral'] low)
+        (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
+          (N[NUM='sg', SENTIMENT='neutral'] impact))))))
+
+【Sentence for Analysis】
+It has gut-wrenching impact, and it is a compelling story.
+【Initial Forecast Sentiment Value】
+neutral
+【Program Analysis Sentiment Value】
+positive
+【Earley Parse Result】
+(S[-INV, SENTIMENT='positive']
+  (S[-INV, SENTIMENT='neutral']
+    (NP[NUM='sg', PERSON=3, SENTIMENT=?s, -WH]
+      (PRP[NUM='sg', PERSON=3] It))
+    (VP[NUM='sg', PERSON=3, SENTIMENT='neutral', TENSE='pres']
+      (V[-AUX, NUM='sg', PERSON=3, SUBCAT='trans', TENSE='pres'] has)
+      (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
+        (ADJ[SENTIMENT='neutral'] gut-wrenching)
+        (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
+          (N[NUM='sg', SENTIMENT='neutral'] impact)))))
+  (PUNCT[] ,)
+  (CC[CONJUNCTION='and'] and)
+  (S[-INV, SENTIMENT='positive']
+    (NP[NUM='sg', PERSON=3, SENTIMENT=?s, -WH]
+      (PRP[NUM='sg', PERSON=3] it))
+    (VP[NUM='sg', PERSON=3, SENTIMENT='positive', TENSE='pres']
+      (V[+AUX, NUM='sg', PERSON=3, TENSE='pres'] is)
+      (NP[NUM='sg', PERSON=?p, SENTIMENT=?s, -WH] (DET[NUM='sg'] a))
+      (NP[NUM='sg', PERSON=?p, SENTIMENT='positive', -WH]
+        (ADJ[SENTIMENT='positive'] compelling)
+        (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
+          (N[NUM='sg', SENTIMENT='neutral'] story))))))
+
