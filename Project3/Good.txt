@@ -417,3 +417,422 @@ neutral
       (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
         (N[NUM='sg', SENTIMENT='neutral'] impact)))))
 
+【Sentence for Analysis】
+It's a compelling story.
+【Initial Forecast Sentiment Value】
+positive
+【Program Analysis Sentiment Value】
+positive
+【Earley Parse Result】
+(S[-INV, SENTIMENT='positive']
+  (NP[NUM='sg', PERSON=3, SENTIMENT=?s, -WH]
+    (PRP[NUM='sg', PERSON=3] It))
+  (VP[NUM='sg', PERSON=3, SENTIMENT='positive', TENSE='pres']
+    (V[+AUX, NUM='sg', PERSON=3, TENSE='pres'] 's)
+    (NP[NUM='sg', PERSON=?p, SENTIMENT=?s, -WH] (DET[NUM='sg'] a))
+    (NP[NUM='sg', PERSON=?p, SENTIMENT='positive', -WH]
+      (ADJ[SENTIMENT='positive'] compelling)
+      (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
+        (N[NUM='sg', SENTIMENT='neutral'] story)))))
+
+【Sentence for Analysis】
+It has low impact but it's a compelling story.
+【Initial Forecast Sentiment Value】
+positive
+【Program Analysis Sentiment Value】
+positive
+【Earley Parse Result】
+(S[-INV, SENTIMENT='positive']
+  (S[-INV, SENTIMENT='neutral']
+    (NP[NUM='sg', PERSON=3, SENTIMENT=?s, -WH]
+      (PRP[NUM='sg', PERSON=3] It))
+    (VP[NUM='sg', PERSON=3, SENTIMENT='neutral', TENSE='pres']
+      (V[-AUX, NUM='sg', PERSON=3, SUBCAT='trans', TENSE='pres'] has)
+      (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
+        (ADJ[SENTIMENT='neutral'] low)
+        (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
+          (N[NUM='sg', SENTIMENT='neutral'] impact)))))
+  (CC[CONJUNCTION='but'] but)
+  (S[-INV, SENTIMENT='positive']
+    (NP[NUM='sg', PERSON=3, SENTIMENT=?s, -WH]
+      (PRP[NUM='sg', PERSON=3] it))
+    (VP[NUM='sg', PERSON=3, SENTIMENT='positive', TENSE='pres']
+      (V[+AUX, NUM='sg', PERSON=3, TENSE='pres'] 's)
+      (NP[NUM='sg', PERSON=?p, SENTIMENT=?s, -WH] (DET[NUM='sg'] a))
+      (NP[NUM='sg', PERSON=?p, SENTIMENT='positive', -WH]
+        (ADJ[SENTIMENT='positive'] compelling)
+        (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
+          (N[NUM='sg', SENTIMENT='neutral'] story))))))
+
+【Sentence for Analysis】
+This does not have gut-wrenching impact but it's a compelling story.
+【Initial Forecast Sentiment Value】
+positive
+【Program Analysis Sentiment Value】
+positive
+【Earley Parse Result】
+(S[-INV, SENTIMENT='positive']
+  (S[-INV, SENTIMENT='neutral']
+    (NP[NUM='sg', PERSON=?p, SENTIMENT=?s, -WH] (DET[NUM='sg'] This))
+    (VP[NUM='sg', PERSON=?p, SENTIMENT='neutral', TENSE='pres']
+      (V[+AUX, NUM='sg', PERSON=3, TENSE='pres'] does)
+      (ADV[+NEGATION] not)
+      (VP[NUM='sg', PERSON=?p, SENTIMENT='neutral', TENSE='pres']
+        (V[-AUX, SUBCAT='trans', TENSE='pres'] have)
+        (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
+          (ADJ[SENTIMENT='neutral'] gut-wrenching)
+          (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
+            (N[NUM='sg', SENTIMENT='neutral'] impact))))))
+  (CC[CONJUNCTION='but'] but)
+  (S[-INV, SENTIMENT='positive']
+    (NP[NUM='sg', PERSON=3, SENTIMENT=?s, -WH]
+      (PRP[NUM='sg', PERSON=3] it))
+    (VP[NUM='sg', PERSON=3, SENTIMENT='positive', TENSE='pres']
+      (V[+AUX, NUM='sg', PERSON=3, TENSE='pres'] 's)
+      (NP[NUM='sg', PERSON=?p, SENTIMENT=?s, -WH] (DET[NUM='sg'] a))
+      (NP[NUM='sg', PERSON=?p, SENTIMENT='positive', -WH]
+        (ADJ[SENTIMENT='positive'] compelling)
+        (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
+          (N[NUM='sg', SENTIMENT='neutral'] story))))))
+
+【Sentence for Analysis】
+This may not have the dramatic gut-wrenching impact of other holocaust films, but it's a compelling story, mainly because of the way it's told by the people who were there.
+【Initial Forecast Sentiment Value】
+positive
+【Program Analysis Sentiment Value】
+positive
+【Earley Parse Result】
+(S[-INV, SENTIMENT='positive']
+  (S[-INV, SENTIMENT=?s]
+    (NP[NUM='sg', PERSON=?p, SENTIMENT=?s, -WH] (DET[NUM='sg'] This))
+    (VP[NUM='sg', PERSON=?p, SENTIMENT=?s, TENSE='pres']
+      (V[+AUX, TENSE='pres'] may)
+      (ADV[+NEGATION] not)
+      (VP[NUM='sg', PERSON=?p, SENTIMENT='neutral', TENSE='pres']
+        (V[-AUX, SUBCAT='trans', TENSE='pres'] have)
+        (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
+          (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
+            (DET[NUM='sg'] the)
+            (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
+              (ADJ[SENTIMENT='neutral'] dramatic)
+              (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
+                (ADJ[SENTIMENT='neutral'] gut-wrenching)
+                (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
+                  (N[NUM='sg', SENTIMENT='neutral'] impact)))))
+          (PREP[] of)
+          (NP[NUM='pl', PERSON=?p, SENTIMENT='neutral', -WH]
+            (ADJ[SENTIMENT='neutral'] other)
+            (NP[NUM='pl', PERSON=?p, SENTIMENT='neutral', -WH]
+              (N[NUM='sg', SENTIMENT='negative'] holocaust)
+              (NP[NUM='pl', PERSON=?p, SENTIMENT='neutral', -WH]
+                (N[NUM='pl', SENTIMENT='neutral'] films))))))))
+  (PUNCT[] ,)
+  (CC[CONJUNCTION='but'] but)
+  (S[-INV, SENTIMENT='positive']
+    (NP[NUM='sg', PERSON=3, SENTIMENT=?s, -WH]
+      (PRP[NUM='sg', PERSON=3] it))
+    (VP[NUM='sg', PERSON=3, SENTIMENT='positive', TENSE='pres']
+      (V[+AUX, NUM='sg', PERSON=3, TENSE='pres'] 's)
+      (NP[NUM='sg', PERSON=?p, SENTIMENT='positive', -WH]
+        (DET[NUM='sg'] a)
+        (NP[NUM='sg', PERSON=?p, SENTIMENT='positive', -WH]
+          (ADJ[SENTIMENT='positive'] compelling)
+          (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
+            (N[NUM='sg', SENTIMENT='neutral'] story))))
+      (PUNCT[] ,)
+      (PP[SENTIMENT='neutral']
+        (ADV[-NEGATION, SENTIMENT='neutral'] mainly)
+        (PREP[] because)
+        (PREP[] of)
+        (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
+          (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
+            (DET[NUM='sg'] the)
+            (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
+              (N[NUM='sg', SENTIMENT='neutral'] way)))
+          (SBAR[SENTIMENT='neutral']
+            (S[-INV, SENTIMENT=?s]
+              (NP[NUM='sg', PERSON=3, SENTIMENT=?s, -WH]
+                (PRP[NUM='sg', PERSON=3] it))
+              (VP[NUM='sg', PERSON=3, SENTIMENT=?s, TENSE='pres']
+                (V[+AUX, NUM='sg', PERSON=3, TENSE='pres'] 's)
+                (V[-AUX, SUBCAT='trans', TENSE='past'] told)
+                (PP[SENTIMENT=?s]
+                  (PREP[] by)
+                  (NP[NUM='sg', PERSON=?p, SENTIMENT=?s, -WH]
+                    (DET[NUM='sg'] the)))))
+            (SBAR[SENTIMENT='neutral']
+              (S[-INV, SENTIMENT='neutral']
+                (NP[NUM='pl', PERSON=?p, SENTIMENT='neutral', -WH]
+                  (N[NUM='pl', SENTIMENT='neutral'] people)))
+              (SBAR[SENTIMENT='neutral']
+                (NP[NUM=?n, PERSON=?p, SENTIMENT=?s, +WH] who)
+                (V[+AUX, NUM='pl', TENSE='past'] were)
+                (ADV[-NEGATION, SENTIMENT='neutral'] there)))))))))
+
+【Sentence for Analysis】
+A perfect example.
+【Initial Forecast Sentiment Value】
+positive
+【Program Analysis Sentiment Value】
+positive
+【Earley Parse Result】
+(S[-INV, SENTIMENT='positive']
+  (NP[NUM='sg', PERSON=?p, SENTIMENT='positive', -WH]
+    (DET[NUM='sg'] A)
+    (NP[NUM='sg', PERSON=?p, SENTIMENT='positive', -WH]
+      (ADJ[SENTIMENT='positive'] perfect)
+      (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
+        (N[NUM='sg', SENTIMENT='neutral'] example)))))
+
+【Sentence for Analysis】
+Well-intentioned movie making.
+【Initial Forecast Sentiment Value】
+positive
+【Program Analysis Sentiment Value】
+positive
+【Earley Parse Result】
+(S[-INV, SENTIMENT='positive']
+  (NP[NUM='sg', PERSON=?p, SENTIMENT='positive', -WH]
+    (ADJ[SENTIMENT='positive'] Well-intentioned)
+    (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
+      (N[NUM='sg', SENTIMENT='neutral'] movie)
+      (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
+        (N[NUM='sg', SENTIMENT='neutral'] making)))))
+
+【Sentence for Analysis】
+Manipulative movie making.
+【Initial Forecast Sentiment Value】
+negative
+【Program Analysis Sentiment Value】
+negative
+【Earley Parse Result】
+(S[-INV, SENTIMENT='negative']
+  (NP[NUM='sg', PERSON=?p, SENTIMENT='negative', -WH]
+    (ADJ[SENTIMENT='negative'] Manipulative)
+    (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
+      (N[NUM='sg', SENTIMENT='neutral'] movie)
+      (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
+        (N[NUM='sg', SENTIMENT='neutral'] making)))))
+
+【Sentence for Analysis】
+Shamelessly manipulative movie making.
+【Initial Forecast Sentiment Value】
+negative
+【Program Analysis Sentiment Value】
+negative
+【Earley Parse Result】
+(S[-INV, SENTIMENT='negative']
+  (NP[NUM='sg', PERSON=?p, SENTIMENT='negative', -WH]
+    (ADJP[SENTIMENT='negative']
+      (ADV[-NEGATION, SENTIMENT='negative'] Shamelessly)
+      (ADJ[SENTIMENT='negative'] manipulative))
+    (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
+      (N[NUM='sg', SENTIMENT='neutral'] movie)
+      (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
+        (N[NUM='sg', SENTIMENT='neutral'] making)))))
+
+【Sentence for Analysis】
+Rancid movie making.
+【Initial Forecast Sentiment Value】
+negative
+【Program Analysis Sentiment Value】
+negative
+【Earley Parse Result】
+(S[-INV, SENTIMENT='negative']
+  (NP[NUM='sg', PERSON=?p, SENTIMENT='negative', -WH]
+    (ADJ[SENTIMENT='negative'] Rancid)
+    (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
+      (N[NUM='sg', SENTIMENT='neutral'] movie)
+      (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
+        (N[NUM='sg', SENTIMENT='neutral'] making)))))
+
+【Sentence for Analysis】
+Well-intentioned but manipulative movie making.
+【Initial Forecast Sentiment Value】
+negative
+【Program Analysis Sentiment Value】
+negative
+【Earley Parse Result】
+(S[-INV, SENTIMENT='negative']
+  (NP[NUM='sg', PERSON=?p, SENTIMENT='negative', -WH]
+    (ADJP[SENTIMENT='negative']
+      (ADJ[SENTIMENT='positive'] Well-intentioned)
+      (CC[CONJUNCTION='but'] but)
+      (ADJ[SENTIMENT='negative'] manipulative))
+    (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
+      (N[NUM='sg', SENTIMENT='neutral'] movie)
+      (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
+        (N[NUM='sg', SENTIMENT='neutral'] making)))))
+
+【Sentence for Analysis】
+A perfect example of well-intentioned but manipulative movie making.
+【Initial Forecast Sentiment Value】
+negative
+【Program Analysis Sentiment Value】
+negative
+【Earley Parse Result】
+(S[-INV, SENTIMENT='positive']
+  (NP[NUM='sg', PERSON=?p, SENTIMENT='positive', -WH]
+    (NP[NUM='sg', PERSON=?p, SENTIMENT='positive', -WH]
+      (DET[NUM='sg'] A)
+      (NP[NUM='sg', PERSON=?p, SENTIMENT='positive', -WH]
+        (ADJ[SENTIMENT='positive'] perfect)
+        (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
+          (N[NUM='sg', SENTIMENT='neutral'] example))))
+    (PREP[] of)
+    (NP[NUM='sg', PERSON=?p, SENTIMENT='negative', -WH]
+      (ADJP[SENTIMENT='negative']
+        (ADJ[SENTIMENT='positive'] well-intentioned)
+        (CC[CONJUNCTION='but'] but)
+        (ADJ[SENTIMENT='negative'] manipulative))
+      (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
+        (N[NUM='sg', SENTIMENT='neutral'] movie)
+        (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
+          (N[NUM='sg', SENTIMENT='neutral'] making))))))
+(S[-INV, SENTIMENT='negative']
+  (NP[NUM='sg', PERSON=?p, SENTIMENT='negative', -WH]
+    (NP[NUM='sg', PERSON=?p, SENTIMENT='positive', -WH]
+      (DET[NUM='sg'] A)
+      (NP[NUM='sg', PERSON=?p, SENTIMENT='positive', -WH]
+        (ADJ[SENTIMENT='positive'] perfect)
+        (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
+          (N[NUM='sg', SENTIMENT='neutral'] example))))
+    (PREP[] of)
+    (NP[NUM='sg', PERSON=?p, SENTIMENT='negative', -WH]
+      (ADJP[SENTIMENT='negative']
+        (ADJ[SENTIMENT='positive'] well-intentioned)
+        (CC[CONJUNCTION='but'] but)
+        (ADJ[SENTIMENT='negative'] manipulative))
+      (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
+        (N[NUM='sg', SENTIMENT='neutral'] movie)
+        (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
+          (N[NUM='sg', SENTIMENT='neutral'] making))))))
+
+【Sentence for Analysis】
+A perfect example of rancid, well-intentioned, but shamelessly manipulative movie making.
+【Initial Forecast Sentiment Value】
+negative
+【Program Analysis Sentiment Value】
+negative
+【Earley Parse Result】
+(S[-INV, SENTIMENT='positive']
+  (NP[NUM='sg', PERSON=?p, SENTIMENT='positive', -WH]
+    (NP[NUM='sg', PERSON=?p, SENTIMENT='positive', -WH]
+      (DET[NUM='sg'] A)
+      (NP[NUM='sg', PERSON=?p, SENTIMENT='positive', -WH]
+        (ADJ[SENTIMENT='positive'] perfect)
+        (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
+          (N[NUM='sg', SENTIMENT='neutral'] example))))
+    (PREP[] of)
+    (NP[NUM='sg', PERSON=?p, SENTIMENT='negative', -WH]
+      (ADJP[SENTIMENT='negative']
+        (ADJ[SENTIMENT='negative'] rancid)
+        (PUNCT[] ,)
+        (ADJP[SENTIMENT='negative']
+          (ADJ[SENTIMENT='positive'] well-intentioned)
+          (PUNCT[] ,)
+          (CC[CONJUNCTION='but'] but)
+          (ADJP[SENTIMENT='negative']
+            (ADV[-NEGATION, SENTIMENT='negative'] shamelessly)
+            (ADJ[SENTIMENT='negative'] manipulative))))
+      (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
+        (N[NUM='sg', SENTIMENT='neutral'] movie)
+        (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
+          (N[NUM='sg', SENTIMENT='neutral'] making))))))
+(S[-INV, SENTIMENT='negative']
+  (NP[NUM='sg', PERSON=?p, SENTIMENT='negative', -WH]
+    (NP[NUM='sg', PERSON=?p, SENTIMENT='positive', -WH]
+      (DET[NUM='sg'] A)
+      (NP[NUM='sg', PERSON=?p, SENTIMENT='positive', -WH]
+        (ADJ[SENTIMENT='positive'] perfect)
+        (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
+          (N[NUM='sg', SENTIMENT='neutral'] example))))
+    (PREP[] of)
+    (NP[NUM='sg', PERSON=?p, SENTIMENT='negative', -WH]
+      (ADJP[SENTIMENT='negative']
+        (ADJ[SENTIMENT='negative'] rancid)
+        (PUNCT[] ,)
+        (ADJP[SENTIMENT='negative']
+          (ADJ[SENTIMENT='positive'] well-intentioned)
+          (PUNCT[] ,)
+          (CC[CONJUNCTION='but'] but)
+          (ADJP[SENTIMENT='negative']
+            (ADV[-NEGATION, SENTIMENT='negative'] shamelessly)
+            (ADJ[SENTIMENT='negative'] manipulative))))
+      (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
+        (N[NUM='sg', SENTIMENT='neutral'] movie)
+        (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
+          (N[NUM='sg', SENTIMENT='neutral'] making))))))
+
+【Sentence for Analysis】
+He gave her an ugly sweater.
+【Initial Forecast Sentiment Value】
+negative
+【Program Analysis Sentiment Value】
+negative
+【Earley Parse Result】
+(S[-INV, SENTIMENT='negative']
+  (NP[NUM='sg', PERSON=3, SENTIMENT=?s, -WH]
+    (PRP[NUM='sg', PERSON=3] He))
+  (VP[NUM='sg', PERSON=3, SENTIMENT='negative', TENSE='past']
+    (V[-AUX, SUBCAT='dative', TENSE='past'] gave)
+    (NP[NUM='sg', PERSON=3, SENTIMENT=?s, -WH]
+      (PRP[NUM='sg', PERSON=3] her))
+    (NP[NUM='sg', PERSON=?p, SENTIMENT='negative', -WH]
+      (DET[NUM='sg'] an)
+      (NP[NUM='sg', PERSON=?p, SENTIMENT='negative', -WH]
+        (ADJ[SENTIMENT='negative'] ugly)
+        (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
+          (N[NUM='sg', SENTIMENT='neutral'] sweater))))))
+
+【Sentence for Analysis】
+It has low impact.
+【Initial Forecast Sentiment Value】
+neutral
+【Program Analysis Sentiment Value】
+neutral
+【Earley Parse Result】
+(S[-INV, SENTIMENT='neutral']
+  (NP[NUM='sg', PERSON=3, SENTIMENT=?s, -WH]
+    (PRP[NUM='sg', PERSON=3] It))
+  (VP[NUM='sg', PERSON=3, SENTIMENT='neutral', TENSE='pres']
+    (V[-AUX, NUM='sg', PERSON=3, SUBCAT='trans', TENSE='pres'] has)
+    (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
+      (ADJ[SENTIMENT='neutral'] low)
+      (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
+        (N[NUM='sg', SENTIMENT='neutral'] impact)))))
+
+【Sentence for Analysis】
+This compelling story with gut-wrenching impact.
+【Initial Forecast Sentiment Value】
+neutral
+【Program Analysis Sentiment Value】
+neutral
+【Earley Parse Result】
+(S[-INV, SENTIMENT='positive']
+  (NP[NUM='sg', PERSON=?p, SENTIMENT='positive', -WH]
+    (NP[NUM='sg', PERSON=?p, SENTIMENT='positive', -WH]
+      (DET[NUM='sg'] This)
+      (NP[NUM='sg', PERSON=?p, SENTIMENT='positive', -WH]
+        (ADJ[SENTIMENT='positive'] compelling)
+        (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
+          (N[NUM='sg', SENTIMENT='neutral'] story))))
+    (PREP[] with)
+    (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
+      (ADJ[SENTIMENT='neutral'] gut-wrenching)
+      (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
+        (N[NUM='sg', SENTIMENT='neutral'] impact)))))
+(S[-INV, SENTIMENT='neutral']
+  (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
+    (NP[NUM='sg', PERSON=?p, SENTIMENT='positive', -WH]
+      (DET[NUM='sg'] This)
+      (NP[NUM='sg', PERSON=?p, SENTIMENT='positive', -WH]
+        (ADJ[SENTIMENT='positive'] compelling)
+        (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
+          (N[NUM='sg', SENTIMENT='neutral'] story))))
+    (PREP[] with)
+    (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
+      (ADJ[SENTIMENT='neutral'] gut-wrenching)
+      (NP[NUM='sg', PERSON=?p, SENTIMENT='neutral', -WH]
+        (N[NUM='sg', SENTIMENT='neutral'] impact)))))
+
