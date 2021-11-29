@@ -55,8 +55,8 @@ class SentenceParser:
             self.tree_number += 1
 
         if len(sentiment_value) == 0:
-            sentiment_value.append('unknown')
-            parse_tree['unknown'].append('(unknown)')
+            sentiment_value.append('null')
+            parse_tree['null'].append('(null)')
 
         return sentiment_value, parse_tree
 
@@ -164,12 +164,12 @@ class AfinnAndSsap:
         self.polarity.append(sentiment_score)
 
     def performance_result(self):
-        print('True Positive =', self.true_positive)
-        print('True Negative =', self.true_negative)
-        print('True Neutral =', self.true_neutral)
-        print('False Positive =', self.false_positive)
-        print('False Negative =', self.false_negative)
-        print('False Neutral =', self.false_neutral)
+        print('True Positive\t', self.true_positive, "\tsentences")
+        print('True Negative\t', self.true_negative, "\tsentences")
+        print('True Neutral\t', self.true_neutral, "\tsentences")
+        print('False Positive\t', self.false_positive, "\tsentences")
+        print('False Negative\t', self.false_negative, "\tsentences")
+        print('False Neutral\t', self.false_neutral, "\tsentences")
 
 
 def part_of_speech_tagging(words: List[str]) -> List[Tuple[str, str]]:
@@ -316,18 +316,12 @@ class SentimentPipeline:
                     self.false_neutral += 1
 
     def performance(self) -> None:
-        # recall = self.true_positive / (self.true_positive + self.false_negative)
-        # precision = self.true_positive / (self.true_positive + self.false_positive)
-        # f1_score = (precision * recall) / (precision + recall)
-        print('True Positive =', self.true_positive)
-        print('True Negative =', self.true_negative)
-        print('True Neutral =', self.true_neutral)
-        print('False Positive =', self.false_positive)
-        print('False Negative =', self.false_negative)
-        print('False Neutral =', self.false_neutral)
-        # print('Precision =', precision)
-        # print('Recall =', recall)
-        # print('F1 measure =', f1_score)
+        print('True Positive:', self.true_positive, "sentences")
+        print('True Negative:', self.true_negative, "sentences")
+        print('True Neutral:', self.true_neutral, "sentences")
+        print('False Positive:', self.false_positive, "sentences")
+        print('False Negative:', self.false_negative, "sentences")
+        print('False Neutral:', self.false_neutral, "sentences")
 
     def lexicon_output(self):
         print('positive sentences:')
