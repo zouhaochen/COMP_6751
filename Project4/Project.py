@@ -48,7 +48,7 @@ class SentenceParser:
                 tree.draw_result()
 
             # append the root's SENTI attribute value to the list
-            sentiment_label = tree.label()['SENTI']
+            sentiment_label = tree.label()['SENTIMENT']
             if sentiment_label in ['negative', 'positive', 'neutral']:
                 sentiment_value.append(sentiment_label)
                 parse_tree[sentiment_label].append(str(tree))
@@ -137,7 +137,7 @@ class AfinnAndSsap:
             word_sentiment_value = 0
         return word_sentiment_value
 
-    def predict(self, text: str, ground_truth: str):
+    def predict_value(self, text: str, ground_truth: str):
         sentiment_score = self.sentiment(text)
         if ground_truth == 'positive':
             if sentiment_score > 0:
@@ -163,20 +163,13 @@ class AfinnAndSsap:
 
         self.polarity.append(sentiment_score)
 
-    def performance(self):
-        # recall = self.true_positive / (self.true_positive + self.false_negative)
-        # precision = self.true_positive / (self.true_positive + self.false_positive)
-        # f1_score = (precision * recall) / (precision + recall)
+    def performance_result(self):
         print('True Positive =', self.true_positive)
         print('True Negative =', self.true_negative)
         print('True Neutral =', self.true_neutral)
         print('False Positive =', self.false_positive)
         print('False Negative =', self.false_negative)
         print('False Neutral =', self.false_neutral)
-        # print('Precision =', precision)
-        # print('Recall =', recall)
-        # print('F1 measure =', f1_score)
-        print('SSAP polarity prediction:', self.polarity)
 
 
 def part_of_speech_tagging(words: List[str]) -> List[Tuple[str, str]]:
@@ -224,6 +217,7 @@ class SentimentPipeline:
 
             # tokenization + pos tagging
             # positive sentences
+            print("Sentence Sentiment Analysis Program\n")
             print("Sentence Sentiment Analysis Start!")
             for sentence_positive_sentiment in self.sentiment_lexicon.read_positive_sentence():
                 sentence_word = word_tokenize(sentence_positive_sentiment)
@@ -231,7 +225,7 @@ class SentimentPipeline:
                 # write the sentencee and the ground-truth and the prediction to a result file
                 self.output_results(sentence_positive_sentiment, 'positive', sentence_sentiment_value, sentence_parse_tree)
                 # run ssap baseline
-                self.baseline.predict(sentence_positive_sentiment, 'positive')
+                self.baseline.predict_value(sentence_positive_sentiment, 'positive')
             # negative sentences
             for sentence_negative_sentiment in self.sentiment_lexicon.read_negative_sentence():
                 sentence_word = word_tokenize(sentence_negative_sentiment)
@@ -239,7 +233,7 @@ class SentimentPipeline:
                 # write the ground-truth and prediction to a result file
                 self.output_results(sentence_negative_sentiment, 'negative', sentence_sentiment_value, sentence_parse_tree)
                 # run ssap baseline
-                self.baseline.predict(sentence_negative_sentiment, 'negative')
+                self.baseline.predict_value(sentence_negative_sentiment, 'negative')
             # neutral sentences
             for sentence_neutral_sentiment in self.sentiment_lexicon.read_neutral_sentence():
                 sentence_word = word_tokenize(sentence_neutral_sentiment)
@@ -247,7 +241,7 @@ class SentimentPipeline:
                 # write the ground-truth and prediction to a result file
                 self.output_results(sentence_neutral_sentiment, 'neutral', sentence_sentiment_value, sentence_parse_tree)
                 # run ssap baseline
-                self.baseline.predict(sentence_neutral_sentiment, 'neutral')
+                self.baseline.predict_value(sentence_neutral_sentiment, 'neutral')
         except Exception as exception:
             print(exception.args[0])
 
@@ -271,20 +265,21 @@ class SentimentPipeline:
             # write the sentence and the ground_truth and label to Good.txt
             with open("Good.txt", "a+") as writer:
                 # write the input sentence
-                writer.write(sentence_content + '\r\n')
+                writer.write('【Sentence for Analysis】\n' + sentence_content + '\r\n')
                 # write the ground-truth label
-                writer.write(ground_truth + '\t|\t')
+                writer.write('【Initial Forecast Sentiment Value】\n' + ground_truth + '\r\n')
                 # write the prediction labels
-                writer.write('[')
+                writer.write('【Program Analysis Sentiment Value】\n')
                 for i in range(len(sentiment_label_result) - 1):
                     writer.write(sentiment_label_result[i][0] + ', ')
-                writer.write(sentiment_label_result[-1][0] + ']')
-                writer.write('\r\n\r\n')
+                writer.write(sentiment_label_result[-1][0])
+                writer.write('\r\n')
                 # write the first tree with prediction label that has the most votes
+                writer.write('【Earley Parse Result】\r\n')
                 for label in sentiment_label_result:
                     writer.write(sentence_parse_tree_result[label[0]][0])
                     writer.write('\r\n')
-                writer.write('-------------------------------------------------------------------\r\n')
+                writer.write('\r\n\r\n')
             # record performance
             if ground_truth == 'negative':
                 self.true_negative += 1
@@ -296,20 +291,21 @@ class SentimentPipeline:
             # write the sentence and the ground_truth and label to False.txt
             with open("False.txt", "a+") as writer:
                 # write the input sentence
-                writer.write(sentence_content + '\r\n')
+                writer.write('【Sentence for Analysis】\n' + sentence_content + '\r\n')
                 # write the ground-truth label
-                writer.write(ground_truth + '\t|\t')
+                writer.write('【Initial Forecast Sentiment Value】\n' + ground_truth + '\r\n')
                 # write the prediction labels
-                writer.write('[')
+                writer.write('【Program Analysis Sentiment Value】\n')
                 for i in range(len(sentiment_label_result) - 1):
                     writer.write(sentiment_label_result[i][0] + ', ')
                 writer.write(sentiment_label_result[-1][0] + ']')
-                writer.write('\r\n\r\n')
+                writer.write('\r\n')
                 # write the first tree with prediction label that has the most votes
+                writer.write('【Earley Parse Result】\r\n')
                 for label in sentiment_label_result:
                     writer.write(sentence_parse_tree_result[label[0]][0])
                     writer.write('\r\n')
-                writer.write('-------------------------------------------------------------------\r\n')
+                writer.write('\r\n\r\n')
             # record performance
             for predict_value, cnt in sentiment_label_result:
                 if predict_value == 'negative' and predict_value != ground_truth and predict_value in [label[0] for label in sentiment_label_result]:
@@ -352,13 +348,12 @@ if __name__ == '__main__':
 
     # define and run pipeline
     sentiment_pipeline = SentimentPipeline(sentence_parser, data)
-    # sp.print_lexica()
     sentiment_pipeline.sentiment_analysis()
     print("Sentence Sentiment Analysis Finish!")
 
     print()
-    print("Baseline SSAP performance:")
-    sentiment_pipeline.baseline.performance()
+    print("The Performance of SSAP:")
+    sentiment_pipeline.baseline.performance_result()
     print()
-    print("Project IV performance:")
+    print("The Performance of Project:")
     sentiment_pipeline.performance()
