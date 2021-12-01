@@ -352,8 +352,7 @@ class SentimentPipeline:
                 writer.write('【Initial Forecast Sentiment Value】\n' + original_value + '\r\n')
                 writer.write('【Program Analysis Sentiment Value】\n')
                 for i in range(len(sentiment_label_result) - 1):
-                    writer.write(sentiment_label_result[i][0] + ', ')
-                writer.write(sentiment_label_result[-1][0] + ']')
+                    writer.write(sentiment_label_result[i][0])
                 writer.write('\r\n')
                 writer.write('【Earley Parse Result】\r\n')
                 for label in sentiment_label_result:

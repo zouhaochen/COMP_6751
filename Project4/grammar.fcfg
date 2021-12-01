@@ -230,13 +230,14 @@ MD -> 'may' | 'can' | 'must'
 COMMA -> ',' | '.' | '?'
 
 # Nouns
-N[NUM=sg, SENTIMENT=neutral] -> 'story' | 'impact' | 'example' | 'movie' | 'making' | 'way' | 'sweater' | 'street' | 'color' | 'salt' | 'response' | 'opportunity' | 'car' | 'chasing' | 'game' | 'apple' | 'review'
-N[NUM=pl, SENTIMENT=neutral] -> 'films' | 'people' | 'cars' | 'reaction' | 'colors'
+N[NUM=sg, SENTIMENT=neutral] -> 'story' | 'impact' | 'example' | 'movie' | 'making' | 'scene' | 'way' | 'sweater' | 'response' | 'opportunity' | 'chasing' | 'game' | 'review'
+N[NUM=pl, SENTIMENT=neutral] -> 'films' | 'people' | 'reaction' | 'romances' | 'audiences'
 N[NUM=sg, SENTIMENT=negative] -> 'holocaust' | 'mess' | 'hazard'
 
 # Personal Pronoun
 PRP[NUM=sg, PERSON=1] -> 'I'
 PRP[NUM=sg, PERSON=3] -> 'it' | 'It' | 'He' | 'her' | 'he'
+PRP[NUM=pl] -> 'They'
 
 # Prepositions
 IN -> 'of' | 'to' | 'because' | 'with' | 'by' | 'on' | 'that'
@@ -247,9 +248,9 @@ CC[CONJUNCTION=but] -> 'but' | 'But'
 CC[CONJUNCTION=or] -> 'or' | 'Or'
 
 # Adjective
-JJ[SENTIMENT=positive] -> 'compelling' | 'perfect' | 'well-intentioned' | 'entertaining' | 'funny' | 'interesting' | 'fascinating' | 'well-equipped' | 'positive'
-JJ[SENTIMENT=negative] -> 'manipulative' | 'rancid' | 'ugly' | 'dull' | 'scary' | 'boring' | 'disappointed' | 'negative'
-JJ[SENTIMENT=neutral] -> 'dramatic' | 'gut-wrenching' | 'low' | 'other' | 'long' | 'general' | 'many' | 'neutral' | 'cheap' | 'expensive' | 'black' | 'different' | 'common' | 'classic' | 'raw' | 'ripe' | 'expensive'
+JJ[SENTIMENT=positive] -> 'marvelous' | 'inspiring' | 'joyful' | 'funny' | 'compelling' | 'perfect' | 'well-intentioned' | 'entertaining' | 'interesting' | 'glamorous' | 'charming' | 'fascinating' | 'well-equipped' | 'positive'
+JJ[SENTIMENT=negative] -> 'horrendous' | 'terrible' | 'manipulative' | 'rancid' | 'ugly' | 'dull' | 'scary' | 'boring' | 'disappointed' | 'negative' | 'tremulous'
+JJ[SENTIMENT=neutral] -> 'dramatic' | 'gut-wrenching' | 'low' | 'other' | 'long' | 'general' | 'many' | 'neutral' | 'different' | 'common' | 'classic' | 'minority' | 'tiny'
 
 # Adverb
 RB[+negation] -> 'not' | 'Not' | "n't"
@@ -257,7 +258,7 @@ RB[-negation, SENTIMENT=neutral] -> 'mainly' | 'too' | 'slightly' | 'more' | 've
 RB[-negation, SENTIMENT=negative] -> 'shamelessly'
 
 # Verb
-V[+AUX, TENSE=pres, NUM=sg, PERSON=3, -passive] -> 'is' | "'s" | 'has' | 'does' | 'Is' | 'Has' | 'Does'
+V[+AUX, TENSE=pres, NUM=sg, PERSON=3, -passive] -> 'is' | "'s" | 'has' | 'does' | 'Is' | 'Has' | 'Does' | 'am' | 'do' | 'Do'
 V[+AUX, TENSE=pres, NUM=pl, PERSON=3, -passive] -> 'are' | 'Are'
 V[+AUX, TENSE=past, NUM=sg, -passive] -> 'was' | 'Was'
 V[+AUX, TENSE=past, NUM=pl, -passive] -> 'were' | 'Were'
@@ -265,7 +266,7 @@ V[+AUX, TENSE=inf, -passive] -> 'may' | 'May'
 V[-AUX, TENSE=pres, NUM=sg, PERSON=1, -passive] -> 'like'
 V[-AUX, TENSE=inf, SUBCAT=trans, -passive] -> 'have'
 V[-AUX, TENSE=past, SUBCAT=trans, -passive] -> 'saw' | 'said'
-V[-AUX, TENSE=past, SUBCAT=trans, +passive] -> 'told'
+V[-AUX, TENSE=past, SUBCAT=trans, +passive] -> 'told' | 'shown' | 'displayed'
 V[-AUX, TENSE=past, SUBCAT=dative, -passive] -> 'gave'
 
 # Wh-pronoun
